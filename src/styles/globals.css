@@ -42,7 +42,13 @@
 	}
 }
 
+html {
+    background: #121212;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 body {
     max-width: 768px;
-    
 }
