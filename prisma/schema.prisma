@@ -1,36 +1,30 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.text annotations in model Account below
-    // Further reading: 
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
+    referentialIntegrity = "prisma"
 }
 
 model Example {
     id String @id @default(cuid())
 }
 
-// Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
     userId            String
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? //@db.Text
-    access_token      String? //@db.Text
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? //@db.Text
+    id_token          String? @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -53,6 +47,8 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    Post          Post[]
+    cluster       Cluster
 }
 
 model VerificationToken {
@@ -61,4 +57,61 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model PromoClipResponses {
+    id          String   @id
+    name        String
+    phoneNumber String   @unique
+    comment     String?
+    interested  Boolean  @default(false)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime
+}
+
+model Post {
+    allowed    Boolean      @default(true)
+    postId     String       @id @default(uuid())
+    postedBy   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId     String
+    feeling    Feeling?
+    type       PostType     @default(Post)
+    createdAt  DateTime     @default(now())
+    attachment Attachment[]
+    content    String?
+    color      String?
+}
+
+model Attachment {
+    attachmentId String @id @default(uuid())
+    url          String
+    Post         Post   @relation(fields: [postId], references: [postId], onDelete: Cascade)
+    postId       String
+}
+
+enum PostType {
+    Post
+    Story
+}
+
+enum Feeling {
+    Tired
+    Happy
+    Sad
+    Excited
+    Angry
+    Loved
+}
+
+enum Cluster {
+    // Setapak
+    // Puchong
+    USJ
+    PJ
+    Heart
+    Force
+    Strike
+    Voice
+    Move
+    Mind
 }

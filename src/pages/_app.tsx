@@ -4,7 +4,10 @@ import type { AppRouter } from "../server/router";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import "../styles/globals.css";
+import { Layout } from "../components/Layout";
 
 const MyApp: AppType = ({
   Component,
@@ -12,7 +15,11 @@ const MyApp: AppType = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <SkeletonTheme baseColor="#5454C5" highlightColor="#639CD9">
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SkeletonTheme>
     </SessionProvider>
   );
 };
