@@ -12,7 +12,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <Head>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>YWKL</title>
-        <meta name="description" content="Best PWA app in the world!" />
+        <meta
+          name="description"
+          content="An application that gathers events that happen within FGACYC Young Warrior"
+        />
         <link rel="shortcut icon" href="/assets/icon-192x192.png" />
         <meta name="theme-color" content="#96ec00" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -47,7 +50,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           property="og:title"
           content="FGACYC Young Warrior KL Event Space"
         />
-        <meta property="og:description" content="Best PWA app in the world!" />
+        <meta
+          property="og:description"
+          content="An application that gathers events that happen within FGACYC Young Warrior"
+        />
         <meta property="og:site_name" content="YWKL Events" />
         <meta property="og:url" content="https://kl.fgacycyw.com" />
         <meta property="og:image" content="/icons/og.png" />
