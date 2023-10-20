@@ -8,7 +8,7 @@ export const jsonData: Record<string, Record<string, any>> = {
     },
     assets: {
       title: "assets/CC_Main_Title.png",
-      poster: "assets/main_poster.png",
+      poster: "assets/main_poster.webp",
       bg: "assets/CC_Background.png",
     },
   },

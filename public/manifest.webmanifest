@@ -1,0 +1,32 @@
+{
+  "theme_color": "#96ec00",
+  "background_color": "#191919",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "FGACYC Young Warrior KL Event Space",
+  "short_name": "YWKL",
+  "description": "An application that gathers events that happen within FGACYC Young Warrior.",
+  "icons": [
+    {
+      "src": "/assets/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
