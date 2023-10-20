@@ -31,7 +31,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         />
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:url" content="https://kl2.fgacycyw.com" />
+        <meta name="twitter:url" content="https://kl.fgacycyw.com" />
         <meta
           name="twitter:title"
           content="FGACYC Young Warrior KL Event Space"
@@ -49,7 +49,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         />
         <meta property="og:description" content="Best PWA app in the world!" />
         <meta property="og:site_name" content="YWKL Events" />
-        <meta property="og:url" content="https://kl2.fgacycyw.com" />
+        <meta property="og:url" content="https://kl.fgacycyw.com" />
         <meta property="og:image" content="/icons/og.png" />
         {/* add the following only if you want to add a startup image for Apple devices. */}
         <link
