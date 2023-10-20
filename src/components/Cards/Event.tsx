@@ -1,6 +1,6 @@
 import { env } from "@/env.mjs";
-import Link from "next/link";
 import { useState, type FunctionComponent, useEffect } from "react";
+import { LinkWrapper } from "../Wrappers/Link";
 
 interface EventsCardProps {
   id: string;
@@ -32,7 +32,8 @@ export const EventsCard: FunctionComponent<EventsCardProps> = ({
   }, [disabled, startTime]);
 
   return (
-    <Link
+    <LinkWrapper
+      disabled={disabled}
       style={{
         background: !disabled && imgSrc ? `url(/${imgSrc})` : "",
       }}
@@ -54,6 +55,6 @@ export const EventsCard: FunctionComponent<EventsCardProps> = ({
         Just the basics - Everything you need to know to set up your database
         and authentication.
       </div> */}
-    </Link>
+    </LinkWrapper>
   );
 };
