@@ -47,6 +47,7 @@ export default function Home() {
               <SwiperSlide key={key}>
                 <EventsCard
                   id={key}
+                  startTime={Number(value.startAt)}
                   imgSrc={value.assets.poster as string}
                   title={value.name as string}
                 />

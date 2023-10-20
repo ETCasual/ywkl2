@@ -6,6 +6,7 @@ export const jsonData: Record<string, Record<string, any>> = {
       primary: "#ff6511",
       secondary: "#96ec00",
     },
+    startAt: 1697860800000,
     assets: {
       title: "assets/CC_Main_Title.png",
       poster: "assets/main_poster.webp",
