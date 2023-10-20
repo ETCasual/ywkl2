@@ -8,6 +8,8 @@ export default {
     extend: {
       fontFamily: {
         sans: [...fontFamily.sans],
+        jijia: ["jijia", ...fontFamily.sans],
+        made: ["made", ...fontFamily.sans],
       },
     },
   },

@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { EventsCard } from "@/components/Cards/Event";
 import Head from "next/head";
 // Import Swiper React components
@@ -9,6 +11,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { MoreCard } from "@/components/Cards/More";
+import { jsonData } from "@/data";
 
 export default function Home() {
   return (
@@ -16,14 +19,19 @@ export default function Home() {
       <Head>
         <title>Events | YWKL</title>
         <meta name="description" content="YWKL Events Center" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/assets/YW_Logo.png" />
       </Head>
       <main className="flex min-h-screen flex-col bg-[#191919]">
-        <div className="flex flex-col gap-12">
-          <div className="w-full border-b border-white bg-[#191919]">
-            <h1 className="px-4 py-4 text-3xl font-extrabold tracking-tight text-[#39FF14] sm:text-[2.25rem] xl:px-5">
+        <div className="contents flex-col gap-5">
+          <div className="flex w-full flex-row items-center justify-between border-b border-white bg-[#191919] px-4">
+            <h1 className="py-4 text-2xl font-extrabold tracking-tight text-[#39FF14] sm:text-[2rem] xl:px-5">
               Events
             </h1>
+            <img
+              src="/assets/YW_Logo.png"
+              alt="YW Logo"
+              className="h-[40px] w-[40px] object-cover"
+            />
           </div>
           <Swiper
             freeMode
@@ -33,18 +41,22 @@ export default function Home() {
             }}
             slidesPerView={"auto"}
             spaceBetween={16}
-            className="mx-0 px-4 xl:px-5"
+            className="mx-0 px-4 pt-4 xl:px-5"
           >
-            <SwiperSlide>
-              <EventsCard id="connect-camp" title="Connect Camp" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <EventsCard id="2" title="Documentation →" />
-            </SwiperSlide>
+            {Object.entries(jsonData).map(([key, value]) => (
+              <SwiperSlide key={key}>
+                <EventsCard
+                  id={key}
+                  imgSrc={value.assets.poster as string}
+                  title={value.name as string}
+                />
+              </SwiperSlide>
+            ))}
             <SwiperSlide>
               <MoreCard />
             </SwiperSlide>
           </Swiper>
+          <MoreCard full />
         </div>
       </main>
     </>
