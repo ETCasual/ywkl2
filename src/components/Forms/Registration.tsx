@@ -74,6 +74,8 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
             /^(\+?6?01)[0|1|2|3|4|6|7|8|9]-*[0-9]{7,8}$/,
             "Invalid format.",
           ),
+        nric_passport: Yup.string().required("Required."),
+        full_name: Yup.string().required("Required."),
       })}
       onSubmit={async (values, action) => {
         action.setSubmitting(true);
