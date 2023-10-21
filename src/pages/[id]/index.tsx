@@ -63,7 +63,11 @@ const EventPage = () => {
 
             <button
               onClick={() =>
-                router.push(`${router.query.id as string}/leaderboard`)
+                router.push(
+                  `${router.query.id as string}/leaderboard/${
+                    localStorage.getItem("ywkl-leaderboard-key") ?? ""
+                  }`,
+                )
               }
               className="absolute right-3 top-4 z-10 w-[130px] rotate-180 transform py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
               style={{

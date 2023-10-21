@@ -99,8 +99,12 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
             },
           ).then(() => {
             alert("Submitted successfully!");
+            localStorage.setItem(
+              "ywkl-leaderboard-key",
+              `${values.nric_passport.trim()}|${values.full_name.trim()}`,
+            );
             void router.push(
-              `${id}/leaderboard/${values.nric_passport}|${values.full_name}`,
+              `${id}/leaderboard/${values.nric_passport.trim()}|${values.full_name.trim()}`,
             );
           });
 

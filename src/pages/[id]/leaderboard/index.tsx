@@ -83,13 +83,16 @@ const LeaderboardPage = () => {
                       <div className={`flex flex-col`} key={a.NO_ID_FIELD}>
                         <div className="flex w-full flex-row border-2 border-solid border-black">
                           <div
-                            className="flex min-w-[50px] flex-row items-center justify-center border-r-2 border-black"
+                            className="flex min-w-[50px] flex-row items-center justify-center"
                             style={{ background: colors.secondary ?? "#FFF" }}
                           >
                             <p className="font-made text-sm">{i + 1}</p>
                           </div>
-                          <div className="p-2 font-made leading-10">
+                          <div className="w-full border-x-2 border-black p-2 font-made leading-10">
                             {a.name}
+                          </div>
+                          <div className="flex w-[125px] flex-col items-center justify-center font-made">
+                            {a.team}
                           </div>
                         </div>
                       </div>
