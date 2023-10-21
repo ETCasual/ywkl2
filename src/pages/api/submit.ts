@@ -39,11 +39,7 @@ const SubmitRegistration = async (
         version: "v4",
       });
 
-      const now = new Date().toLocaleString("en-US", {
-        dateStyle: "full",
-        timeStyle: "long",
-        timeZone: "Asia/Kuala_Lumpur",
-      });
+      const now = Date.now();
 
       const convertDob = new Date(dob as string).toLocaleString("en-US", {
         dateStyle: "full",
@@ -57,7 +53,7 @@ const SubmitRegistration = async (
         requestBody: {
           values: [
             [
-              now,
+              `=EPOCHTODATE(${now},2)`,
               engName,
               chiName,
               phoneNo,
