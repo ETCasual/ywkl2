@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { useFirestore } from "reactfire";
 import { doc, setDoc } from "firebase/firestore";
+import { trimObjectValues } from "@/utils/helpers";
 
 export type RegistrationFormData = {
   full_name: string;
@@ -82,7 +83,7 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(trimObjectValues(values)),
         });
 
         if (res.ok) {
@@ -90,10 +91,11 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
             doc(
               firestore,
               "leaderboard",
-              `${values.nric_passport}|${values.full_name}`,
+              `${values.nric_passport.trim()}|${values.full_name.trim()}`,
             ),
             {
-              name: values.full_name,
+              name: values.full_name.trim(),
+              team: values.pastoral_team,
               timestamp: Date.now(),
             },
           ).then(() => {
@@ -201,7 +203,7 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
             type="submit"
             disabled={isSubmitting}
             style={{ background: primaryColor }}
-            className="font-made mt-4 flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-2 font-bold active:mb-[6px] active:border active:bg-opacity-80"
+            className="mt-4 flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-2 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
           >
             {isSubmitting ? (
               <PulseLoader color={"#000"} speedMultiplier={0.5} />

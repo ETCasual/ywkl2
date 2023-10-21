@@ -53,7 +53,7 @@ const LeaderboardPage = () => {
           <>
             <button
               onClick={() => router.back()}
-              className="font-made absolute left-3 top-4 z-10 w-[110px] py-1.5 text-[12px] font-bold shadow-xl hover:top-[18px]"
+              className="absolute left-3 top-4 z-10 w-[110px] py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
               style={{
                 backgroundColor: colors?.secondary ?? "",
                 clipPath:
@@ -95,13 +95,16 @@ const LeaderboardPage = () => {
                       >
                         <div className="flex w-full flex-row border-2 border-solid border-black">
                           <div
-                            className="flex min-w-[50px] flex-row items-center justify-center border-r-2 border-black"
+                            className="flex min-w-[50px] flex-row items-center justify-center border-black"
                             style={{ background: colors.secondary ?? "#FFF" }}
                           >
                             <p className="font-made text-sm">{i + 1}</p>
                           </div>
-                          <div className="font-made p-2 leading-10">
+                          <div className="w-full border-x-2 border-black p-2 font-made leading-10">
                             {a.name}
+                          </div>
+                          <div className="flex w-[125px] flex-col items-center justify-center font-made">
+                            {a.team}
                           </div>
                         </div>
                       </div>
@@ -124,7 +127,7 @@ const LeaderboardPage = () => {
                     background: colors.primary,
                     borderColor: colors.primary,
                   }}
-                  className="font-made flex min-w-[145px] flex-col items-center  border-r-4 py-3 font-bold"
+                  className="flex min-w-[145px] flex-col items-center border-r-4  py-3 font-made font-bold"
                 >
                   Total Count
                 </div>
