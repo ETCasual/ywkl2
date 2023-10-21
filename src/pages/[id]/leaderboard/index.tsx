@@ -51,8 +51,8 @@ const LeaderboardPage = () => {
         ) : (
           <>
             <button
-              onClick={() => router.back()}
-              className="font-made absolute left-3 top-4 z-10 w-[110px] py-1.5 text-[12px] font-bold shadow-xl hover:top-[18px]"
+              onClick={() => router.push(`/${router.query.id as string}`)}
+              className="absolute left-3 top-4 z-10 w-[110px] py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
               style={{
                 backgroundColor: colors?.secondary ?? "",
                 clipPath:
@@ -88,7 +88,7 @@ const LeaderboardPage = () => {
                           >
                             <p className="font-made text-sm">{i + 1}</p>
                           </div>
-                          <div className="font-made p-2 leading-10">
+                          <div className="p-2 font-made leading-10">
                             {a.name}
                           </div>
                         </div>
@@ -112,7 +112,7 @@ const LeaderboardPage = () => {
                     background: colors.primary,
                     borderColor: colors.primary,
                   }}
-                  className="font-made flex min-w-[145px] flex-col items-center  border-r-4 py-3 font-bold"
+                  className="flex min-w-[145px] flex-col items-center border-r-4  py-3 font-made font-bold"
                 >
                   Total Count
                 </div>

@@ -52,7 +52,7 @@ const LeaderboardPage = () => {
         ) : (
           <>
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push(`/${router.query.id as string}`)}
               className="absolute left-3 top-4 z-10 w-[110px] py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
               style={{
                 backgroundColor: colors?.secondary ?? "",

@@ -43,8 +43,8 @@ const EventPage = () => {
         ) : (
           <>
             <button
-              onClick={() => router.back()}
-              className="font-made absolute left-3 top-4 z-10 w-[110px] py-1.5 text-[12px] font-bold shadow-xl hover:top-[18px]"
+              onClick={() => router.push("/")}
+              className="absolute left-3 top-4 z-10 w-[110px] py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
               style={{
                 backgroundColor: colors?.secondary ?? "",
                 clipPath:
@@ -65,7 +65,7 @@ const EventPage = () => {
               onClick={() =>
                 router.push(`${router.query.id as string}/leaderboard`)
               }
-              className="font-made absolute right-3 top-4 z-10 w-[130px] rotate-180 transform py-1.5 text-[12px] font-bold shadow-xl hover:top-[18px]"
+              className="absolute right-3 top-4 z-10 w-[130px] rotate-180 transform py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
               style={{
                 backgroundColor: colors?.secondary ?? "",
                 clipPath:
