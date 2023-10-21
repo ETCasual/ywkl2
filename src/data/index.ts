@@ -66,6 +66,6 @@ export const structureData: Record<
       "Phan Zhi Xuan",
       "Wong Wei Heng",
     ],
-    "Force 2 | Liew Hern Liang": ["Gilbert Hu Chang Hou"],
+    "Force 2 | Liew Hern Liang": ["Liew Hern Liang"],
   },
 };
