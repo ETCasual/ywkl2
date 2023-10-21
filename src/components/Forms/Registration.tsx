@@ -109,12 +109,10 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
               `${id}/leaderboard/${values.nric_passport.trim()}|${values.full_name.trim()}`,
             );
           });
-
-          router;
         } else {
           alert("Unknown Server Error");
           console.warn(res);
-          //   action.resetForm();
+          // action.resetForm();
           action.setSubmitting(false);
         }
       }}

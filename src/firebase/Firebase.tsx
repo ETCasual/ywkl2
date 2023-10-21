@@ -19,8 +19,6 @@ export const Firestore: FunctionComponent<{ children: ReactNode }> = ({
   }
 
   return (
-    <>
-      <FirestoreProvider sdk={firestoreInstance}>{children}</FirestoreProvider>
-    </>
+    <FirestoreProvider sdk={firestoreInstance}>{children}</FirestoreProvider>
   );
 };
