@@ -23,9 +23,8 @@ export type RegistrationFormData = {
   nric_passport: string;
   contact_number: string;
   pastoral_status:
-    | "NF"
-    | "RNF"
-    | "NB"
+    | "New Friend"
+    | "New Believer"
     | "OM"
     | "SGL"
     | "CGL"
@@ -62,7 +61,7 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
         contact_number: "",
         gender: "male",
         nric_passport: "",
-        pastoral_status: "NF",
+        pastoral_status: "New Friend",
         pastoral_team: "Move",
         small_team: "",
         tshirt_size: "S",
