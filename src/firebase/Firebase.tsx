@@ -15,7 +15,7 @@ export const Firestore: FunctionComponent<{ children: ReactNode }> = ({
   );
 
   if (status === "loading") {
-    return <div>Loading</div>;
+    return "Loading";
   }
 
   return (
