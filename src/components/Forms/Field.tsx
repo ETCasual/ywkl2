@@ -28,7 +28,7 @@ export const Field: FunctionComponent<FieldProps> = ({
           className="min-w-[130px] border-r-2 border-black"
           style={{ background: labelColor ?? "#FFF" }}
         >
-          <label className="font-made pl-2 text-xs" htmlFor={name}>
+          <label className="pl-2 font-made text-xs" htmlFor={name}>
             {label}
           </label>
         </div>
@@ -117,7 +117,7 @@ export const Field: FunctionComponent<FieldProps> = ({
       </div>
       {/* @ts-ignore */}
       {errors[name] && (
-        <div className="font-made w-full border-x-2 border-b-2 border-black bg-red-600/30 py-1 pr-2 text-right text-xs text-red-600">
+        <div className="w-full border-x-2 border-b-2 border-black bg-red-600/30 py-1 pr-2 text-right font-made text-xs text-red-600">
           {/* @ts-ignore */}
           {errors[name]}
         </div>
@@ -140,7 +140,7 @@ export const PastoralTeamField: FunctionComponent<FieldProps> = ({
         className="min-w-[130px] border-r-2 border-black"
         style={{ background: secondaryColor ?? "#FFF" }}
       >
-        <label className="font-made pl-2 text-xs" htmlFor={name}>
+        <label className="pl-2 font-made text-xs" htmlFor={name}>
           {label}
         </label>
       </div>
@@ -180,7 +180,7 @@ export const SmallTeamField: FunctionComponent<FieldProps> = ({
         className="min-w-[130px] border-r-2 border-black"
         style={{ background: secondaryColor ?? "#FFF" }}
       >
-        <label className="font-made pl-2 text-xs" htmlFor={name}>
+        <label className="pl-2 font-made text-xs" htmlFor={name}>
           {label}
         </label>
       </div>
@@ -219,7 +219,7 @@ export const CGField: FunctionComponent<FieldProps> = ({
         className="min-w-[130px] border-r-2 border-black"
         style={{ background: secondaryColor ?? "#FFF" }}
       >
-        <label className="font-made pl-2 text-xs" htmlFor={name}>
+        <label className="pl-2 font-made text-xs" htmlFor={name}>
           {label}
         </label>
       </div>
@@ -260,7 +260,7 @@ export const PastoralStatusField: FunctionComponent<FieldProps> = ({
         className="min-w-[130px] border-r-2 border-black"
         style={{ background: secondaryColor ?? "#FFF" }}
       >
-        <label className="font-made pl-2 text-xs" htmlFor={name}>
+        <label className="pl-2 font-made text-xs" htmlFor={name}>
           {label}
         </label>
       </div>
@@ -270,13 +270,18 @@ export const PastoralStatusField: FunctionComponent<FieldProps> = ({
         as="select"
         disabled={!editable}
       >
-        {["NF", "RNF", "NB", "OM", "SGL", "CGL", "Coach/TL/Pastor"].map(
-          (value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ),
-        )}
+        {[
+          "New Friend",
+          "New Believer",
+          "OM",
+          "SGL",
+          "CGL",
+          "Coach/TL/Pastor",
+        ].map((value) => (
+          <option key={value} value={value}>
+            {value}
+          </option>
+        ))}
       </FormikField>
     </div>
   );
@@ -301,7 +306,7 @@ export const TShirtField: FunctionComponent<FieldProps> = ({
         className="min-w-[130px] border-r-2 border-black"
         style={{ background: secondaryColor ?? "#FFF" }}
       >
-        <label className="font-made pl-2 text-xs" htmlFor={name}>
+        <label className="pl-2 font-made text-xs" htmlFor={name}>
           {label}
         </label>
       </div>
