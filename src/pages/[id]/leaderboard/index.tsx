@@ -80,16 +80,10 @@ const LeaderboardPage = () => {
                   fbData
                     .sort((a, b) => a.timestamp - b.timestamp)
                     .map((a, i) => (
-                      <div
-                        className={`flex flex-col`}
-                        style={{
-                          background: "#FFF",
-                        }}
-                        key={a.NO_ID_FIELD}
-                      >
+                      <div className={`flex flex-col`} key={a.NO_ID_FIELD}>
                         <div className="flex w-full flex-row border-2 border-solid border-black">
                           <div
-                            className="flex min-w-[50px] flex-row items-center justify-center border-black"
+                            className="flex min-w-[50px] flex-row items-center justify-center"
                             style={{ background: colors.secondary ?? "#FFF" }}
                           >
                             <p className="font-made text-sm">{i + 1}</p>

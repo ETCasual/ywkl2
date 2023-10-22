@@ -95,7 +95,7 @@ const LeaderboardPage = () => {
                       >
                         <div className="flex w-full flex-row border-2 border-solid border-black">
                           <div
-                            className="flex min-w-[50px] flex-row items-center justify-center border-black"
+                            className="flex min-w-[50px] flex-row items-center justify-center"
                             style={{ background: colors.secondary ?? "#FFF" }}
                           >
                             <p className="font-made text-sm">{i + 1}</p>
