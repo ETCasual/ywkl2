@@ -48,7 +48,7 @@ const LeaderboardPage = () => {
         }`}
       >
         {loading ? (
-          <p>Loading...</p>
+          <div>Loading...</div>
         ) : (
           <>
             <button
