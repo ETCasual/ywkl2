@@ -2,9 +2,9 @@ import { type AppType } from "next/dist/shared/lib/utils";
 
 import "@/styles/globals.css";
 import { FirebaseAppProvider } from "reactfire";
-import { Firestore } from "@/firebase/Firebase";
 import { firebaseConfig } from "@/firebase";
 import Head from "next/head";
+import { Firestore } from "@/components/Init";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
