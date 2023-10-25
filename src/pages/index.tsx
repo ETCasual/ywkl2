@@ -12,6 +12,7 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { MoreCard } from "@/components/Cards/More";
 import { jsonData } from "@/data";
+import { RightDrawer } from "@/components/Drawer";
 
 export default function Home() {
   return (
@@ -27,11 +28,12 @@ export default function Home() {
             <h1 className="py-4 text-2xl font-extrabold tracking-tight text-[#39FF14] sm:text-[2rem] xl:px-5">
               Events
             </h1>
-            <img
+            {/* <img
               src="/assets/YW_Logo.png"
               alt="YW Logo"
               className="h-[40px] w-[40px] object-cover"
-            />
+            /> */}
+            <RightDrawer />
           </div>
           <Swiper
             freeMode

@@ -2,7 +2,7 @@ import { initializeFirestore } from "firebase/firestore";
 import type { FunctionComponent, ReactNode } from "react";
 import { FirestoreProvider, useInitFirestore } from "reactfire";
 
-export const Firestore: FunctionComponent<{ children: ReactNode }> = ({
+export const Init: FunctionComponent<{ children: ReactNode }> = ({
   children,
 }) => {
   const { status, data: firestoreInstance } = useInitFirestore(
@@ -15,7 +15,7 @@ export const Firestore: FunctionComponent<{ children: ReactNode }> = ({
   );
 
   if (status === "loading") {
-    return <div>Loading</div>;
+    return <div />;
   }
 
   return (

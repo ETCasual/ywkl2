@@ -8,12 +8,13 @@ import {
   TShirtField,
 } from "./Field";
 import { PulseLoader } from "react-spinners";
-import { type FunctionComponent } from "react";
+import React, { type FunctionComponent } from "react";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { useFirestore } from "reactfire";
 import { doc, setDoc } from "firebase/firestore";
 import { trimObjectValues } from "@/utils/helpers";
+import ReactGA from "react-ga4";
 
 export type RegistrationFormData = {
   full_name: string;
@@ -88,6 +89,10 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
         });
 
         if (res.ok) {
+          ReactGA.event({
+            category: "registration",
+            action: "registered",
+          });
           await setDoc(
             doc(
               firestore,

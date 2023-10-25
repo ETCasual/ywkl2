@@ -4,9 +4,15 @@ import "@/styles/globals.css";
 import { FirebaseAppProvider } from "reactfire";
 import { firebaseConfig } from "@/firebase";
 import Head from "next/head";
-import { Firestore } from "@/components/Init";
+import { Init as Firestore } from "@/components/Init";
+import { ThemeProvider } from "@material-tailwind/react";
+import ReactGA from "react-ga4";
+import { env } from "@/env.mjs";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
+  env.NEXT_PUBLIC_IS_STAGING === "0" &&
+    ReactGA.initialize(env.NEXT_PUBLIC_MEASUREMENT_ID);
+
   return (
     <>
       <Head>
@@ -229,11 +235,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           href="/splash_screens/8.3__iPad_Mini_portrait.png"
         />
       </Head>
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <Firestore>
-          <Component {...pageProps} />
-        </Firestore>
-      </FirebaseAppProvider>
+      <ThemeProvider>
+        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+          <Firestore>
+            <Component {...pageProps} />
+          </Firestore>
+        </FirebaseAppProvider>
+      </ThemeProvider>
     </>
   );
 };

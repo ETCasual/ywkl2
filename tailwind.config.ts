@@ -1,7 +1,8 @@
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
+import withMT from "@material-tailwind/react/utils/withMT";
 
-export default {
+const config = withMT({
   content: ["./src/**/*.tsx"],
   important: true,
   theme: {
@@ -14,4 +15,6 @@ export default {
     },
   },
   plugins: [],
-} satisfies Config;
+} satisfies Config);
+
+export default config;
