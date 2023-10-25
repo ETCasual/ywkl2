@@ -10,8 +10,7 @@ import ReactGA from "react-ga4";
 import { env } from "@/env.mjs";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  env.NEXT_PUBLIC_IS_STAGING === "0" &&
-    ReactGA.initialize(env.NEXT_PUBLIC_MEASUREMENT_ID);
+  ReactGA.initialize(env.NEXT_PUBLIC_MEASUREMENT_ID);
 
   return (
     <>
