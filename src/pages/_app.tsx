@@ -8,6 +8,7 @@ import { Init as Firestore } from "@/components/Init";
 import { ThemeProvider } from "@material-tailwind/react";
 import ReactGA from "react-ga4";
 import { env } from "@/env.mjs";
+import NoSSR from "react-no-ssr";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   ReactGA.initialize(env.NEXT_PUBLIC_MEASUREMENT_ID);
@@ -234,13 +235,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           href="/splash_screens/8.3__iPad_Mini_portrait.png"
         />
       </Head>
-      <ThemeProvider>
-        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-          <Firestore>
-            <Component {...pageProps} />
-          </Firestore>
-        </FirebaseAppProvider>
-      </ThemeProvider>
+      <NoSSR onSSR={<div>Loading</div>}>
+        <ThemeProvider>
+          <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+            <Firestore>
+              <Component {...pageProps} />
+            </Firestore>
+          </FirebaseAppProvider>
+        </ThemeProvider>
+      </NoSSR>
     </>
   );
 };
