@@ -21,8 +21,7 @@ export const structureData: Record<
   | "Force"
   | "Voice"
   | "Mind"
-  | "WonderKids"
-  | "General Service",
+  | "WonderKids",
   Record<string, string[]>
 > = {
   Move: {
@@ -73,11 +72,9 @@ export const structureData: Record<
       "Wong Wei Heng",
     ],
     "Force 2 | Liew Hern Liang": ["Liew Hern Liang"],
+"Joel Wong Xie Zhe": ["Joey Lim"],
   },
   WonderKids: {
     WonderKids: ["Wong Kin Hou"],
-  },
-  "General Service": {
-    "General Service": ["Joel Wong Xin Zhe"],
   },
 };
