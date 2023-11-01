@@ -38,7 +38,7 @@ export const structureData: Record<
     "Voice 2 | Goh Zheng Yang": [
       "Saw Li Hua",
       "Evan Yap Kam Seng",
-      "Beverly Yip Yi-Man",
+      "Teressa Tang",
       "Lie Wen Si",
       "Emily Him Ming Li",
       "Lie Wai Kien",
