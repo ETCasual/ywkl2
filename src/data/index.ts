@@ -16,12 +16,7 @@ export const jsonData: Record<string, Record<string, any>> = {
 };
 
 export const structureData: Record<
-  | "Move"
-  | "Heart"
-  | "Force"
-  | "Voice"
-  | "Mind"
-  | "WonderKids",
+  "Move" | "Heart" | "Force" | "Voice" | "Mind" | "WonderKids",
   Record<string, string[]>
 > = {
   Move: {
@@ -54,7 +49,7 @@ export const structureData: Record<
     "Mind 2 | Wong How Han": ["Wong How Han"],
   },
   Heart: {
-    "Heart 1 | Foong Dawn Hui": [
+    "Heart 1 | Loh Xin Kai": [
       "Mok Hor Yin",
       "Chong Hui Ying",
       "Pooi Weng Been",
@@ -72,7 +67,7 @@ export const structureData: Record<
       "Wong Wei Heng",
     ],
     "Force 2 | Liew Hern Liang": ["Liew Hern Liang"],
-"Joel Wong Xie Zhe": ["Joey Lim"],
+    "Joel Wong Xie Zhe": ["Joey Lim"],
   },
   WonderKids: {
     WonderKids: ["Wong Kin Hou"],
