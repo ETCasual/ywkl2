@@ -67,7 +67,7 @@ export const structureData: Record<
       "Wong Wei Heng",
     ],
     "Force 2 | Liew Hern Liang": ["Liew Hern Liang"],
-    "Joel Wong Xie Zhe": ["Joey Lim"],
+    "Joel Wong Xie Zhe": ["Joey Chong"],
   },
   WonderKids: {
     WonderKids: ["Wong Kin Hou"],
