@@ -118,7 +118,7 @@ const EventPage = () => {
               alt="main title"
               className="mt-5 w-[220px] object-cover md:mt-0 md:w-[300px] lg:w-[380px]"
             />
-            <div className="relative mt-3 flex max-h-[70vh] w-[310px] flex-grow flex-col overflow-y-scroll border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10">
+            <div className="relative mt-3 flex max-h-[65vh] w-[310px] flex-grow flex-col overflow-y-scroll border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10">
               {registrationStatus === "loading" ? (
                 <BounceLoader
                   color={colors.secondary}
