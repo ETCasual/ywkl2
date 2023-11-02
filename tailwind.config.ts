@@ -10,6 +10,7 @@ export default {
         sans: [...fontFamily.sans],
         jijia: ["jijia", ...fontFamily.sans],
         made: ["made", ...fontFamily.sans],
+        noto: ["'Noto Sans SC'", "sans-serif"],
       },
     },
   },
