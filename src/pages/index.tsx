@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @next/next/no-img-element */
@@ -28,9 +29,16 @@ export default function Home() {
     if (!mounted) return;
 
     window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
       setInstallPrompt(e);
     });
+    () =>
+      window.removeEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        setInstallPrompt(e);
+      });
   }, [mounted]);
+
   return (
     <>
       <Head>
@@ -51,8 +59,13 @@ export default function Home() {
                     boxShadow: "#8bda02 0 0 10px 1px",
                   }}
                   className="rounded-md bg-[#8bda02] bg-opacity-100 px-5 py-2 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
-                  //@ts-ignore
-                  onClick={() => void installPrompt.prompt()}
+                  onClick={async () => {
+                    //@ts-ignore
+                    const res = await installPrompt.prompt();
+
+                    if (res.outcome !== "dismissed")
+                      setInstallPrompt(undefined);
+                  }}
                 >
                   Download as App
                 </button>
