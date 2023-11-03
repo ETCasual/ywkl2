@@ -6,6 +6,8 @@ import { firebaseConfig } from "@/firebase";
 import Head from "next/head";
 import { Firestore } from "@/components/Init";
 
+import { ToastContainer } from "react-toastify";
+
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
@@ -232,6 +234,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         <Firestore>
           <Component {...pageProps} />
+          <ToastContainer />
         </Firestore>
       </FirebaseAppProvider>
     </>

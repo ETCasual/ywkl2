@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { EventsCard } from "@/components/Cards/Event";
@@ -12,8 +14,23 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { MoreCard } from "@/components/Cards/More";
 import { jsonData } from "@/data";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<Event>();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      setInstallPrompt(e);
+    });
+  }, [mounted]);
   return (
     <>
       <Head>
@@ -27,11 +44,25 @@ export default function Home() {
             <h1 className="py-4 text-2xl font-extrabold tracking-tight text-[#39FF14] sm:text-[2rem] xl:px-5">
               Events
             </h1>
-            <img
-              src="/assets/YW_Logo.png"
-              alt="YW Logo"
-              className="h-[40px] w-[40px] object-cover"
-            />
+            <div className="flex flex-row items-center gap-4">
+              {installPrompt && (
+                <button
+                  style={{
+                    boxShadow: "#8bda02 0 0 10px 1px",
+                  }}
+                  className="rounded-md bg-[#8bda02] bg-opacity-100 px-5 py-2 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
+                  //@ts-ignore
+                  onClick={() => void installPrompt.prompt()}
+                >
+                  Download as App
+                </button>
+              )}
+              <img
+                src="/assets/YW_Logo.png"
+                alt="YW Logo"
+                className="h-[40px] w-[40px] object-cover"
+              />
+            </div>
           </div>
           <Swiper
             freeMode
