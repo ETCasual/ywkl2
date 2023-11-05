@@ -92,7 +92,11 @@ const LeaderboardPage = () => {
                             {a.name}
                           </div>
                           <div className="flex w-[125px] flex-col items-center justify-center font-made">
-                            {a.team}
+                            {a.team === "WonderKids"
+                              ? "WK"
+                              : a.team === "General Service"
+                              ? "GS"
+                              : a.team}
                           </div>
                         </div>
                       </div>
