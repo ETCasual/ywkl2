@@ -185,7 +185,7 @@ export const structureData: Record<
       "Evan Yap Kam Seng",
       "Teressa Tang",
       "Lie Wen Si",
-      "Emily Him Ming Li",
+      "Emily Him Min Li",
       "Lie Wai Kien",
     ],
     "Voice 3 | Shum Wai Lok": [
