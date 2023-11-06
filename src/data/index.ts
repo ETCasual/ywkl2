@@ -16,7 +16,7 @@ export const jsonData: Record<string, Record<string, any>> = {
 };
 
 export const structureData: Record<
-  "Move" | "Heart" | "Force" | "Voice" | "Mind" | "WonderKids",
+  "Move" | "Heart" | "Force" | "Voice" | "Mind" | "Ps. Joshua Team",
   Record<string, string[]>
 > = {
   Move: {
