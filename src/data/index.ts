@@ -219,7 +219,7 @@ export const structureData: Record<
     "Force 2 | Liew Hern Liang": ["Liew Hern Liang"],
     "Joel Wong Xie Zhe": ["Joey Chong"],
   },
-  WonderKids: {
-    WonderKids: ["Wong Kin Hou"],
+  "Ps. Joshua Team": {
+    "Ps. Joshua Team": ["Wong Kin Hou"],
   },
 };
