@@ -53,7 +53,7 @@ export const jsonData: Record<string, Record<string, any>> = {
           en: "Smoking, alcohol, gambling, drugs and fighting are prohibited in the camp.",
         },
         10: {
-          chi: "严禁那女在营地各处单独或有任何亲密举止, 例如牵手, 拥抱, 亲吻或任何不雅行为。",
+          chi: "严禁男女在营地各处单独或有任何亲密举止, 例如牵手, 拥抱, 亲吻或任何不雅行为。",
           en: "Male and female are not allowed to be alone without third party or have any close body contacts, e.g. hugging, kissing or any sort of indecent behaviours.",
         },
         11: {

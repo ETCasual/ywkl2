@@ -1,9 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Groups } from "@/components/Display/connect-camp/Groups";
-import { Rooms } from "@/components/Display/connect-camp/Rooms";
-import { Rules } from "@/components/Display/connect-camp/Rules";
 import { RegistrationForm } from "@/components/Forms/Registration";
 import { jsonData } from "@/data";
 import Head from "next/head";
@@ -118,7 +115,11 @@ const EventPage = () => {
               alt="main title"
               className="mt-5 w-[220px] object-cover md:mt-0 md:w-[300px] lg:w-[380px]"
             />
-            <div className="relative mt-3 flex max-h-[65vh] w-[310px] flex-grow flex-col overflow-y-scroll border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10">
+            <div
+              className={`${
+                registrationStatus !== "ended" ? "flex-grow " : ""
+              }relative mt-3 flex max-h-[65vh] w-[310px] flex-col overflow-y-scroll border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10`}
+            >
               {registrationStatus === "loading" ? (
                 <BounceLoader
                   color={colors.secondary}
@@ -131,11 +132,41 @@ const EventPage = () => {
                   secondaryColor={colors?.secondary}
                 />
               ) : (
-                <>
-                  <Rules rules={data?.booklet?.rules} />
-                  <Rooms rooms={data?.booklet?.rooms} />
-                  <Groups groups={data?.booklet?.groups} />
-                </>
+                <div className="flex h-full flex-col gap-2 p-2">
+                  <button
+                    style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                  >
+                    Personnels in charge
+                  </button>
+                  <button
+                    onClick={() => router.push("/connect-camp/rules")}
+                    style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                  >
+                    Rules
+                  </button>
+                  <button
+                    onClick={() => router.push("/connect-camp/groups")}
+                    style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                  >
+                    Groups
+                  </button>
+                  <button
+                    onClick={() => router.push("/connect-camp/rooms")}
+                    style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                  >
+                    Rooms
+                  </button>
+                  <button
+                    style={{ backgroundColor: colors.secondary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                  >
+                    Emergency Contact
+                  </button>
+                </div>
               )}
             </div>
           </>
