@@ -165,9 +165,7 @@ export const Groups: FunctionComponent<GroupsProps> = ({ groups, bg }) => {
                                 : ""
                             }`}
                           >
-                            {go.includes("(L)")
-                              ? go.substring(0, go.length - 4)
-                              : go}
+                            {go}
                           </div>
                         ))}
                       </div>
