@@ -81,54 +81,23 @@ export const jsonData: Record<string, Record<string, any>> = {
         },
       },
       rooms: {
-        1: [
-          "Lew Qian Yi (RL)",
-          "Yew Jia Ying",
-          "Soon Mei Shi",
-          "Christie Micda",
-        ],
-        2: [
-          "Chin Jia Hao (RL)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        3: [
-          "Chin Jia Hao (RL)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        4: [
-          "Chin Jia Hao (RL)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        5: [
-          "Chin Jia Hao (RL)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        6: [
-          "Chin Jia Hao (RL)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        7: [
-          "Chin Jia Hao (RL)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        8: [
-          "Chin Jia Hao (RL)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
+        "Level 1": {
+          "Room 1": [
+            "Lew Qian Yi (RL)",
+            "Yew Jia Ying",
+            "Soon Mei Shi",
+            "Christie Micda",
+          ],
+          "Dorm 1": [
+            "Chin Jia Hao (RL)",
+            "Chung Wai Quan",
+            "Ng Liang Shin",
+            "Tan Li Zhang",
+          ],
+        },
+        "Level 2": {
+          "Room 2": ["Yu Enci (RL)", "Leng Zhi Yan", "Phoebe", "Audrey"],
+        },
       },
     },
   },

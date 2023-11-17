@@ -89,23 +89,6 @@ export const Groups: FunctionComponent<GroupsProps> = ({ groups, bg }) => {
             return matchingMembers.flat().length > 0;
           })
           .map(([clan, groupMembers], i) => (
-            // <div key={i} className="flex w-[320px] flex-col bg-white">
-            //   <div className="w-full border-2 border-black bg-[#ff6511] font-made text-sm">
-            //     <p className="px-5 py-2 text-lg">Group {num}</p>
-            //   </div>
-            //   <div className="flex w-full flex-col border-2 border-t-0 border-black">
-            //     {groupMembers.map((go) => (
-            //       <div
-            //         key={`${i}-${go}`}
-            //         className={`py-1 text-lg pl-5${
-            //           go.includes("(L)") ? " bg-[#96ec00] font-bold" : ""
-            //         }`}
-            //       >
-            //         {go.includes("(L)") ? go.substring(0, go.length - 4) : go}
-            //       </div>
-            //     ))}
-            //   </div>
-            // </div>
             <div
               key={i}
               className="relative w-[320px] border-x-4 border-b-[10px] border-t-4 border-black bg-white"

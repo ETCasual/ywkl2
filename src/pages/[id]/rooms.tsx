@@ -14,7 +14,11 @@ const RoomsPage = () => {
     if (!data) return;
     setLoading(false);
   }, [data]);
-  return loading ? <div>Loading</div> : <Rooms rooms={data?.booklet?.rooms} />;
+  return loading ? (
+    <div>Loading</div>
+  ) : (
+    <Rooms bg={data?.assets?.bg} rooms={data?.booklet?.rooms} />
+  );
 };
 
 export default RoomsPage;
