@@ -14,7 +14,10 @@ const RulesPage = () => {
     if (!data) return;
     setLoading(false);
   }, [data]);
-  return loading ? <div>Loading</div> : <Rules rules={data?.booklet?.rules} />;
+  return loading ? (
+    <div>Loading</div>
+  ) : (
+    <Rules bg={data?.assets?.bg} rules={data?.booklet?.rules} />
+  );
 };
-
 export default RulesPage;
