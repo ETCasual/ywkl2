@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -185,16 +186,24 @@ const EventPage = () => {
                           : " invisible max-h-0 opacity-0"
                       }`}
                     >
-                      {emergencyContacts.map(({ name, contact }) => (
-                        <button
-                          key={name}
-                          style={{ backgroundColor: colors.primary }}
-                          onClick={() => window.open(`tel:${contact}`)}
-                          className="w-full border-2 border-b-[6px] border-black py-2 active:mb-[6px] active:border active:bg-opacity-80"
-                        >
-                          {name}
-                        </button>
-                      ))}
+                      {emergencyContacts.map(
+                        ({
+                          name,
+                          contact,
+                        }: {
+                          name: string;
+                          contact: string;
+                        }) => (
+                          <button
+                            key={name}
+                            style={{ backgroundColor: colors.primary }}
+                            onClick={() => window.open(`tel:${contact}`)}
+                            className="w-full border-2 border-b-[6px] border-black py-2 active:mb-[6px] active:border active:bg-opacity-80"
+                          >
+                            {name}
+                          </button>
+                        ),
+                      )}
                     </div>
                   </div>
                 </div>
