@@ -62,54 +62,23 @@ export const jsonData: Record<string, Record<string, any>> = {
         },
       },
       groups: {
-        1: [
-          "Lew Qian Yi (L)",
-          "Yew Jia Ying",
-          "Soon Mei Shi",
-          "Christie Micda",
-        ],
-        2: [
-          "Chin Jia Hao (L)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        3: [
-          "Chin Jia Hao (L)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        4: [
-          "Chin Jia Hao (L)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        5: [
-          "Chin Jia Hao (L)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        6: [
-          "Chin Jia Hao (L)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        7: [
-          "Chin Jia Hao (L)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
-        8: [
-          "Chin Jia Hao (L)",
-          "Chung Wai Quan",
-          "Ng Liang Shin",
-          "Tan Li Zhang",
-        ],
+        eagle: {
+          1: [
+            "Lew Qian Yi (L)",
+            "Yew Jia Ying",
+            "Soon Mei Shi",
+            "Christie Micda",
+          ],
+          2: [
+            "Chin Jia Hao (L)",
+            "Chung Wai Quan",
+            "Ng Liang Shin",
+            "Tan Li Zhang",
+          ],
+        },
+        lion: {
+          1: ["Yu Enci (L)", "Leng Zhi Yan", "Audrey", "Phoebe"],
+        },
       },
       rooms: {
         1: [

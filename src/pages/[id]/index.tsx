@@ -137,7 +137,7 @@ const EventPage = () => {
                     style={{ backgroundColor: colors.primary }}
                     className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
                   >
-                    Personnels in charge
+                    Camp Masters
                   </button>
                   <button
                     onClick={() => router.push("/connect-camp/rules")}

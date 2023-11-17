@@ -47,7 +47,7 @@ export const Rules: FunctionComponent<RulesProps> = ({ rules, bg }) => {
           <p className="pl-2 font-made text-xl">Back</p>
         </div>
       </div>
-      <div className="flex h-[calc(100dvh-68px)] w-full flex-col items-center gap-7 overflow-y-scroll p-7">
+      <div className="flex h-[calc(100dvh-70px)] w-full flex-col items-center gap-7 overflow-y-scroll p-7">
         {Object.entries(rules).map(([num, rule]) => (
           // <div key={num} className={`flex border-b-2 border-black`}>
           //   <div
