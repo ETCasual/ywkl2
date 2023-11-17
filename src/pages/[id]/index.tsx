@@ -11,6 +11,7 @@ import { BounceLoader } from "react-spinners";
 const EventPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [emergencyShown, setEmergencyShown] = useState(false);
 
   const data = jsonData[router.query.id as string];
   const name = data?.name;
@@ -18,6 +19,7 @@ const EventPage = () => {
   const assets = data?.assets;
   const bg = assets?.bg;
   const regEnd = data?.testRegEnd;
+  const emergencyContacts = data?.emergencyContacts;
 
   const [registrationStatus, setRegistrationStatus] = useState<
     "loading" | "ended" | "progress"
@@ -160,13 +162,41 @@ const EventPage = () => {
                   >
                     Rooms
                   </button>
-                  <button
+                  {/* <button
                     style={{ backgroundColor: colors.secondary }}
                     onClick={() => window.open("tel:+60172412866")}
                     className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
                   >
                     Emergency Contact
-                  </button>
+                  </button> */}
+                  <div
+                    style={{ backgroundColor: colors.secondary }}
+                    onClick={() => setEmergencyShown((prev) => !prev)}
+                    className="group flex flex-col border-2 border-b-[6px] border-black p-3 font-made text-black"
+                    tabIndex={1}
+                  >
+                    <div className="flex cursor-pointer flex-row items-center justify-center">
+                      <p>Emergency Contact</p>
+                    </div>
+                    <div
+                      className={`flex h-auto flex-col items-center gap-1 transition-all${
+                        emergencyShown
+                          ? " visible mt-3 max-h-screen opacity-100 duration-500"
+                          : " invisible max-h-0 opacity-0"
+                      }`}
+                    >
+                      {emergencyContacts.map(({ name, contact }) => (
+                        <button
+                          key={name}
+                          style={{ backgroundColor: colors.primary }}
+                          onClick={() => window.open(`tel:${contact}`)}
+                          className="w-full border-2 border-b-[6px] border-black py-2 active:mb-[6px] active:border active:bg-opacity-80"
+                        >
+                          {name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
