@@ -91,7 +91,7 @@ const LeaderboardPage = () => {
                           <div className="w-full border-x-2 border-black p-2 font-made leading-10">
                             {a.name}
                           </div>
-                          <div className="flex w-[125px] flex-col items-center justify-center font-made">
+                          <div className="flex w-[135px] flex-col items-center justify-center text-center font-made">
                             {a.team}
                           </div>
                         </div>
