@@ -121,7 +121,7 @@ const EventPage = () => {
             <div
               className={`${
                 registrationStatus !== "ended" ? "flex-grow " : ""
-              }relative mt-3 flex max-h-[65vh] w-[310px] flex-col overflow-y-scroll border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10`}
+              }relative mt-3 flex max-h-[73vh] w-[310px] flex-col overflow-y-hidden border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10`}
             >
               {registrationStatus === "loading" ? (
                 <BounceLoader
