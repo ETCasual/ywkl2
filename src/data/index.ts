@@ -10,9 +10,8 @@ export const jsonData: Record<string, Record<string, any>> = {
     registrationEndAt: 1700668800000,
     testRegEnd: 1698747000000,
     emergencyContacts: [
-      { name: "Bro. Json Low", contact: "+6014-9667874" },
-      { name: "Bro. Douglas Soh", contact: "+6012-6780349" },
-      { name: "Bro. John Yew", contact: "+6016-3286960" },
+      { name: "Lin Yau", contact: "+6011-27318868", type: "medic" },
+      { name: "Isaac Ho", contact: "+6016-3379314", type: "general" },
     ],
     assets: {
       title: "assets/CC_Main_Title.png",

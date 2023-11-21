@@ -8,6 +8,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BounceLoader } from "react-spinners";
+import { GiMedicalPack } from "react-icons/gi";
+import { IoPersonSharp } from "react-icons/io5";
 
 const EventPage = () => {
   const router = useRouter();
@@ -19,7 +21,7 @@ const EventPage = () => {
   const colors = data?.colors;
   const assets = data?.assets;
   const bg = assets?.bg;
-  const regEnd = data?.registrationEndAt;
+  const regEnd = data?.testRegEnd;
   const emergencyContacts = data?.emergencyContacts;
 
   const [registrationStatus, setRegistrationStatus] = useState<
@@ -195,17 +197,26 @@ const EventPage = () => {
                         ({
                           name,
                           contact,
+                          type,
                         }: {
                           name: string;
                           contact: string;
+                          type: string;
                         }) => (
                           <div
                             key={name}
                             style={{ backgroundColor: colors.primary }}
                             onClick={() => window.open(`tel:${contact}`)}
-                            className="w-full cursor-pointer border-2 border-b-[6px] border-black py-2 active:mb-[6px] active:border active:bg-opacity-80"
+                            className="flex w-full cursor-pointer flex-row items-center justify-center border-2 border-b-[6px] border-black active:mb-[6px] active:border active:bg-opacity-80"
                           >
-                            {name}
+                            <div className="flex h-[40px] flex-col items-center justify-center border-r-2 border-black bg-white px-2">
+                              {type === "medic" ? (
+                                <GiMedicalPack size={25} />
+                              ) : (
+                                <IoPersonSharp size={25} />
+                              )}
+                            </div>
+                            <div className="w-full">{name}</div>
                           </div>
                         ),
                       )}
