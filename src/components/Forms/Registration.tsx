@@ -118,95 +118,97 @@ export const RegistrationForm: FunctionComponent<RegistrationFormProps> = ({
       }}
     >
       {({ isSubmitting }) => (
-        <Form className="flex flex-col gap-1 px-2 pb-3 pt-5">
-          <Field
-            label="Full Name (EN)"
-            name="full_name"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <Field
-            label="Full Name (CHI)"
-            name="chi_name"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <Field
-            label="Gender"
-            name="gender"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          {/* <Field
+        <Form className="flex flex-grow flex-col justify-between px-2 pb-3 pt-5">
+          <div className="flex flex-col gap-1">
+            <Field
+              label="Full Name (EN)"
+              name="full_name"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <Field
+              label="Full Name (CHI)"
+              name="chi_name"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <Field
+              label="Gender"
+              name="gender"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            {/* <Field
             label="Age"
             name="age"
             secondaryColor={secondaryColor}
             primaryColor={primaryColor}
           /> */}
-          <Field
-            label="NRIC / Passport"
-            name="nric_passport"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <Field
-            label="Contact No."
-            name="contact_number"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <Field
-            label="Date Of Birth"
-            name="dob"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <PastoralTeamField
-            label="Pastoral Team"
-            name="pastoral_team"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <SmallTeamField
-            label="Small Team"
-            name="small_team"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <CGField
-            label="CG"
-            name="cg"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <PastoralStatusField
-            label="Pastoral Status"
-            name="pastoral_status"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
-          <TShirtField
-            label="T-Shirt Size"
-            name="tshirt_size"
-            secondaryColor={secondaryColor}
-            primaryColor={primaryColor}
-            editable={!isSubmitting}
-          />
+            <Field
+              label="NRIC / Passport"
+              name="nric_passport"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <Field
+              label="Contact No."
+              name="contact_number"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <Field
+              label="Date Of Birth"
+              name="dob"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <PastoralTeamField
+              label="Pastoral Team"
+              name="pastoral_team"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <SmallTeamField
+              label="Small Team"
+              name="small_team"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <CGField
+              label="CG"
+              name="cg"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <PastoralStatusField
+              label="Pastoral Status"
+              name="pastoral_status"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+            <TShirtField
+              label="T-Shirt Size"
+              name="tshirt_size"
+              secondaryColor={secondaryColor}
+              primaryColor={primaryColor}
+              editable={!isSubmitting}
+            />
+          </div>
           <button
             type="submit"
             disabled={isSubmitting}
             style={{ background: primaryColor }}
-            className="mt-4 flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-2 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+            className="mt-4 flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
           >
             {isSubmitting ? (
               <PulseLoader color={"#000"} speedMultiplier={0.5} />
