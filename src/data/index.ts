@@ -7,7 +7,7 @@ export const jsonData: Record<string, Record<string, any>> = {
       secondary: "#96ec00",
     },
     startAt: 1697860800000,
-    registrationEndAt: 1700668799000,
+    registrationEndAt: 1700668800000,
     testRegEnd: 1698747000000,
     emergencyContacts: [
       { name: "Bro. Json Low", contact: "+6014-9667874" },

@@ -19,33 +19,31 @@ const EventPage = () => {
   const colors = data?.colors;
   const assets = data?.assets;
   const bg = assets?.bg;
-  const regEnd = data?.testRegEnd;
+  const regEnd = data?.registrationEndAt;
   const emergencyContacts = data?.emergencyContacts;
 
   const [registrationStatus, setRegistrationStatus] = useState<
     "loading" | "ended" | "progress"
-  >(
-    Date.now() >= regEnd
-      ? "ended"
-      : Date.now() <= regEnd
-      ? "progress"
-      : "loading",
-  );
+  >("loading");
 
   useEffect(() => {
     if (!data) return;
     setLoading(false);
-  }, [data]);
+    const now = Date.now();
+    setRegistrationStatus(now >= regEnd ? "ended" : "progress");
+  }, [data, regEnd]);
 
   useEffect(() => {
     if (!regEnd) return;
 
     const interval = setInterval(() => {
       const now = Date.now();
-      if (now > regEnd) setRegistrationStatus("ended");
+      if (now > regEnd) {
+        setRegistrationStatus("ended");
+      }
     }, 3000);
 
-    if (registrationStatus) return () => clearInterval(interval);
+    if (registrationStatus === "ended") return () => clearInterval(interval);
     return () => clearInterval(interval);
   }, [regEnd, registrationStatus]);
 
@@ -120,7 +118,11 @@ const EventPage = () => {
             />
             <div
               className={`${
-                registrationStatus !== "ended" ? "flex-grow " : ""
+                registrationStatus === "ended"
+                  ? ""
+                  : registrationStatus === "loading"
+                  ? "flex-grow "
+                  : ""
               }relative mt-3 flex max-h-[73vh] w-[310px] flex-col overflow-y-hidden border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10`}
             >
               {registrationStatus === "loading" ? (
@@ -137,29 +139,32 @@ const EventPage = () => {
               ) : (
                 <div className="flex h-full flex-col gap-2 p-2">
                   <button
-                    style={{ backgroundColor: colors.primary }}
-                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
-                  >
-                    Camp Masters
-                  </button>
-                  <button
                     onClick={() => router.push("/connect-camp/rules")}
-                    style={{ backgroundColor: colors.primary }}
-                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                    // style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
                   >
                     Rules
                   </button>
                   <button
+                    onClick={() => router.push("/connect-camp/pic")}
+                    disabled
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
+                  >
+                    Camp Masters
+                  </button>
+                  <button
                     onClick={() => router.push("/connect-camp/groups")}
-                    style={{ backgroundColor: colors.primary }}
-                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                    // style={{ backgroundColor: colors.primary }}
+                    disabled
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
                   >
                     Groups
                   </button>
                   <button
+                    disabled
                     onClick={() => router.push("/connect-camp/rooms")}
-                    style={{ backgroundColor: colors.primary }}
-                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
+                    // style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
                   >
                     Rooms
                   </button>
@@ -170,17 +175,17 @@ const EventPage = () => {
                   >
                     Emergency Contact
                   </button> */}
-                  <div
-                    style={{ backgroundColor: colors.secondary }}
+                  <button
+                    // disabled
                     onClick={() => setEmergencyShown((prev) => !prev)}
-                    className="group flex flex-col border-2 border-b-[6px] border-black p-3 font-made text-black"
+                    className="group flex flex-col border-2 border-b-[6px] border-black bg-[#96ec00] p-3 font-made text-black disabled:bg-opacity-50 disabled:text-opacity-50"
                     tabIndex={1}
                   >
-                    <div className="flex cursor-pointer flex-row items-center justify-center">
+                    <div className="flex w-full flex-row items-center justify-center">
                       <p>Emergency Contact</p>
                     </div>
                     <div
-                      className={`flex h-auto flex-col items-center gap-1 transition-all${
+                      className={`flex h-auto w-full flex-col items-center gap-1 transition-all${
                         emergencyShown
                           ? " visible mt-3 max-h-screen opacity-100 duration-500"
                           : " invisible max-h-0 opacity-0"
@@ -194,18 +199,18 @@ const EventPage = () => {
                           name: string;
                           contact: string;
                         }) => (
-                          <button
+                          <div
                             key={name}
                             style={{ backgroundColor: colors.primary }}
                             onClick={() => window.open(`tel:${contact}`)}
-                            className="w-full border-2 border-b-[6px] border-black py-2 active:mb-[6px] active:border active:bg-opacity-80"
+                            className="w-full cursor-pointer border-2 border-b-[6px] border-black py-2 active:mb-[6px] active:border active:bg-opacity-80"
                           >
                             {name}
-                          </button>
+                          </div>
                         ),
                       )}
                     </div>
-                  </div>
+                  </button>
                 </div>
               )}
             </div>
