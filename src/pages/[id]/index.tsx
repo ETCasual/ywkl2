@@ -21,7 +21,7 @@ const EventPage = () => {
   const colors = data?.colors;
   const assets = data?.assets;
   const bg = assets?.bg;
-  const regEnd = data?.testRegEnd;
+  const regEnd = data?.registrationEndAt;
   const emergencyContacts = data?.emergencyContacts;
 
   const [registrationStatus, setRegistrationStatus] = useState<
