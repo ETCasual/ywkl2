@@ -91,7 +91,7 @@ export const jsonData: Record<string, Record<string, any>> = {
           en: "Take care of public properties and keep the place clean.",
         },
         8: {
-          chi: "请小心报关个人财务, 若有遗失, 恕不负责。",
+          chi: "请小心保管个人财务, 若有遗失, 恕不负责。",
           en: "Please take care of your belongings. We will not be responsible for any lost.",
         },
         9: {
