@@ -17,42 +17,42 @@ export const jsonData: Record<string, Record<string, any>> = {
       {
         name: "Json Low",
         position: "Project Lead",
-        imgSrc: "/assets/avatars/json.png",
+        imgSrc: "/assets/avatars/json.gif",
       },
       {
         name: "Chi Joon",
         position: "Ministry Team",
-        imgSrc: "/assets/avatars/chijoon.png",
+        imgSrc: "/assets/avatars/chijoon.gif",
       },
       {
         name: "How Han",
         position: "Game Master",
-        imgSrc: "/assets/avatars/howhan.png",
+        imgSrc: "/assets/avatars/howhan.gif",
       },
       {
         name: "Isaac Ho",
         position: "Finance",
-        imgSrc: "/assets/avatars/isaac.png",
+        imgSrc: "/assets/avatars/isaac.gif",
       },
       {
         name: "Qian Yi",
         position: "Admin",
-        imgSrc: "/assets/avatars/qianyi.png",
+        imgSrc: "/assets/avatars/qianyi.gif",
       },
       {
         name: "You Yuan",
         position: "Crowd Management",
-        imgSrc: "/assets/avatars/youyuan.png",
+        imgSrc: "/assets/avatars/youyuan.gif",
       },
       {
         name: "Jia Hao",
         position: "Event Specialist",
-        imgSrc: "/assets/avatars/jiahao.png",
+        imgSrc: "/assets/avatars/jiahao.gif",
       },
       {
         name: "Hiro Hoi",
         position: "Performance",
-        imgSrc: "/assets/avatars/hoi.png",
+        imgSrc: "/assets/avatars/hoi.gif",
       },
     ],
     assets: {
