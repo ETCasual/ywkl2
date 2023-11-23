@@ -13,6 +13,48 @@ export const jsonData: Record<string, Record<string, any>> = {
       { name: "Lin Yau", contact: "+6011-27318868", type: "medic" },
       { name: "Isaac Ho", contact: "+6016-3379314", type: "general" },
     ],
+    pic: [
+      {
+        name: "Json Low",
+        position: "Project Lead",
+        imgSrc: "/assets/avatars/json.png",
+      },
+      {
+        name: "Chi Joon",
+        position: "Ministry Team",
+        imgSrc: "/assets/avatars/chijoon.png",
+      },
+      {
+        name: "How Han",
+        position: "Game Master",
+        imgSrc: "/assets/avatars/howhan.png",
+      },
+      {
+        name: "Isaac Ho",
+        position: "Finance",
+        imgSrc: "/assets/avatars/isaac.png",
+      },
+      {
+        name: "Qian Yi",
+        position: "Admin",
+        imgSrc: "/assets/avatars/qianyi.png",
+      },
+      {
+        name: "You Yuan",
+        position: "Crowd Management",
+        imgSrc: "/assets/avatars/youyuan.png",
+      },
+      {
+        name: "Jia Hao",
+        position: "Event Specialist",
+        imgSrc: "/assets/avatars/jiahao.png",
+      },
+      {
+        name: "Hiro Hoi",
+        position: "Performance",
+        imgSrc: "/assets/avatars/hoi.png",
+      },
+    ],
     assets: {
       title: "assets/CC_Main_Title.png",
       poster: "assets/main_poster.webp",

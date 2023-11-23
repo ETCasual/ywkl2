@@ -149,7 +149,7 @@ const EventPage = () => {
                   </button>
                   <button
                     onClick={() => router.push("/connect-camp/pic")}
-                    disabled
+                    // disabled
                     className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
                   >
                     Camp Masters
