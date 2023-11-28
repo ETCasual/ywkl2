@@ -17,7 +17,7 @@ const GroupsPage = () => {
   return loading ? (
     <div>Loading</div>
   ) : (
-    <Groups bg={data?.assets?.bg} groups={data?.booklet?.groups} />
+    <Groups bg={data?.assets?.bg} groups={data?.booklet?.groups} leaders={data?.booklet?.groupLeaders}/>
   );
 };
 

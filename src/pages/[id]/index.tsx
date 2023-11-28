@@ -116,7 +116,7 @@ const EventPage = () => {
             <img
               src="/assets/CC_Main_Title.png"
               alt="main title"
-              className="mt-5 w-[220px] object-cover md:mt-0 md:w-[300px] lg:w-[380px]"
+              className="mt-5 w-[220px] object-cover md:mt-0 md:w-[270px] lg:w-[320px]"
             />
             <div
               className={`${
@@ -155,6 +155,21 @@ const EventPage = () => {
                     Camp Masters
                   </button>
                   <button
+                    onClick={() => router.push("/connect-camp/schedule")}
+                    // style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
+                  >
+                    Schedule
+                  </button>
+
+                  <button
+                    onClick={() => router.push("/connect-camp/rooms")}
+                    // style={{ backgroundColor: colors.primary }}
+                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
+                  >
+                    Rooms
+                  </button>
+                  <button
                     onClick={() => router.push("/connect-camp/groups")}
                     // style={{ backgroundColor: colors.primary }}
                     disabled
@@ -164,19 +179,12 @@ const EventPage = () => {
                   </button>
                   <button
                     disabled
-                    onClick={() => router.push("/connect-camp/rooms")}
+                    onClick={() => router.push("/connect-camp/ranking")}
                     // style={{ backgroundColor: colors.primary }}
                     className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
                   >
-                    Rooms
+                    Ranking
                   </button>
-                  {/* <button
-                    style={{ backgroundColor: colors.secondary }}
-                    onClick={() => window.open("tel:+60172412866")}
-                    className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black py-3 font-made font-bold active:mb-[6px] active:border active:bg-opacity-80"
-                  >
-                    Emergency Contact
-                  </button> */}
                   <button
                     disabled
                     onClick={() => setEmergencyShown((prev) => !prev)}

@@ -7,9 +7,14 @@ import { FaTrashAlt } from "react-icons/fa";
 type GroupsProps = {
   groups: Record<string, Record<number, string[]>>;
   bg: string;
+  leaders: Record<string, string>;
 };
 
-export const Groups: FunctionComponent<GroupsProps> = ({ groups, bg }) => {
+export const Groups: FunctionComponent<GroupsProps> = ({
+  groups,
+  bg,
+  leaders,
+}) => {
   const [searchString, setSearchString] = useState("");
 
   const router = useRouter();
@@ -95,7 +100,7 @@ export const Groups: FunctionComponent<GroupsProps> = ({ groups, bg }) => {
             >
               <div className="absolute -top-[20px] left-1/2 flex -translate-x-1/2 flex-col items-center justify-center">
                 <div
-                  className="z-[5] flex h-[30px] w-[125px] flex-col items-center justify-center bg-[#96ec00] font-made text-lg uppercase"
+                  className="z-[5] flex h-[30px] w-[125px] flex-col items-center justify-center bg-[#96ec00] font-made text-lg font-bold uppercase"
                   style={{
                     clipPath:
                       "polygon(0% 50%, 15px 0%, 110px 0, 100% 50%, 30px 110px, 15px 30px)",
@@ -114,6 +119,9 @@ export const Groups: FunctionComponent<GroupsProps> = ({ groups, bg }) => {
               <div className="flex flex-col items-center justify-center gap-3 p-5">
                 {/* <p className="font-noto text-2xl font-bold">{rule.chi}</p>
                 <p className="font-made text-lg">{rule.en}</p> */}
+                <p className="w-full text-center text-xl font-bold">
+                  Leader: {leaders[clan]}
+                </p>
                 {Object.entries(groupMembers)
                   .filter(([, gm]) => {
                     // console.log(gm);
@@ -134,7 +142,7 @@ export const Groups: FunctionComponent<GroupsProps> = ({ groups, bg }) => {
                       key={idx}
                     >
                       <div className="w-full border-2 border-black bg-[#ff6511] font-made text-sm">
-                        <p className="px-5 py-2 text-lg capitalize">
+                        <p className="px-5 py-2 text-lg font-bold capitalize">
                           {clan} {no}
                         </p>
                       </div>
@@ -142,7 +150,7 @@ export const Groups: FunctionComponent<GroupsProps> = ({ groups, bg }) => {
                         {gm.map((go) => (
                           <div
                             key={`${i}-${go}`}
-                            className={`py-1 text-lg pl-5${
+                            className={`py-1 text-lg px-5${
                               go.includes("(L)")
                                 ? " bg-[#96ec00] font-bold"
                                 : ""
