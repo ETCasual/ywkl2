@@ -44,3 +44,15 @@
 
   box-sizing: border-box;
 }
+@keyframes move {
+  from {
+    background-position:
+      center center,
+      left center;
+  }
+  to {
+    background-position:
+      center center,
+      right center;
+  }
+}
