@@ -143,7 +143,12 @@ export const Groups: FunctionComponent<GroupsProps> = ({
                     >
                       <div className="w-full border-2 border-black bg-[#ff6511] font-made text-sm">
                         <p className="px-5 py-2 text-lg font-bold capitalize">
-                          {clan} {no}
+                          {clan}{" "}
+                          {no.length === 1
+                            ? `00${no}`
+                            : no.length == 2
+                            ? `0${no}`
+                            : no}
                         </p>
                       </div>
                       <div className="flex w-full flex-col border-2 border-t-0 border-black">
