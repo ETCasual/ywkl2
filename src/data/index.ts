@@ -724,6 +724,7 @@ export const jsonData: Record<string, Record<string, any>> = {
             "Toh Jun Hao",
             "Wayne Wong Wui Ming",
             "Chin Zi Xuan",
+            "Chong Yaw Hang",
             "Ng Liang Shin",
             "Fong Chung Sang",
             "Lee Jan Yuan",
