@@ -186,7 +186,7 @@ const EventPage = () => {
                     Ranking
                   </button>
                   <button
-                    disabled
+                    // disabled
                     onClick={() => setEmergencyShown((prev) => !prev)}
                     className="group flex flex-col border-2 border-b-[6px] border-black bg-[#96ec00] p-3 font-made text-black disabled:bg-opacity-50 disabled:text-opacity-50"
                     tabIndex={1}
