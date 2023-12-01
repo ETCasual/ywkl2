@@ -87,33 +87,7 @@ const EventPage = () => {
               }}
               className="absolute left-3 top-[20px] h-8 w-[110px] bg-black py-1"
             />
-
-            <button
-              onClick={() =>
-                router.push(
-                  `${router.query.id as string}/leaderboard/${
-                    localStorage.getItem("ywkl-leaderboard-key") ?? ""
-                  }`,
-                )
-              }
-              className="absolute right-3 top-4 z-10 w-[130px] rotate-180 transform py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
-              style={{
-                backgroundColor: colors?.secondary ?? "",
-                clipPath:
-                  "polygon(100% 0, 120px 50%, 100% 100%,20px 100%,0 50%, 15% 0)",
-              }}
-            >
-              <p className="rotate-180 transform">Leaderboard</p>
-            </button>
-            <div
-              style={{
-                clipPath:
-                  "polygon(100% 0, 120px 50%, 100% 100%,20px 100%,0 50%,15% 0)",
-              }}
-              className="absolute right-3 top-[20px] h-8 w-[130px] rotate-180 transform bg-black py-1"
-            />
-
-            <img
+         <img
               src="/assets/CC_Main_Title.png"
               alt="main title"
               className="mt-5 w-[220px] object-cover md:mt-0 md:w-[270px] lg:w-[320px]"
