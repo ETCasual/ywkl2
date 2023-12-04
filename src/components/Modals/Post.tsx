@@ -171,7 +171,10 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                                 {
                                   count: increment(1),
                                 },
-                              ).then(() => alert("Posted!"));
+                              ).then(() => {
+                                alert("Posted!");
+                                closeModal();
+                              });
                             })
                             .catch((err) => {
                               console.error(err);
@@ -204,7 +207,10 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                           .then(async () => {
                             await updateDoc(doc(firestore, "posts/settings"), {
                               count: increment(1),
-                            }).then(() => alert("Posted!"));
+                            }).then(() => {
+                              alert("Posted!");
+                              closeModal();
+                            });
                           })
                           .catch((err) => {
                             console.error(err);
