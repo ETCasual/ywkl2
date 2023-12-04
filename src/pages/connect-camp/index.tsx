@@ -257,7 +257,7 @@ const EventPage = () => {
         <div className="fixed bottom-0 z-20 w-full max-w-[500px] p-1.5">
           <button
             onClick={() => setUploadModalShown(true)}
-            className="flex w-full flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-2 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
+            className="flex w-full flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-2 font-made font-bold text-black active:mb-[6px] active:border disabled:text-opacity-50"
           >
             Write a post
           </button>
