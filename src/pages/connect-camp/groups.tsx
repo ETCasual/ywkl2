@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Rules } from "@/components/Display/connect-camp/Rules";
+import { Groups } from "@/components/Display/connect-camp/Groups";
 import { jsonData } from "@/data";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const RulesPage = () => {
-  const router = useRouter();
+const GroupsPage = () => {
   const [loading, setLoading] = useState(true);
-  const data = jsonData[router.query.id as string];
+  const data = jsonData["connect-camp"];
 
   useEffect(() => {
     if (!data) return;
@@ -17,7 +15,12 @@ const RulesPage = () => {
   return loading ? (
     <div>Loading</div>
   ) : (
-    <Rules bg={data?.assets?.bg} rules={data?.booklet?.rules} />
+    <Groups
+      bg={data?.assets?.bg}
+      groups={data?.booklet?.groups}
+      leaders={data?.booklet?.groupLeaders}
+    />
   );
 };
-export default RulesPage;
+
+export default GroupsPage;

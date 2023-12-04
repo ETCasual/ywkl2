@@ -2,31 +2,58 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { MessageCard } from "@/components/Cards/Message";
 import { RegistrationForm } from "@/components/Forms/Registration";
+import { PostModal } from "@/components/Modals/Post";
 import { jsonData } from "@/data";
+import { collection, doc } from "firebase/firestore";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BounceLoader } from "react-spinners";
-import { GiMedicalPack } from "react-icons/gi";
-import { IoPersonSharp } from "react-icons/io5";
+import {
+  useFirestore,
+  useFirestoreCollectionData,
+  useFirestoreDocData,
+} from "reactfire";
+// import { GiMedicalPack } from "react-icons/gi";
+// import { IoPersonSharp } from "react-icons/io5";
 
 const EventPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [emergencyShown, setEmergencyShown] = useState(false);
+  const [uploadModalShown, setUploadModalShown] = useState(false);
+  // const [emergencyShown, setEmergencyShown] = useState(false);
 
-  const data = jsonData[router.query.id as string];
+  const data = jsonData["connect-camp"];
   const name = data?.name;
   const colors = data?.colors;
   const assets = data?.assets;
   const bg = assets?.bg;
   const regEnd = data?.registrationEndAt;
-  const emergencyContacts = data?.emergencyContacts;
+  // const emergencyContacts = data?.emergencyContacts;
+
+  const firestore = useFirestore();
+  const countRef = doc(firestore, "posts/settings");
+  const postingsRef = collection(firestore, "posts/socialMedia/postings");
+
+  const [allDone, setAllDone] = useState(false);
+
+  const { status, data: postsCountData } = useFirestoreDocData(countRef);
+  const { status: status2, data: postingsData } =
+    useFirestoreCollectionData(postingsRef);
 
   const [registrationStatus, setRegistrationStatus] = useState<
     "loading" | "ended" | "progress"
   >("loading");
+
+  useEffect(() => {
+    if (status === "success" && status2 === "success") {
+      setAllDone(true);
+    } else {
+      setAllDone(false);
+    }
+  }, [status, status2]);
 
   useEffect(() => {
     if (!data) return;
@@ -61,7 +88,7 @@ const EventPage = () => {
         style={{
           background: `url("/${bg}")`,
         }}
-        className={`relative flex min-h-screen flex-col items-center py-12${
+        className={`relative flex min-h-screen flex-col items-center px-5 py-12${
           bg ? " bg-cover bg-center" : ""
         }`}
       >
@@ -69,6 +96,10 @@ const EventPage = () => {
           <p>Loading...</p>
         ) : (
           <>
+            <PostModal
+              closeModal={() => setUploadModalShown(false)}
+              isOpen={uploadModalShown}
+            />
             <button
               onClick={() => router.push("/")}
               className="absolute left-3 top-4 z-10 w-[110px] py-1.5 font-made text-[12px] font-bold shadow-xl hover:top-[18px]"
@@ -87,10 +118,10 @@ const EventPage = () => {
               }}
               className="absolute left-3 top-[20px] h-8 w-[110px] bg-black py-1"
             />
-         <img
-              src="/assets/CC_Main_Title.png"
+            <img
+              src="/assets/CC_MessageBoard_Title.png"
               alt="main title"
-              className="mt-5 w-[220px] object-cover md:mt-0 md:w-[270px] lg:w-[320px]"
+              className="mt-4 w-[200px] object-cover md:mt-0 md:w-[250px] lg:w-[290px]"
             />
             <div
               className={`${
@@ -99,22 +130,34 @@ const EventPage = () => {
                   : registrationStatus === "loading"
                   ? "flex-grow "
                   : ""
-              }relative mt-3 flex max-h-[73vh] w-[310px] flex-col overflow-y-hidden border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10`}
+              }relative mt-3 flex max-h-[70vh] w-full max-w-[500px] flex-col overflow-y-scroll border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10`}
             >
-              {registrationStatus === "loading" ? (
+              {registrationStatus === "loading" || status === "loading" ? (
                 <BounceLoader
                   color={colors.secondary}
                   className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                 />
               ) : registrationStatus === "progress" ? (
                 <RegistrationForm
-                  id={router.query.id as string}
+                  id={"connect-camp"}
                   primaryColor={colors.primary}
                   secondaryColor={colors?.secondary}
                 />
               ) : (
-                <div className="flex h-full flex-col gap-2 p-2">
-                  <button
+                <div className="flex h-full flex-col gap-8 px-3 pb-2 pt-7">
+                  {allDone &&
+                    postingsData.length === (postsCountData.count as number) &&
+                    postingsData.map((posting) => (
+                      <MessageCard
+                        key={posting.NO_ID_FIELD}
+                        author={posting.name}
+                        image={posting.imageUrl}
+                        clanName={posting.clan}
+                        groupNo={posting.groupNo}
+                        message={posting.message}
+                      />
+                    ))}
+                  {/* <button
                     onClick={() => router.push("/connect-camp/rules")}
                     // style={{ backgroundColor: colors.primary }}
                     className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
@@ -150,7 +193,7 @@ const EventPage = () => {
                     className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
                   >
                     Groups
-                  </button>
+                  </button>  
                   <button
                     
                     onClick={() => router.push("/connect-camp/ranking")}
@@ -159,7 +202,7 @@ const EventPage = () => {
                   >
                     Ranking
                   </button>
-                  <button
+                   <button
                     // disabled
                     onClick={() => setEmergencyShown((prev) => !prev)}
                     className="group flex flex-col border-2 border-b-[6px] border-black bg-[#96ec00] p-3 font-made text-black disabled:bg-opacity-50 disabled:text-opacity-50"
@@ -203,12 +246,20 @@ const EventPage = () => {
                         ),
                       )}
                     </div>
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>
           </>
         )}
+        <div className="fixed bottom-0 z-20 w-full max-w-[500px] p-1.5">
+          <button
+            onClick={() => setUploadModalShown(true)}
+            className="flex w-full flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-2 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
+          >
+            Write a post
+          </button>
+        </div>
       </main>
     </>
   );

@@ -18,7 +18,7 @@ const PICPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  const data = jsonData[router.query.id as string];
+  const data = jsonData["connect-camp"];
 
   const name = data?.name;
   const assets = data?.assets;

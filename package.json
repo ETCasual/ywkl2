@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^9.7.2",
+    "@headlessui/react": "^1.7.17",
     "@t3-oss/env-nextjs": "^0.7.0",
+    "aws-sdk": "^2.1510.0",
     "firebase": "^10.5.0",
     "formik": "^2.4.5",
     "googleapis": "^128.0.0",
@@ -22,6 +24,7 @@
     "react-toastify": "^9.1.3",
     "reactfire": "^4.2.3",
     "swiper": "^10.3.1",
+    "uuid": "^9.0.1",
     "yup": "^1.3.2",
     "zod": "^3.22.4"
   },
@@ -30,6 +33,7 @@
     "@types/node": "^18.16.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "autoprefixer": "^10.4.14",

@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Groups } from "@/components/Display/connect-camp/Groups";
+import { Rooms } from "@/components/Display/connect-camp/Rooms";
 import { jsonData } from "@/data";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const GroupsPage = () => {
-  const router = useRouter();
+const RoomsPage = () => {
   const [loading, setLoading] = useState(true);
-  const data = jsonData[router.query.id as string];
+  const data = jsonData["connect-camp"];
 
   useEffect(() => {
     if (!data) return;
@@ -17,8 +15,8 @@ const GroupsPage = () => {
   return loading ? (
     <div>Loading</div>
   ) : (
-    <Groups bg={data?.assets?.bg} groups={data?.booklet?.groups} leaders={data?.booklet?.groupLeaders}/>
+    <Rooms bg={data?.assets?.bg} rooms={data?.booklet?.rooms} />
   );
 };
 
-export default GroupsPage;
+export default RoomsPage;

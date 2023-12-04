@@ -12,7 +12,7 @@ const SchedulePage = () => {
   const [loading, setLoading] = useState(true);
   const [day, setDay] = useState<number>(1);
 
-  const data = jsonData[router.query.id as string];
+  const data = jsonData["connect-camp"];
 
   const name = data?.name;
   const assets = data?.assets;
