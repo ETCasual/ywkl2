@@ -148,7 +148,7 @@ const EventPage = () => {
                   {allDone &&
                     postingsData.length === (postsCountData.count as number) &&
                     postingsData
-                      .sort((a, b) => b.timestamp - a.timestamp)
+                      .sort((a, b) => a.timestamp - b.timestamp)
                       .map((posting) => (
                         <MessageCard
                           key={posting.NO_ID_FIELD}
