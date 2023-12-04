@@ -12,7 +12,14 @@ import { v4 as uuidv4 } from "uuid";
 import { doc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { useFirestore } from "reactfire";
 
-const clans = ["调查兵团", "宪兵团", "驻守兵团", "训练兵团", "Pillars"];
+const clans = [
+  "调查兵团",
+  "宪兵团",
+  "驻守兵团",
+  "训练兵团",
+  "Ministry",
+  "Pillars",
+];
 
 type ModalProps = {
   isOpen: boolean;

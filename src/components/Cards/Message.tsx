@@ -26,7 +26,8 @@ export const MessageCard: FunctionComponent<MessageCardProps> = ({
               "polygon(0% 50%, 20px 0%, 205px 0, 100% 50%, 20px 205px, 20px 40px)",
           }}
         >
-          {clanName} {clanName !== "Pillars" && groupNo}
+          {clanName}{" "}
+          {clanName !== "Pillars" && clanName !== "Ministry" && groupNo}
         </div>
         <div
           className="absolute top-[0.25rem] h-[40px] w-[225px] bg-black"

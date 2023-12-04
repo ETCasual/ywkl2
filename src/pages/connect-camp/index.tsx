@@ -147,16 +147,18 @@ const EventPage = () => {
                 <div className="flex h-full flex-col gap-8 px-3 pb-2 pt-7">
                   {allDone &&
                     postingsData.length === (postsCountData.count as number) &&
-                    postingsData.map((posting) => (
-                      <MessageCard
-                        key={posting.NO_ID_FIELD}
-                        author={posting.name}
-                        image={posting.imageUrl}
-                        clanName={posting.clan}
-                        groupNo={posting.groupNo}
-                        message={posting.message}
-                      />
-                    ))}
+                    postingsData
+                      .sort((a, b) => b.timestamp - a.timestamp)
+                      .map((posting) => (
+                        <MessageCard
+                          key={posting.NO_ID_FIELD}
+                          author={posting.name}
+                          image={posting.imageUrl}
+                          clanName={posting.clan}
+                          groupNo={posting.groupNo}
+                          message={posting.message}
+                        />
+                      ))}
                   {/* <button
                     onClick={() => router.push("/connect-camp/rules")}
                     // style={{ backgroundColor: colors.primary }}
