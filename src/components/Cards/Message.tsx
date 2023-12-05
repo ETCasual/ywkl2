@@ -20,7 +20,7 @@ export const MessageCard: FunctionComponent<MessageCardProps> = ({
     <div className="relative w-full border-x-4 border-b-[10px] border-t-4 border-black bg-white">
       <div className="absolute -top-[23px] left-1/2 flex -translate-x-1/2 flex-col items-center justify-center">
         <div
-          className="z-[5] flex h-[40px] w-[225px] flex-col items-center justify-center bg-[#96ec00] font-noto text-lg font-extrabold uppercase"
+          className="z-[5] flex h-[40px] w-[225px] flex-col items-center justify-center truncate bg-[#96ec00] font-noto text-lg font-extrabold uppercase"
           style={{
             clipPath:
               "polygon(0% 50%, 20px 0%, 205px 0, 100% 50%, 20px 205px, 20px 40px)",
