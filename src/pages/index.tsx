@@ -97,12 +97,22 @@ export default function Home() {
               Events
             </h1>
             <div className="flex flex-row items-center gap-4">
-              <img
-                src="/assets/YW_Logo.png"
-                alt="YW Logo"
-                className="h-[40px] w-[40px] cursor-pointer object-cover"
+              <button
                 onClick={() => setDrawer(true)}
-              />
+                style={{
+                  boxShadow: "#31925a 0 0 10px 1px",
+                  clipPath:
+                    "polygon(100% 0%, 100% 100%, 20px 100%, 0% 50%, 20px 0%)",
+                }}
+                className="flex w-full flex-row gap-3 rounded-md bg-[#31925a] bg-opacity-100 py-2 pl-7 pr-5 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
+              >
+                <p className="text-[#191919]">Options</p>
+                <img
+                  src="/assets/YW_Logo.png"
+                  alt="YW Logo"
+                  className="h-[25px] w-[25px] object-cover"
+                />
+              </button>
             </div>
           </div>
           <Swiper
