@@ -9,7 +9,7 @@ await import("./src/env.mjs");
 
 const withPWA = withPWAInit({
   dest: "public",
-  disable: env.NODE_ENV === "development",
+  // disable: env.NODE_ENV === "development",
   register: true,
 });
 

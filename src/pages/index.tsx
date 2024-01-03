@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @next/next/no-img-element */
 import { EventsCard } from "@/components/Cards/Event";
 import Head from "next/head";
 // Import Swiper React components
@@ -16,10 +13,45 @@ import "swiper/css/pagination";
 import { MoreCard } from "@/components/Cards/More";
 import { jsonData } from "@/data";
 import { useEffect, useState } from "react";
+import { Drawer } from "@/components/Drawer";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  const [drawer, setDrawer] = useState(false);
   const [installPrompt, setInstallPrompt] = useState<Event>();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscription, setSubscription] = useState<PushSubscription>();
+  const [registration, setRegistration] = useState<ServiceWorkerRegistration>();
+
+  useEffect(() => {
+    const readyNotifications = async () => {
+      await navigator.serviceWorker.ready.then(async (reg) => {
+        await reg.pushManager.getSubscription().then((sub) => {
+          if (
+            sub &&
+            !(
+              sub.expirationTime &&
+              Date.now() > sub.expirationTime - 5 * 60 * 1000
+            )
+          ) {
+            setSubscription(sub);
+            setIsSubscribed(true);
+            console.log("Subscribed");
+          }
+        });
+        setRegistration(reg);
+        console.log("Registered");
+      });
+    };
+    if (
+      typeof window !== "undefined" &&
+      "serviceWorker" in navigator &&
+      window.workbox !== undefined
+    ) {
+      // run only in browser
+      void readyNotifications();
+    }
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -47,33 +79,29 @@ export default function Home() {
         <link rel="icon" href="/assets/YW_Logo.png" />
       </Head>
       <main className="flex min-h-screen flex-col bg-[#191919]">
+        <Drawer
+          open={drawer}
+          onClose={() => setDrawer(false)}
+          installPrompt={installPrompt}
+          setInstallPrompt={setInstallPrompt}
+          registration={registration}
+          subscription={subscription}
+          // setRegistration={setRegistration}
+          setSubscription={setSubscription}
+          isSubscribed={isSubscribed}
+          setIsSubscribed={setIsSubscribed}
+        />
         <div className="contents flex-col gap-5">
           <div className="flex w-full flex-row items-center justify-between border-b border-white bg-[#191919] px-4">
             <h1 className="py-4 text-2xl font-extrabold tracking-tight text-[#39FF14] sm:text-[2rem] xl:px-5">
               Events
             </h1>
             <div className="flex flex-row items-center gap-4">
-              {installPrompt && (
-                <button
-                  style={{
-                    boxShadow: "#8bda02 0 0 10px 1px",
-                  }}
-                  className="rounded-md bg-[#8bda02] bg-opacity-100 px-5 py-2 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
-                  onClick={async () => {
-                    //@ts-ignore
-                    const res = await installPrompt.prompt();
-
-                    if (res.outcome !== "dismissed")
-                      setInstallPrompt(undefined);
-                  }}
-                >
-                  Download as App
-                </button>
-              )}
               <img
                 src="/assets/YW_Logo.png"
                 alt="YW Logo"
-                className="h-[40px] w-[40px] object-cover"
+                className="h-[40px] w-[40px] cursor-pointer object-cover"
+                onClick={() => setDrawer(true)}
               />
             </div>
           </div>

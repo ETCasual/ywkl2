@@ -5,7 +5,7 @@ import { FirebaseAppProvider } from "reactfire";
 import { firebaseConfig } from "@/firebase";
 import Head from "next/head";
 import { Firestore } from "@/components/Init";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ToastContainer } from "react-toastify";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -237,6 +237,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           <ToastContainer />
         </Firestore>
       </FirebaseAppProvider>
+      <SpeedInsights />
     </>
   );
 };

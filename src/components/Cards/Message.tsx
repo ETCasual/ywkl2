@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import type { FunctionComponent } from "react";
+import { useRef, type FunctionComponent } from "react";
+// import { RiSave3Fill } from "react-icons/ri";
+// import domtoimage from "dom-to-image";
+import { v4 as uuidv4 } from "uuid";
 
 type MessageCardProps = {
   author: string;
@@ -16,8 +19,14 @@ export const MessageCard: FunctionComponent<MessageCardProps> = ({
   clanName,
   groupNo,
 }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const uid = uuidv4();
   return (
-    <div className="relative w-full border-x-4 border-b-[10px] border-t-4 border-black bg-white">
+    <div
+      className="relative w-full border-x-4 border-b-[10px] border-t-4 border-black bg-white"
+      id={`${author}-${clanName}-${groupNo}-${uid}`}
+      ref={ref}
+    >
       <div className="absolute -top-[23px] left-1/2 flex -translate-x-1/2 flex-col items-center justify-center">
         <div
           className="z-[5] flex h-[40px] w-[225px] flex-col items-center justify-center truncate bg-[#96ec00] font-noto text-lg font-extrabold uppercase"
@@ -45,10 +54,32 @@ export const MessageCard: FunctionComponent<MessageCardProps> = ({
             className="w-[280px] self-center object-cover"
           />
         )}
-        <p className="w-full truncate text-ellipsis text-end font-noto text-base font-bold">
-          - {clanName}{" "}
-          {clanName !== "Pillars" && clanName !== "Ministry" && groupNo} -
-        </p>
+        <div className="flex flex-row justify-between">
+          {/* <RiSave3Fill
+            color="#000"
+            size={25}
+            onClick={async () => {
+              await domtoimage
+                .toPng(
+                  document.getElementById(
+                    `${author}-${clanName}-${groupNo}-${uid}`,
+                  ),
+                  { quality: 0.95 },
+                )
+                .then(function (dataUrl) {
+                  const link = document.createElement("a");
+                  link.download = "area-chart.png";
+                  link.href = dataUrl;
+                  link.click();
+                });
+            }}
+          /> */}
+
+          <p className="w-full truncate text-ellipsis text-end font-noto text-base font-bold">
+            - {clanName}{" "}
+            {clanName !== "Pillars" && clanName !== "Ministry" && groupNo} -
+          </p>
+        </div>
       </div>
     </div>
   );
