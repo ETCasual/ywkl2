@@ -104,7 +104,7 @@ export default function Home() {
                   clipPath:
                     "polygon(100% 0%, 100% 100%, 20px 100%, 0% 50%, 20px 0%)",
                 }}
-                className="flex w-full flex-row gap-3 rounded-md bg-[#31925a] bg-opacity-100 py-2 pl-7 pr-5 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
+                className="flex w-full flex-row gap-3 rounded-md bg-[#31925a] bg-opacity-100 py-2 pl-7 pr-4 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
               >
                 <p className="text-[#191919]">Options</p>
                 <img
