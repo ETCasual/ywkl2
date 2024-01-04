@@ -1,5 +1,5 @@
 import withPWAInit from "@ducanh2912/next-pwa";
-import { env } from "./src/env.mjs";
+// import { env } from "./src/env.mjs";
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -9,7 +9,7 @@ await import("./src/env.mjs");
 
 const withPWA = withPWAInit({
   dest: "public",
-  disable: env.NODE_ENV === "development",
+  // disable: env.NODE_ENV === "development",
   register: true,
 });
 

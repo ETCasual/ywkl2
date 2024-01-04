@@ -13,6 +13,7 @@ import { Dialog, Switch, Transition } from "@headlessui/react";
 import { IoCloseOutline } from "react-icons/io5";
 import { base64ToUint8Array } from "@/utils/helpers";
 import { env } from "@/env.mjs";
+import { toast } from "react-toastify";
 
 interface DrawerProps {
   open: boolean;
@@ -41,7 +42,6 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
   const [enabled, setEnabled] = useState(
     localStorage.getItem("ywkl-allow-notification") === "true",
   );
-  // console.log("subscription", subscription);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -119,6 +119,11 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                                     });
                                   setSubscription(sub);
                                   setIsSubscribed(true);
+                                  toast("Subscribed to notifications!", {
+                                    autoClose: 2000,
+                                    theme: "colored",
+                                    type: "success",
+                                  });
                                   console.log("web push subscribed!", sub);
 
                                   localStorage.setItem(
@@ -175,24 +180,8 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                           onClick={async () => {
                             //@ts-ignore
                             const res = await installPrompt.prompt();
-
                             if (res.outcome !== "dismissed")
                               setInstallPrompt(undefined);
-
-                            // await fetch("/api/notification", {
-                            //   method: "POST",
-                            //   headers: {
-                            //     "Content-Type": "application/json",
-                            //   },
-                            //   body: JSON.stringify({
-                            //     subscription: subscription,
-                            //     data: {
-                            //       title: "Test",
-                            //       message: "Test Message",
-                            //       url: "/connect-camp",
-                            //     },
-                            //   }),
-                            // });
                           }}
                         >
                           Download as App

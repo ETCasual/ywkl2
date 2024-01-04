@@ -27,6 +27,7 @@ export default function Home() {
     const readyNotifications = async () => {
       await navigator.serviceWorker.ready.then(async (reg) => {
         await reg.pushManager.getSubscription().then((sub) => {
+          console.log("sub", sub);
           if (
             sub &&
             !(
