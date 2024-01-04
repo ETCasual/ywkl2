@@ -36,11 +36,9 @@ export default function Home() {
           ) {
             setSubscription(sub);
             setIsSubscribed(true);
-            console.log("Subscribed");
           }
         });
         setRegistration(reg);
-        console.log("Registered");
       });
     };
     if (

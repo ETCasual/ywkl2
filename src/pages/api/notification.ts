@@ -15,7 +15,7 @@ webPush.setVapidDetails(
 const Notification = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
     const { subscription, data } = req.body;
-
+    console.log(JSON.stringify(subscription));
     webPush
       .sendNotification(subscription, JSON.stringify(data))
       .then((response) => {

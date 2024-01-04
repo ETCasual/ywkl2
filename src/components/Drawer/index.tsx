@@ -41,6 +41,7 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
   const [enabled, setEnabled] = useState(
     localStorage.getItem("ywkl-allow-notification") === "true",
   );
+  // console.log("subscription", subscription);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -101,8 +102,8 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                       </Dialog.Title>
                     </div>
                     <div className="relative flex h-full flex-col gap-5 pt-6">
-                      <button
-                        className="flex flex-row items-center justify-between"
+                      <div
+                        className="flex cursor-pointer flex-row items-center justify-between"
                         onClick={async (event) => {
                           if (!enabled) {
                             await Notification.requestPermission().then(
@@ -164,7 +165,7 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
             pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
                           />
                         </Switch>
-                      </button>
+                      </div>
                       {installPrompt && (
                         <button
                           style={{
@@ -177,6 +178,21 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
 
                             if (res.outcome !== "dismissed")
                               setInstallPrompt(undefined);
+
+                            // await fetch("/api/notification", {
+                            //   method: "POST",
+                            //   headers: {
+                            //     "Content-Type": "application/json",
+                            //   },
+                            //   body: JSON.stringify({
+                            //     subscription: subscription,
+                            //     data: {
+                            //       title: "Test",
+                            //       message: "Test Message",
+                            //       url: "/connect-camp",
+                            //     },
+                            //   }),
+                            // });
                           }}
                         >
                           Download as App
