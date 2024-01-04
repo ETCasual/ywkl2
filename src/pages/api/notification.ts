@@ -14,17 +14,10 @@ webPush.setVapidDetails(
 
 const Notification = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
-    const { subscription } = req.body;
+    const { subscription, data } = req.body;
 
     webPush
-      .sendNotification(
-        subscription,
-        JSON.stringify({
-          title: "Hello Web Push",
-          message: "Your web push notification is here!",
-          url: "/connect-camp",
-        }),
-      )
+      .sendNotification(subscription, JSON.stringify(data))
       .then((response) => {
         return res
           .writeHead(response.statusCode, response.headers)
