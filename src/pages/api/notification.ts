@@ -22,6 +22,7 @@ const Notification = (req: NextApiRequest, res: NextApiResponse) => {
         JSON.stringify({
           title: "Hello Web Push",
           message: "Your web push notification is here!",
+          url: "/connect-camp",
         }),
       )
       .then((response) => {

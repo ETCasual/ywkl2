@@ -21,13 +21,14 @@ self.addEventListener("message", (event) => {
 
 self.addEventListener("push", (event) => {
   const data = JSON.parse(event?.data.text() ?? "{}") as Record<
-    "title" | "message",
+    "title" | "message" | "url",
     string
   >;
   event?.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.message,
       icon: "/icons/android-chrome-192x192.png",
+      data: data.url,
     }),
   );
 });
@@ -43,7 +44,7 @@ self.addEventListener("notificationclick", (event) => {
         if (focusedClient) {
           return focusedClient.focus();
         }
-        return self.clients.openWindow("/");
+        return self.clients.openWindow(event?.notification.data as string);
       }),
   );
 });
