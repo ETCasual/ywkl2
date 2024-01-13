@@ -14,6 +14,8 @@ import { MoreCard } from "@/components/Cards/More";
 import { jsonData } from "@/data";
 import { useEffect, useState } from "react";
 import { Drawer } from "@/components/Drawer";
+import { env } from "@/env.mjs";
+import Link from "next/link";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -138,6 +140,16 @@ export default function Home() {
               <MoreCard />
             </SwiperSlide>
           </Swiper>
+          {env.NEXT_PUBLIC_IS_STAGING === "1" && (
+            <div className="w-full px-4 pt-4">
+              <Link
+                href="/discipleship"
+                className="flex w-full items-center justify-center rounded-xl bg-[#31925a] px-1 py-2 font-made text-lg text-white"
+              >
+                DISCIPLESHIP
+              </Link>
+            </div>
+          )}
           <MoreCard full />
         </div>
       </main>

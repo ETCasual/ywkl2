@@ -56,3 +56,8 @@
       right center;
   }
 }
+
+.table :where(.table-pin-rows thead tr) {
+  --tw-bg-opacity: 0 !important
+;
+}

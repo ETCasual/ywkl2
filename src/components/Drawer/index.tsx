@@ -182,6 +182,21 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                             const res = await installPrompt.prompt();
                             if (res.outcome !== "dismissed")
                               setInstallPrompt(undefined);
+
+                            // await fetch("/api/notification", {
+                            //   method: "POST",
+                            //   headers: {
+                            //     "Content-Type": "application/json",
+                            //   },
+                            //   body: JSON.stringify({
+                            //     subscription: subscription,
+                            //     data: {
+                            //       title: "Hi",
+                            //       message: "Hello",
+                            //       url: "/connect-camp",
+                            //     },
+                            //   }),
+                            // });
                           }}
                         >
                           Download as App

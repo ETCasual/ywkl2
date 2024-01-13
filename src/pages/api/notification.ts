@@ -3,6 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
+// TODO: Add login auth and push subscription
+
 import type { NextApiRequest, NextApiResponse } from "next";
 import webPush from "web-push";
 
@@ -15,6 +17,7 @@ webPush.setVapidDetails(
 const Notification = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
     const { subscription, data } = req.body;
+
     console.log(JSON.stringify(subscription));
     webPush
       .sendNotification(subscription, JSON.stringify(data))
