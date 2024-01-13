@@ -68,7 +68,7 @@ export const Table = () => {
     <div className="max-h-[50vh] w-full overflow-x-hidden overflow-y-scroll rounded-lg bg-white/50">
       <table
         // style={{ background: "none" }}
-        className="table-xs table-pin-rows table w-full border-black"
+        className="table table-pin-rows table-xs w-full border-black"
       >
         <thead className="sticky top-0 z-10 bg-[white_!important] text-black">
           <tr className="text-black/60">
@@ -88,7 +88,7 @@ export const Table = () => {
                 </div>
               </td>
               <td>
-                <div className="text-xs font-bold text-neutral-800">
+                <div className="text-end text-xs font-bold text-neutral-800">
                   {item.position}
                 </div>
               </td>

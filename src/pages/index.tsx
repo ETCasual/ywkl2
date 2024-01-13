@@ -118,7 +118,7 @@ export default function Home() {
                 src="/assets/YW_Logo.png"
                 alt="YW Logo"
                 className="h-[40px] w-[40px] cursor-pointer object-cover"
-                onClick={() => setDrawer(true)}
+                // onClick={() => setDrawer(true)}
               />
             </div>
           </div>
