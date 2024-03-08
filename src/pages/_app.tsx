@@ -8,6 +8,7 @@ import { Firestore } from "@/components/Init";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ToastContainer } from "react-toastify";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -234,12 +235,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           href="/splash_screens/8.3__iPad_Mini_portrait.png"
         />
       </Head>
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <Firestore>
-          <Component {...pageProps} />
-          <ToastContainer position="bottom-center" />
-        </Firestore>
-      </FirebaseAppProvider>
+      <UserProvider>
+        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+          <Firestore>
+            <Component {...pageProps} />
+            <ToastContainer position="bottom-center" />
+          </Firestore>
+        </FirebaseAppProvider>
+      </UserProvider>
       <SpeedInsights />
       <Analytics />
     </>

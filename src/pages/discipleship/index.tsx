@@ -1,7 +1,20 @@
 import { Table } from "@/components/Display/general/Table";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const DiscipleshipIndexPage = () => {
+  const { user, isLoading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user) void router.push("/");
+  }, [isLoading, router, user]);
+
+  const [isZL, setIsZL] = useState(false);
+
   return (
     <>
       <Head>
@@ -16,7 +29,7 @@ const DiscipleshipIndexPage = () => {
         }}
         className={`relative flex min-h-screen flex-col items-center bg-cover bg-center px-5 py-12`}
       >
-        <h1 className="text-shadow-hard w-full pb-5 text-center font-made text-3xl font-bold uppercase text-[#e1f255] shadow-black">
+        <h1 className="w-full pb-5 text-center font-made text-3xl font-bold uppercase text-[#e1f255] shadow-black text-shadow-hard">
           Discipleship
         </h1>
         <Table />

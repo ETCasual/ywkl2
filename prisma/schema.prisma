@@ -11,16 +11,54 @@ datasource db {
 }
 
 model User {
-    id            String        @unique
-    Subscriptions Subscription?
+    id           String         @id @unique
+    display_name String?
+    email        String?
+    superuser    Boolean?       @default(false)
+    name         String?
+    rank         Rank?
+    created_at   DateTime?      @default(now())
+    updated_at   DateTime?      @default(now()) @updatedAt
+    Subscription Subscription[]
+    Cg           Cg?            @relation(fields: [cgId], references: [id])
+    cgId         String?
+    Cluster      Cluster?
 }
 
 model Subscription {
-    id         String  @unique @default(uuid()) @db.Uuid
-    endpoint   String
-    public_key String
-    auth_key   String
-    user       User    @relation(fields: [userId], references: [id])
-    userId     String  @unique
-    enabled    Boolean @default(true)
+    id         String    @id @unique @default(uuid())
+    created_at DateTime? @default(now())
+    updated_at DateTime? @default(now()) @updatedAt
+    endpoint   String?
+    public_key String?
+    auth_key   String?
+    enabled    Boolean?  @default(true)
+    on         User?     @relation(fields: [userId], references: [id])
+    userId     String?
+}
+
+model Cg {
+    id        String  @id @unique
+    leaderId  String
+    members   User[]
+    Cluster   Cluster @relation(fields: [clusterId], references: [id])
+    clusterId String
+}
+
+model Cluster {
+    id     String @id @unique
+    leader User   @relation(fields: [userId], references: [id])
+    cgs    Cg[]
+
+    userId String @unique
+}
+
+enum Rank {
+    NB
+    NF
+    OM
+    SGL
+    CGL
+    Coach
+    TL_Pastor
 }
