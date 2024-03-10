@@ -23,6 +23,7 @@ model User {
     Cg           Cg?            @relation(fields: [cgId], references: [id])
     cgId         String?
     Cluster      Cluster?
+    password     String?
 }
 
 model Subscription {

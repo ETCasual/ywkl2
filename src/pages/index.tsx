@@ -15,12 +15,12 @@ import { jsonData } from "@/data";
 import { useEffect, useState } from "react";
 import { Drawer } from "@/components/Drawer";
 import { env } from "@/env.mjs";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { LinkWrapper } from "@/components/Wrappers/Link";
 import { useRouter } from "next/router";
 import { Form, Formik } from "formik";
 import type { Rank } from "@prisma/client";
 import { Field } from "@/components/Display/general/Form/Field";
+import { useUser } from "@/stores/useUser";
 
 export type FormikProfileForm = {
   name: string;
@@ -37,28 +37,31 @@ export default function Home() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription>();
   const [registration, setRegistration] = useState<ServiceWorkerRegistration>();
-  const [hasUserRegistered, setHasUserRegistered] = useState(false);
-  const { user, isLoading } = useUser();
+  const { user, hasRegistered } = useUser();
   const router = useRouter();
 
   useEffect(() => {
-    const registered = async (id: string) => {
-      return await fetch(`/api/user?id=${id}`, {
-        method: "GET",
-      }).then(async (res) =>
-        res.json().then((jsoned: boolean) => {
-          setHasUserRegistered(jsoned);
-        }),
-      );
-    };
-    if (isLoading) return;
-    if (user) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      registered(String(user?.sub));
+    if (!user) void router.replace("/login");
+  }, [router, user]);
 
-      return;
-    } else void router.push("/api/auth/login");
-  }, [isLoading, router, user]);
+  // useEffect(() => {
+  //   const registered = async (id: string) => {
+  //     return await fetch(`/api/user?id=${id}`, {
+  //       method: "GET",
+  //     }).then(async (res) =>
+  //       res.json().then((jsoned: boolean) => {
+  //         setHasUserRegistered(jsoned);
+  //       }),
+  //     );
+  //   };
+  //   if (isLoading) return;
+  //   if (user) {
+  //     // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  //     registered(String(user?.sub));
+
+  //     return;
+  //   } else void router.push("/api/auth/login");
+  // }, [isLoading, router, user]);
 
   useEffect(() => {
     const readyNotifications = async () => {
@@ -95,7 +98,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!mounted) return;
-    if (user && !hasUserRegistered)
+    if (user)
       (
         document.getElementById("register-user") as HTMLDialogElement
       ).showModal();

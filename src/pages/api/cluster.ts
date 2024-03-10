@@ -173,10 +173,16 @@ const handler: NextApiHandler = async (req, res) => {
             rank: "CGL",
           },
           {
-            id: "christiemicda",
-            name: "Christie Micda",
-            email: "christiemicda@gmail.com",
+            id: "meijia",
+            name: "Law Mei Jia",
+            email: "meijia@gmail.com",
             rank: "CGL",
+          },
+          {
+            id: "howhan",
+            name: "Wong How Han",
+            email: "howhan@gmail.com",
+            rank: "Coach",
           },
           {
             id: "zhanhao",
@@ -202,7 +208,12 @@ const handler: NextApiHandler = async (req, res) => {
             email: "weiheng@gmail.com",
             rank: "CGL",
           },
-
+          {
+            id: "hernliang",
+            name: "Liew Hern Liang",
+            email: "hernliang@gmail.com",
+            rank: "Coach",
+          },
           {
             id: "annang",
             name: "Anna Ng Bee Keow",
@@ -243,6 +254,12 @@ const handler: NextApiHandler = async (req, res) => {
             id: "kayan",
             name: "Chai Ka Yan",
             email: "kayan@gmail.com",
+            rank: "Coach",
+          },
+          {
+            id: "josephchong",
+            name: "Joseph Chong Zuo Nian",
+            email: "josephchong@gmail.com",
             rank: "Coach",
           },
           {
