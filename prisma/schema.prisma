@@ -11,19 +11,22 @@ datasource db {
 }
 
 model User {
-    id           String         @id @unique
-    display_name String?
-    email        String?
-    superuser    Boolean?       @default(false)
-    name         String?
-    rank         Rank?
-    created_at   DateTime?      @default(now())
-    updated_at   DateTime?      @default(now()) @updatedAt
-    Subscription Subscription[]
-    Cg           Cg?            @relation(fields: [cgId], references: [id])
-    cgId         String?
-    Cluster      Cluster?
-    password     String?
+    id             String         @id @unique @default(uuid())
+    display_name   String?
+    email          String
+    superuser      Boolean?       @default(false)
+    name           String?
+    rank           Rank?
+    created_at     DateTime?      @default(now())
+    updated_at     DateTime?      @default(now()) @updatedAt
+    Subscription   Subscription[]
+    cgId           String?
+    Cluster        Cluster?
+    password       String?
+    CgToUserView   CgToUserView?  @relation(fields: [cgToUserViewId], references: [id])
+    cgToUserViewId String?
+    LeaderToCG     LeaderToCG?
+    as_cgm         CGMs?
 }
 
 model Subscription {
@@ -39,11 +42,13 @@ model Subscription {
 }
 
 model Cg {
-    id        String  @id @unique
-    leaderId  String
-    members   User[]
-    Cluster   Cluster @relation(fields: [clusterId], references: [id])
-    clusterId String
+    id             String        @id @unique
+    members        CGMs[]
+    Cluster        Cluster       @relation(fields: [clusterId], references: [id])
+    clusterId      String
+    CgToUserView   CgToUserView? @relation(fields: [cgToUserViewId], references: [id])
+    cgToUserViewId String?       @unique
+    LeaderToCG     LeaderToCG?
 }
 
 model Cluster {
@@ -62,4 +67,46 @@ enum Rank {
     CGL
     Coach
     TL_Pastor
+}
+
+model CgToUserView {
+    id          String @id @unique @default(uuid())
+    cg          Cg?
+    viewable_by User[]
+    cgId        String
+}
+
+model LeaderToCG {
+    id     String  @id @unique @default(uuid())
+    cg     Cg?     @relation(fields: [cgId], references: [id])
+    leader User?   @relation(fields: [userId], references: [id])
+    cgId   String? @unique
+    userId String? @unique
+}
+
+model Discipleship {
+    id             String    @id @unique @default(uuid())
+    person_to_meet CGMs      @relation(fields: [cGMsId], references: [id])
+    meet_by        String
+    created_at     DateTime? @default(now())
+    updated_at     DateTime? @default(now()) @updatedAt
+    cGMsId         String
+}
+
+model CGMs {
+    id            String             @id @unique @default(uuid())
+    Cg            Cg                 @relation(fields: [cgId], references: [id])
+    cgId          String
+    as            User?              @relation(fields: [userId], references: [id])
+    userId        String?            @unique
+    status        DiscipleshipStatus @default(Healthy)
+    discipleships Discipleship[]
+    rank          Rank
+    name          String
+}
+
+enum DiscipleshipStatus {
+    Alert
+    Warning
+    Healthy
 }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { db } from "@/server/db";
 import { type NextApiHandler } from "next";
@@ -8,20 +10,25 @@ const handler: NextApiHandler = async (req, res) => {
     const id = req.query.id as string;
 
     try {
-      const query = await db.user.findUnique({
-        select: {
-          id: true,
-        },
+      const user = await db.user.findUnique({
         where: {
           id: id,
         },
+        select: {
+          cgId: true,
+          cgToUserViewId: true,
+          created_at: true,
+          updated_at: true,
+          display_name: true,
+          name: true,
+          email: true,
+          id: true,
+          rank: true,
+          superuser: true,
+        },
       });
 
-      if (query?.id) {
-        return res.status(200).json(true);
-      } else {
-        return res.status(404).json(false);
-      }
+      return res.status(200).json(user);
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);
@@ -29,30 +36,31 @@ const handler: NextApiHandler = async (req, res) => {
       }
     }
   }
-
+  // Profile Register
   if (req.method === "POST") {
-    const { cg, name, email, id } = req.body as FormikProfileForm;
-    const { rank } = req.body as FormikProfileForm;
+    const { cg, displayName, id, name, rank } = JSON.parse(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      req.body,
+    ) as FormikProfileForm;
 
     try {
-      const create = await db.user.create({
-        select: {
-          name: true,
+      const user = await db.user.update({
+        where: {
+          id: id,
         },
         data: {
-          email: email,
-          rank: rank,
-          id: id,
-          name: name,
           Cg: {
             connect: {
               id: cg,
             },
           },
+          display_name: displayName,
+          name: name,
+          rank: rank,
         },
       });
 
-      return res.status(200).json(create);
+      return res.status(200).json(user);
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);

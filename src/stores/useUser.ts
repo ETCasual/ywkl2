@@ -1,29 +1,45 @@
 import { type User } from "@prisma/client";
-import { bool } from "aws-sdk/clients/signer";
 import { create, type StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
 
 type UserState = {
-  user: User | null;
+  user: Omit<User, "password"> | null;
   hasRegistered: boolean;
   clear: () => void;
-  setUser: (user: User) => void;
+  setUser: (user: Omit<User, "password">) => Promise<void>;
   setRegistrationStatus: (state: boolean) => void;
+  reloadUser: () => Promise<void>;
 };
 
-const createState: StateCreator<UserState> = (set) => ({
+const createState: StateCreator<UserState> = (set, get) => ({
   user: null,
   hasRegistered: false,
   clear: () =>
     set({
       user: null,
+      hasRegistered: false,
     }),
-  setUser: (state) => {
-    set({ user: { ...state } });
+  setUser: async (state) => {
+    await new Promise<void>((resolve) => {
+      set({ user: { ...state } });
+      resolve();
+    });
   },
 
   setRegistrationStatus: (state) => {
     set({ hasRegistered: state });
+  },
+  reloadUser: async () => {
+    if (!get().user) return;
+    const res = await fetch(`/api/profile?id=${get().user?.id}`, {
+      method: "GET",
+    });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const response: User = await res.json();
+
+    set({
+      user: response,
+    });
   },
 });
 

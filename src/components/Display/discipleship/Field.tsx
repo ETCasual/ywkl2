@@ -8,7 +8,7 @@ interface FieldProps<T> {
   options?: string[];
 }
 
-export const Field = <T,>({
+export const DiscipleshipField = <T,>({
   label,
   formikKey,
   disabled,
@@ -18,24 +18,29 @@ export const Field = <T,>({
   const { errors } = useFormikContext<T>();
   return (
     <div className="flex w-full flex-col">
-      <div className="flex w-full flex-col gap-2">
-        <div className="min-w-[130px]">
+      <div className="flex w-full flex-row items-center gap-2 rounded-lg bg-[#45c178]">
+        {/* <div className="min-w-[130px]">
           <label
-            className="pl-2 font-made text-base font-semibold"
+            className="pl-2 font-sans font-bold"
             htmlFor={String(formikKey)}
           >
             {label}
           </label>
-        </div>
+        </div> */}
 
         <FormikField
           as={as ?? "input"}
           id={formikKey}
           name={String(formikKey)}
           disabled={disabled}
-          className={`w-full rounded-md px-2 outline-none${as === "select" ? " select select-bordered select-secondary select-sm" : " input input-bordered input-secondary input-sm"}`}
+          placeholder={label ?? formikKey}
+          className={`w-full rounded-md border-none bg-transparent px-2 outline-none${as === "select" ? " select select-secondary select-sm" : " input input-secondary input-sm placeholder:italic placeholder:text-white/70"}`}
         >
-          {options?.map((s, i) => <option key={i}>{s}</option>)}
+          {options?.map((s, i) => (
+            <option className="text-black" key={i}>
+              {s}
+            </option>
+          ))}
         </FormikField>
       </div>
 

@@ -237,7 +237,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         <Firestore>
           <Component {...pageProps} />
-          <ToastContainer position="bottom-center" />
+          <ToastContainer position="bottom-center" stacked hideProgressBar />
         </Firestore>
       </FirebaseAppProvider>
       <SpeedInsights />

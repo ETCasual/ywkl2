@@ -4,54 +4,41 @@
 import { db } from "@/server/db";
 import { type NextApiHandler } from "next";
 import * as bc from "bcrypt";
-import { type FormikLoginForm } from "../login";
+import { type FormikRegisterForm } from "../register";
 
 const handler: NextApiHandler = async (req, res) => {
-  if (req.method === "GET") {
-    const id = req.query.id as string;
-
-    try {
-      const query = await db.user.findUnique({
-        select: {
-          id: true,
-        },
-        where: {
-          id: id,
-        },
-      });
-
-      if (query?.id) {
-        return res.status(200).json(true);
-      } else {
-        return res.status(404).json(false);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err);
-        return res.status(500).json(err);
-      }
-    }
-  }
-  // Login
+  // Register
   if (req.method === "POST") {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const { email, password } = JSON.parse(req.body) as FormikLoginForm;
+    const { email, password } = JSON.parse(req.body) as FormikRegisterForm;
+
+    const encryptedPass = await bc.hash(
+      password,
+      Number(process.env.SALT_ROUNDS),
+    );
 
     try {
       const user = await db.user.findFirst({
         where: {
-          email: email,
+          email: {
+            equals: String(email),
+          },
         },
-        select: { password: true, id: true },
       });
+      if (!user) {
+        const create = await db.user.create({
+          data: { email: email, password: encryptedPass },
+        });
 
-   
-      const match = user ? await bc.compare(password, user.password!) : false;
-
-      if (match) {
-        const result = await db.user.findFirst({
+        return res.status(200).json(create);
+      }
+      if (!user?.password) {
+        const assignPasswordUser = await db.user.update({
           where: {
             id: user?.id,
+          },
+          data: {
+            password: encryptedPass,
           },
           select: {
             cgId: true,
@@ -66,10 +53,11 @@ const handler: NextApiHandler = async (req, res) => {
             superuser: true,
           },
         });
-        return res.status(200).json(result);
-      } else if (!user) {
-        return res.status(404).json("No User Found.");
-      } else return res.status(403).json("Forbidden. Invalid Credentials.");
+        return res.status(200).json(assignPasswordUser);
+      }
+      if (user?.password) return res.status(302).json("User Exists.");
+
+      return res.status(500).json("An Unexpected Error Occurred.");
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);

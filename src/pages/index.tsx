@@ -5,6 +5,7 @@ import Head from "next/head";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
+import { Rings } from "react-loader-spinner";
 
 // Import Swiper styles
 import "swiper/css";
@@ -21,6 +22,8 @@ import { Form, Formik } from "formik";
 import type { Rank } from "@prisma/client";
 import { Field } from "@/components/Display/general/Form/Field";
 import { useUser } from "@/stores/useUser";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 
 export type FormikProfileForm = {
   name: string;
@@ -28,7 +31,10 @@ export type FormikProfileForm = {
   rank: Rank;
   email: string;
   id: string;
+  displayName: string;
 };
+
+type CGData = { id: string; LeaderToCG: { leader: { name: string } } };
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -37,12 +43,22 @@ export default function Home() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription>();
   const [registration, setRegistration] = useState<ServiceWorkerRegistration>();
-  const { user, hasRegistered } = useUser();
+  const [cgs, setCgs] = useState<CGData[]>([]);
+  const { user, hasRegistered, setRegistrationStatus, reloadUser } = useUser();
   const router = useRouter();
 
   useEffect(() => {
     if (!user) void router.replace("/login");
   }, [router, user]);
+
+  useEffect(() => {
+    if (cgs.length > 0) return;
+    void (async () => {
+      await fetch("/api/cg", { method: "GET" }).then((s) =>
+        s.json().then((res: CGData[]) => setCgs(res)),
+      );
+    })();
+  }, [cgs.length]);
 
   // useEffect(() => {
   //   const registered = async (id: string) => {
@@ -91,20 +107,36 @@ export default function Home() {
       void readyNotifications();
     }
   }, []);
-
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
+    document.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (!mounted) return;
+      if (e.key !== "Escape") return;
+      e.preventDefault();
+    });
+
+    return () => {
+      document.removeEventListener("keydown", (e: KeyboardEvent) => {
+        if (!mounted) return;
+        if (e.key !== "Escape") return;
+        e.preventDefault();
+      });
+    };
+  }, [mounted]);
+  useEffect(() => {
     if (!mounted) return;
-    if (user)
+    if (!user) return;
+
+    if (!hasRegistered)
       (
         document.getElementById("register-user") as HTMLDialogElement
       ).showModal();
-    if (user && hasUserRegistered)
+    if (hasRegistered)
       (document.getElementById("register-user") as HTMLDialogElement).close();
-  }, [hasUserRegistered, user, mounted]);
+  }, [hasRegistered, user, mounted]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -136,72 +168,133 @@ export default function Home() {
             id="register-user"
             className="modal focus-within:outline-none focus-visible:outline-none"
           >
-            <div className="modal-box border-4 border-green-500">
-              <h1 className="font-made text-xl text-green-500 underline underline-offset-4">
-                Register Your Profile!
-              </h1>
-              <Formik<FormikProfileForm>
-                initialValues={{
-                  cg: "",
-                  email: String(user?.email),
-                  id: String(user?.sub),
-                  name: "",
-                  rank: "OM",
-                }}
-                onSubmit={(values, action) => {
-                  console.log(values);
-                  alert(values);
-                  action.setSubmitting(false);
-                }}
-              >
-                {({ isSubmitting }) => (
-                  <Form className="flex flex-col gap-3 pt-3">
-                    <Field<FormikProfileForm>
-                      disabled={isSubmitting}
-                      formikKey="name"
-                      label="Name"
-                    />
-                    <Field<FormikProfileForm>
-                      disabled={isSubmitting}
-                      formikKey="cg"
-                      label="CG"
-                      as="select"
-                      options={["CYC 16S"]}
-                    />
-                    <Field<FormikProfileForm>
-                      disabled={isSubmitting}
-                      formikKey="rank"
-                      label="Status"
-                      as="select"
-                      options={[
-                        "NF",
-                        "NB",
-                        "OM",
-                        "SGL",
-                        "CGL",
-                        "Coach",
-                        "TL/Pastor",
-                      ]}
-                    />
-                    <div className="h-2 w-full" />
-                    <button
-                      className="btn btn-primary btn-md"
-                      type="button"
-                      onClick={async () => {
-                        await fetch("/api/cluster", {
-                          method: "POST",
-                        }).then(
-                          async (res) =>
-                            await res.json().then((z) => console.log(z)),
-                        );
-                      }}
-                    >
-                      Save
-                    </button>
-                  </Form>
-                )}
-              </Formik>
-            </div>
+            {cgs.length > 0 ? (
+              <div className="modal-box">
+                <h1 className="font-made text-xl tracking-tight text-primary underline underline-offset-4">
+                  Register Your Profile!
+                </h1>
+                <Formik<FormikProfileForm>
+                  initialValues={{
+                    displayName: user?.display_name ?? "",
+                    cg: `${cgs[0]?.id} - ${cgs[0]?.LeaderToCG.leader.name}`,
+                    email: user?.email,
+                    id: user?.id,
+                    name: user?.name ?? "",
+                    rank: user?.rank ?? "OM",
+                  }}
+                  validationSchema={Yup.object().shape({
+                    displayName: Yup.string(),
+                    name: Yup.string().required("Required."),
+                    email: Yup.string()
+                      .email("Invalid Format.")
+                      .required("Required."),
+                  })}
+                  onSubmit={async (values, action) => {
+                    const tst = toast.loading("Updating Profile");
+                    const cg = values.cg.split(" - ")[0];
+                    const rank = values.rank.replace("/", "_");
+                    const res = await fetch("/api/profile", {
+                      method: "POST",
+                      body: JSON.stringify({ ...values, rank: rank, cg: cg }),
+                    });
+                    if (res.ok) {
+                      setRegistrationStatus(true);
+                      await reloadUser();
+                      (
+                        document.getElementById(
+                          "register-user",
+                        ) as HTMLDialogElement
+                      ).close();
+                      toast.update(tst, {
+                        autoClose: 2000,
+                        isLoading: false,
+                        type: "success",
+                        render: () => "Profile Updated!",
+                      });
+                    }
+
+                    if (!res.ok) {
+                      toast.update(tst, {
+                        isLoading: false,
+                        type: "error",
+                        autoClose: 1500,
+                        render: () => "Something Unexpected Happened..",
+                      });
+                    }
+
+                    action.setSubmitting(false);
+                  }}
+                >
+                  {({ isSubmitting }) => (
+                    <Form className="flex w-full flex-col gap-3 pt-3">
+                      <Field<FormikProfileForm>
+                        disabled={isSubmitting}
+                        formikKey="email"
+                        label="Confirm Your Email"
+                      />
+                      <div className="flex w-full flex-col items-center gap-3 md:flex-row">
+                        <Field<FormikProfileForm>
+                          disabled={isSubmitting}
+                          formikKey="name"
+                          label="Full Name"
+                        />
+                        <Field<FormikProfileForm>
+                          disabled={isSubmitting}
+                          formikKey="displayName"
+                          label="Nickname"
+                        />
+                      </div>
+                      <div className="flex w-full flex-col items-center gap-3 md:flex-row">
+                        <Field<FormikProfileForm>
+                          disabled={isSubmitting}
+                          formikKey="cg"
+                          label="CG"
+                          as="select"
+                          options={cgs.map(
+                            (cgd) =>
+                              `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
+                          )}
+                        />
+                        <Field<FormikProfileForm>
+                          disabled={isSubmitting}
+                          formikKey="rank"
+                          label="Status"
+                          as="select"
+                          options={[
+                            "NF",
+                            "NB",
+                            "OM",
+                            "SGL",
+                            "CGL",
+                            "Coach",
+                            "TL/Pastor",
+                          ]}
+                        />
+                      </div>
+                      <div className="h-1 w-full" />
+                      <button
+                        className="btn btn-primary btn-md !h-[unset] !min-h-[unset] py-3"
+                        type="submit"
+                      >
+                        Save
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            ) : (
+              <div className="modal-box flex flex-row items-center justify-center">
+                <Rings
+                  visible={true}
+                  height="200"
+                  width="200"
+                  color="purple"
+                  ariaLabel="rings-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              </div>
+            )}
           </dialog>
           <Drawer
             open={drawer}
@@ -233,16 +326,14 @@ export default function Home() {
                   >
                     <p className="text-[#191919]">Options</p>
                     <img
-                      src={
-                        user?.picture ? user?.picture : "/assets/YW_Logo.png"
-                      }
+                      src={"/assets/YW_Logo.png"}
                       alt="YW Logo"
                       className="h-[30px] w-[30px] rounded-full object-cover shadow-md"
                     />
                   </button>
                 ) : (
                   <img
-                    src={user?.picture ? user?.picture : "/assets/YW_Logo.png"}
+                    src={"/assets/YW_Logo.png"}
                     alt="YW Logo"
                     className="h-[30px] w-[30px] rounded-full object-cover shadow-md"
                     // onClick={() => setDrawer(true)}
@@ -274,6 +365,7 @@ export default function Home() {
                 <MoreCard />
               </SwiperSlide>
             </Swiper>
+
             {env.NEXT_PUBLIC_IS_STAGING === "1" && (
               <div className="w-full px-4 pt-4">
                 <LinkWrapper
