@@ -14,6 +14,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { base64ToUint8Array } from "@/utils/helpers";
 import { env } from "@/env.mjs";
 import { toast } from "react-toastify";
+import { useUser } from "@/stores/useUser";
 
 interface DrawerProps {
   open: boolean;
@@ -42,6 +43,8 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
   const [enabled, setEnabled] = useState(
     localStorage.getItem("ywkl-allow-notification") === "true",
   );
+
+  const { clear } = useUser();
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -101,107 +104,120 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                         Options
                       </Dialog.Title>
                     </div>
-                    <div className="relative flex h-full flex-col gap-5 pt-6">
-                      <div
-                        className="flex cursor-pointer flex-row items-center justify-between"
-                        onClick={async (event) => {
-                          if (!enabled) {
-                            await Notification.requestPermission().then(
-                              async (res) => {
-                                if (res === "granted") {
-                                  event.preventDefault();
-                                  const sub =
-                                    await registration?.pushManager.subscribe({
-                                      userVisibleOnly: true,
-                                      applicationServerKey: base64ToUint8Array(
-                                        env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
-                                      ),
+                    <div className="relative flex h-full flex-col justify-between pt-6">
+                      <div className="relative flex flex-col gap-5">
+                        <div
+                          className="flex cursor-pointer flex-row items-center justify-between"
+                          onClick={async (event) => {
+                            if (!enabled) {
+                              await Notification.requestPermission().then(
+                                async (res) => {
+                                  if (res === "granted") {
+                                    event.preventDefault();
+                                    const sub =
+                                      await registration?.pushManager.subscribe(
+                                        {
+                                          userVisibleOnly: true,
+                                          applicationServerKey:
+                                            base64ToUint8Array(
+                                              env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
+                                            ),
+                                        },
+                                      );
+                                    setSubscription(sub);
+                                    setIsSubscribed(true);
+                                    toast("Subscribed to notifications!", {
+                                      autoClose: 2000,
+                                      theme: "colored",
+                                      type: "success",
                                     });
-                                  setSubscription(sub);
-                                  setIsSubscribed(true);
-                                  toast("Subscribed to notifications!", {
-                                    autoClose: 2000,
-                                    theme: "colored",
-                                    type: "success",
-                                  });
-                                  console.log("web push subscribed!", sub);
+                                    console.log("web push subscribed!", sub);
 
-                                  localStorage.setItem(
-                                    "ywkl-allow-notification",
-                                    "true",
-                                  );
-                                  setEnabled(true);
-                                } else {
-                                  localStorage.setItem(
-                                    "ywkl-allow-notification",
-                                    "false",
-                                  );
-                                  setEnabled(false);
-                                }
-                              },
-                            );
-                          } else {
-                            if (enabled) {
-                              localStorage.setItem(
-                                "ywkl-allow-notification",
-                                "false",
+                                    localStorage.setItem(
+                                      "ywkl-allow-notification",
+                                      "true",
+                                    );
+                                    setEnabled(true);
+                                  } else {
+                                    localStorage.setItem(
+                                      "ywkl-allow-notification",
+                                      "false",
+                                    );
+                                    setEnabled(false);
+                                  }
+                                },
                               );
-                              setEnabled(false);
+                            } else {
+                              if (enabled) {
+                                localStorage.setItem(
+                                  "ywkl-allow-notification",
+                                  "false",
+                                );
+                                setEnabled(false);
+                              }
                             }
-                          }
-                        }}
-                      >
-                        <p className="font-bold text-white">
-                          Allow Notifications
-                        </p>
-                        <Switch
-                          checked={enabled}
-                          className={`${
-                            enabled ? "bg-[#44ae32]" : "bg-gray-400"
-                          }
-          relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
+                          }}
                         >
-                          <span className="sr-only">Use setting</span>
-                          <span
-                            aria-hidden="true"
+                          <p className="font-bold text-white">
+                            Allow Notifications
+                          </p>
+                          <Switch
+                            checked={enabled}
                             className={`${
-                              enabled ? "translate-x-5" : "translate-x-0"
+                              enabled ? "bg-[#44ae32]" : "bg-gray-400"
                             }
+          relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
+                          >
+                            <span className="sr-only">Use setting</span>
+                            <span
+                              aria-hidden="true"
+                              className={`${
+                                enabled ? "translate-x-5" : "translate-x-0"
+                              }
             pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                          />
-                        </Switch>
-                      </div>
-                      {installPrompt && (
-                        <button
-                          style={{
-                            boxShadow: "#8bda02 0 0 10px 1px",
-                          }}
-                          className="w-full rounded-md bg-[#8bda02] bg-opacity-100 px-5 py-2 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
-                          onClick={async () => {
-                            //@ts-ignore
-                            const res = await installPrompt.prompt();
-                            if (res.outcome !== "dismissed")
-                              setInstallPrompt(undefined);
+                            />
+                          </Switch>
+                        </div>
+                        {installPrompt && (
+                          <button
+                            style={{
+                              boxShadow: "#8bda02 0 0 10px 1px",
+                            }}
+                            className="w-full rounded-md bg-[#8bda02] bg-opacity-100 px-5 py-2 font-sans font-bold transition hover:bg-opacity-70 hover:shadow-none"
+                            onClick={async () => {
+                              //@ts-ignore
+                              const res = await installPrompt.prompt();
+                              if (res.outcome !== "dismissed")
+                                setInstallPrompt(undefined);
 
-                            // await fetch("/api/notification", {
-                            //   method: "POST",
-                            //   headers: {
-                            //     "Content-Type": "application/json",
-                            //   },
-                            //   body: JSON.stringify({
-                            //     subscription: subscription,
-                            //     data: {
-                            //       title: "Hi",
-                            //       message: "Hello",
-                            //       url: "/connect-camp",
-                            //     },
-                            //   }),
-                            // });
-                          }}
-                        >
-                          Download as App
-                        </button>
-                      )}
+                              // await fetch("/api/notification", {
+                              //   method: "POST",
+                              //   headers: {
+                              //     "Content-Type": "application/json",
+                              //   },
+                              //   body: JSON.stringify({
+                              //     subscription: subscription,
+                              //     data: {
+                              //       title: "Hi",
+                              //       message: "Hello",
+                              //       url: "/connect-camp",
+                              //     },
+                              //   }),
+                              // });
+                            }}
+                          >
+                            Download as App
+                          </button>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => {
+                          clear();
+                        }}
+                        className="w-full rounded-md border-2 border-[#8bda02] px-5 py-2 text-center font-sans font-bold transition hover:border-[1px]"
+                      >
+                        Log Out
+                      </button>
                     </div>
                   </div>
                 </Dialog.Panel>

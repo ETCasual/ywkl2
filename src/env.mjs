@@ -62,6 +62,7 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
     NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY:
       process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
+
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
