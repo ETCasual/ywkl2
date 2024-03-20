@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { MessageCard } from "@/components/Cards/Message";
-import { RegistrationForm } from "@/components/Forms/Registration";
+import { RegistrationForm } from "@/components/Display/connect-camp/Forms/Registration";
 import { PostModal } from "@/components/Modals/Post";
 import { jsonData } from "@/data";
 import { collection, doc } from "firebase/firestore";
@@ -128,8 +128,8 @@ const EventPage = () => {
                 registrationStatus === "ended"
                   ? ""
                   : registrationStatus === "loading"
-                  ? "flex-grow "
-                  : ""
+                    ? "flex-grow "
+                    : ""
               }relative mt-3 flex max-h-[65vh] w-full max-w-[500px] flex-col overflow-y-scroll border-x-4 border-b-[20px] border-t-4 border-solid border-black bg-white md:mt-5 lg:mt-10`}
             >
               {registrationStatus === "loading" || status === "loading" ? (
