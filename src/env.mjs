@@ -37,7 +37,7 @@ export const env = createEnv({
     NEXT_PUBLIC_AWS_REGION: z.string(),
     NEXT_PUBLIC_AWS_ACCESS_KEY: z.string(),
     NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY: z.string(),
-    // NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY: z.string(),
+    NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY: z.string(),
   },
 
   /**
@@ -60,8 +60,8 @@ export const env = createEnv({
     NEXT_PUBLIC_AWS_S3_BUCKET: process.env.NEXT_PUBLIC_AWS_S3_BUCKET,
     NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY:
       process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-    // NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY:
-    //   process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
+    NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY:
+      process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
 
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

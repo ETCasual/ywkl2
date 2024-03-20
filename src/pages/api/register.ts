@@ -41,7 +41,11 @@ const handler: NextApiHandler = async (req, res) => {
             password: encryptedPass,
           },
           select: {
-            cgId: true,
+            as_cgm: {
+              select: {
+                cgId: true,
+              },
+            },
             cgToUserViewId: true,
             created_at: true,
             updated_at: true,

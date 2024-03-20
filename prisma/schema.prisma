@@ -11,22 +11,22 @@ datasource db {
 }
 
 model User {
-    id             String         @id @unique @default(uuid())
-    display_name   String?
-    email          String
-    superuser      Boolean?       @default(false)
-    name           String?
-    rank           Rank?
-    created_at     DateTime?      @default(now())
-    updated_at     DateTime?      @default(now()) @updatedAt
-    Subscription   Subscription[]
-    cgId           String?
-    Cluster        Cluster?
-    password       String?
-    CgToUserView   CgToUserView?  @relation(fields: [cgToUserViewId], references: [id])
-    cgToUserViewId String?
-    LeaderToCG     LeaderToCG?
-    as_cgm         CGMs?
+    id              String         @id @unique @default(uuid())
+    display_name    String?
+    email           String
+    superuser       Boolean?       @default(false)
+    name            String?
+    rank            Rank?
+    created_at      DateTime?      @default(now())
+    updated_at      DateTime?      @default(now()) @updatedAt
+    Subscription    Subscription[]
+    leaderToCluster Cluster?
+    password        String?
+    CgToUserView    CgToUserView?  @relation(fields: [cgToUserViewId], references: [id])
+    cgToUserViewId  String?
+    LeaderToCG      LeaderToCG?
+    as_cgm          CGMs?
+    Discipleship    Discipleship[]
 }
 
 model Subscription {
@@ -85,12 +85,15 @@ model LeaderToCG {
 }
 
 model Discipleship {
-    id             String    @id @unique @default(uuid())
-    person_to_meet CGMs      @relation(fields: [cGMsId], references: [id])
-    meet_by        String
-    created_at     DateTime? @default(now())
-    updated_at     DateTime? @default(now()) @updatedAt
-    cGMsId         String
+    id              String             @id @unique @default(uuid())
+    person_to_meet  CGMs               @relation(fields: [cGMsId], references: [id])
+    meet_by         User               @relation(fields: [userId], references: [id])
+    created_at      DateTime?          @default(now())
+    updated_at      DateTime?          @default(now()) @updatedAt
+    cGMsId          String
+    note            String
+    userId          String
+    assigned_status DiscipleshipStatus @default(Healthy)
 }
 
 model CGMs {

@@ -45,7 +45,6 @@ const handler: NextApiHandler = async (req, res) => {
         select: { password: true, id: true },
       });
 
-   
       const match = user ? await bc.compare(password, user.password!) : false;
 
       if (match) {
@@ -54,7 +53,11 @@ const handler: NextApiHandler = async (req, res) => {
             id: user?.id,
           },
           select: {
-            cgId: true,
+            as_cgm: {
+              select: {
+                cgId: true,
+              },
+            },
             cgToUserViewId: true,
             created_at: true,
             updated_at: true,

@@ -14,7 +14,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { base64ToUint8Array } from "@/utils/helpers";
 import { env } from "@/env.mjs";
 import { toast } from "react-toastify";
-import { LinkWrapper } from "../Wrappers/Link";
+import { useUser } from "@/stores/useUser";
 
 interface DrawerProps {
   open: boolean;
@@ -43,6 +43,8 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
   const [enabled, setEnabled] = useState(
     localStorage.getItem("ywkl-allow-notification") === "true",
   );
+
+  const { clear } = useUser();
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -208,12 +210,14 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                           </button>
                         )}
                       </div>
-                      <LinkWrapper
-                        href="/api/auth/logout"
+                      <button
+                        onClick={() => {
+                          clear();
+                        }}
                         className="w-full rounded-md border-2 border-[#8bda02] px-5 py-2 text-center font-sans font-bold transition hover:border-[1px]"
                       >
                         Log Out
-                      </LinkWrapper>
+                      </button>
                     </div>
                   </div>
                 </Dialog.Panel>

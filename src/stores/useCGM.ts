@@ -8,7 +8,7 @@ type CGMState = {
   clear: () => void;
   setCGMs: (cgm: CGMState["cgm"]) => Promise<void>;
   setCG: (cg: string) => Promise<void>;
-  reloadCG: () => Promise<void>;
+  reloadCG: (superuser?: boolean | null) => Promise<void>;
 };
 
 const createState: StateCreator<CGMState> = (set, get) => ({
@@ -32,9 +32,10 @@ const createState: StateCreator<CGMState> = (set, get) => ({
     });
   },
 
-  reloadCG: async () => {
+  reloadCG: async (superuser) => {
     if (!(get().cgm.length > 0)) return;
-    const res = await fetch(`/api/cgm?cg=${get().cg}`, {
+
+    const res = await fetch(`/api/cgm?cgId=${superuser ? "all" : get().cg}`, {
       method: "GET",
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

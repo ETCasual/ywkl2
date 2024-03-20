@@ -1,5 +1,8 @@
 import { DiscipleshipField } from "@/components/Display/discipleship/Field";
-import { DispicleshipDataDialog } from "@/components/Display/discipleship/dialog";
+import {
+  DispicleshipDataDialog,
+  SubmitDiscipleshipDialog,
+} from "@/components/Display/discipleship/dialog";
 // import { Field } from "@/components/Display/general/Form/Field";
 import { Table } from "@/components/Display/general/Table";
 import { useCGM } from "@/stores/useCGM";
@@ -11,6 +14,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import { IoChevronBackCircleSharp } from "react-icons/io5";
 
 export type AddCGMForm = {
   name: string;
@@ -55,16 +59,19 @@ const DiscipleshipIndexPage = () => {
       user.rank === "OM" ||
       user.rank === "NB" ||
       user.rank === "NF" ||
-      !user.cgId
+      !user.as_cgm?.cgId
     ) {
       void router.replace("/");
       return;
     }
 
     void (async () =>
-      await fetch(`/api/cgm?cgId=${user.superuser ? "all" : user.cgId}`, {
-        method: "GET",
-      }).then(
+      await fetch(
+        `/api/cgm?cgId=${user.superuser ? "all" : user.as_cgm?.cgId}`,
+        {
+          method: "GET",
+        },
+      ).then(
         async (res) =>
           await res.json().then((response: CGMs[]) => {
             void setCGMs(response);
@@ -86,6 +93,12 @@ const DiscipleshipIndexPage = () => {
         }}
         className={`relative flex min-h-screen flex-col items-center bg-cover bg-center px-5 py-12`}
       >
+        <IoChevronBackCircleSharp
+          onClick={() => router.push("/")}
+          className="absolute left-3 top-5 text-[#45c178]"
+          size={35}
+        />
+
         <dialog
           id="add-cgm"
           className="modal focus-within:outline-none focus-visible:outline-none"
@@ -105,7 +118,7 @@ const DiscipleshipIndexPage = () => {
                 discipleshipStatus: "Healthy",
                 name: "",
                 rank: "OM",
-                cg: user?.cgId ?? "",
+                cg: user?.as_cgm?.cgId ?? "",
               }}
               onSubmit={async (values, action) => {
                 console.log(values);
@@ -113,10 +126,11 @@ const DiscipleshipIndexPage = () => {
                 if (!values.cg) console.log("Invalid CG");
 
                 const tst = toast.loading("Updating Profile");
+                const rank = values.rank.replace("/", "_");
 
                 const res = await fetch("/api/cgm", {
                   method: "POST",
-                  body: JSON.stringify(values),
+                  body: JSON.stringify({ ...values, rank: rank }),
                 });
 
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -129,7 +143,7 @@ const DiscipleshipIndexPage = () => {
                     type: "success",
                     render: () => `CGM ${response.name} added!`,
                   });
-                  await reloadCG().then(() =>
+                  await reloadCG(user?.superuser).then(() =>
                     (
                       document.getElementById("add-cgm") as HTMLDialogElement
                     ).close(),
@@ -164,13 +178,13 @@ const DiscipleshipIndexPage = () => {
                     formikKey={"rank"}
                     as="select"
                     options={[
-                      "NF",
-                      "NB",
-                      "OM",
-                      "SGL",
-                      "CGL",
-                      "Coach",
-                      "TL/Pastor",
+                      { value: "NF", label: "NF" },
+                      { value: "NB", label: "NB" },
+                      { value: "OM", label: "OM" },
+                      { value: "SGL", label: "SGL" },
+                      { value: "CGL", label: "CGL" },
+                      { value: "Coach", label: "Coach" },
+                      { value: "TL/Pastor", label: "TL/Pastor" },
                     ]}
                   />
                   <DiscipleshipField<AddCGMForm>
@@ -178,7 +192,11 @@ const DiscipleshipIndexPage = () => {
                     label={"Discipleship Status"}
                     formikKey={"discipleshipStatus"}
                     as="select"
-                    options={["Healthy", "Warning", "Alert"]}
+                    options={[
+                      { label: "Healthy", value: "Healthy" },
+                      { label: "Alert", value: "Healthy" },
+                      { label: "Warning", value: "Warning" },
+                    ]}
                   />
                   <button
                     type="submit"
@@ -192,10 +210,11 @@ const DiscipleshipIndexPage = () => {
           </div>
         </dialog>
         <DispicleshipDataDialog cgmId={cgmId} />
+        <SubmitDiscipleshipDialog />
         <h1 className="w-full pb-5 text-center font-made text-3xl font-bold uppercase text-[#e1f255] shadow-black text-shadow-hard">
           Discipleship
         </h1>
-        <Table cgId={String(user?.cgId)} setCGMId={setCGMId} />
+        <Table cgId={String(user?.as_cgm?.cgId)} setCGMId={setCGMId} />
         <div className="flex w-full flex-col items-center gap-2 pt-5">
           <button
             onClick={() => {
@@ -207,7 +226,16 @@ const DiscipleshipIndexPage = () => {
           >
             Add NB / NF / OM
           </button>
-          <button className="flex w-full items-center justify-center rounded-xl bg-[#45c178] px-1 py-2 font-made text-lg text-white">
+          <button
+            onClick={() => {
+              (
+                document.getElementById(
+                  "submit-discipleship",
+                ) as HTMLDialogElement
+              ).showModal();
+            }}
+            className="flex w-full items-center justify-center rounded-xl bg-[#45c178] px-1 py-2 font-made text-lg text-white"
+          >
             Discipleship
           </button>
         </div>

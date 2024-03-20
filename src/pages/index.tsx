@@ -250,10 +250,12 @@ export default function Home() {
                           formikKey="cg"
                           label="CG"
                           as="select"
-                          options={cgs.map(
-                            (cgd) =>
-                              `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
-                          )}
+                          options={cgs.map((cgd) => {
+                            return {
+                              label: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
+                              value: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
+                            };
+                          })}
                         />
                         <Field<FormikProfileForm>
                           disabled={isSubmitting}
@@ -261,13 +263,13 @@ export default function Home() {
                           label="Status"
                           as="select"
                           options={[
-                            "NF",
-                            "NB",
-                            "OM",
-                            "SGL",
-                            "CGL",
-                            "Coach",
-                            "TL/Pastor",
+                            { value: "NF", label: "NF" },
+                            { value: "NB", label: "NB" },
+                            { value: "OM", label: "OM" },
+                            { value: "SGL", label: "SGL" },
+                            { value: "CGL", label: "CGL" },
+                            { value: "Coach", label: "Coach" },
+                            { value: "TL/Pastor", label: "TL/Pastor" },
                           ]}
                         />
                       </div>
@@ -366,7 +368,10 @@ export default function Home() {
               </SwiperSlide>
             </Swiper>
 
-            {env.NEXT_PUBLIC_IS_STAGING === "1" && (
+            {(env.NEXT_PUBLIC_IS_STAGING === "1" ||
+              user.rank === "CGL" ||
+              user.rank === "Coach" ||
+              user.rank === "TL_Pastor") && (
               <div className="w-full px-4 pt-4">
                 <LinkWrapper
                   href="/discipleship"

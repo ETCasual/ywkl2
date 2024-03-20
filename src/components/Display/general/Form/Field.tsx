@@ -5,7 +5,7 @@ interface FieldProps<T> {
   formikKey: keyof T;
   disabled: boolean;
   as?: string;
-  options?: string[];
+  options?: { label: string; value: string }[];
 }
 
 export const Field = <T,>({
@@ -35,7 +35,11 @@ export const Field = <T,>({
           disabled={disabled}
           className={`w-full rounded-md px-2 outline-none${as === "select" ? " select select-bordered select-secondary select-sm" : " input input-bordered input-secondary input-sm"}`}
         >
-          {options?.map((s, i) => <option key={i}>{s}</option>)}
+          {options?.map((s, i) => (
+            <option key={i} value={s.value ?? s.label}>
+              {s.label}
+            </option>
+          ))}
         </FormikField>
       </div>
 

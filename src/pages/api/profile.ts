@@ -15,7 +15,11 @@ const handler: NextApiHandler = async (req, res) => {
           id: id,
         },
         select: {
-          cgId: true,
+          as_cgm: {
+            select: {
+              cgId: true,
+            },
+          },
           cgToUserViewId: true,
           created_at: true,
           updated_at: true,
@@ -49,9 +53,20 @@ const handler: NextApiHandler = async (req, res) => {
           id: id,
         },
         data: {
-          Cg: {
-            connect: {
-              id: cg,
+          // Cg: {
+          //   connect: {
+          //     id: cg,
+          //   },
+          // },
+          as_cgm: {
+            create: {
+              name: name,
+              rank: rank,
+              Cg: {
+                connect: {
+                  id: cg,
+                },
+              },
             },
           },
           display_name: displayName,

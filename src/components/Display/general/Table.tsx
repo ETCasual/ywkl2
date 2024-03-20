@@ -10,12 +10,14 @@ import {
 } from "react";
 import { useCGM } from "@/stores/useCGM";
 import { Rings } from "react-loader-spinner";
+import { useUser } from "@/stores/useUser";
 
 export const Table: FunctionComponent<{
   cgId: string;
   setCGMId: Dispatch<SetStateAction<string>>;
 }> = ({ cgId, setCGMId }) => {
   const { cgm, setCGMs, setCG } = useCGM();
+  const { user } = useUser();
 
   useEffect(() => {
     void setCG(cgId);
@@ -41,53 +43,63 @@ export const Table: FunctionComponent<{
               <th>Name</th>
               <th className="text-end">Position</th>
               <th className="text-end">Status</th>
+              {user?.superuser ? <th className="text-end">From CG</th> : null}
               <th className="text-end">Discipleship</th>
             </tr>
           </thead>
           <tbody>
-            {cgm.map((item, i) => (
-              <tr key={i}>
-                <td>
-                  <div className="text-xs font-bold text-neutral-800">
-                    {item.name}
-                  </div>
-                </td>
-                <td>
-                  <div className="text-end text-xs font-bold text-neutral-800">
-                    {item.rank}
-                  </div>
-                </td>
-                <td>
-                  <div className="flex justify-end gap-1 text-neutral-800">
-                    {item.status === "Healthy" ? (
-                      <TiTick className="h-5 w-5 text-green-400" />
-                    ) : item.status === "Warning" ? (
-                      <TiWarning className="h-5 w-5 text-red-400" />
-                    ) : (
-                      <>
-                        <TbUrgent className="h-5 w-5 text-red-600" />
-                        <TiWarning className="h-5 w-5 text-red-400" />
-                      </>
-                    )}
-                  </div>
-                </td>
+            {cgm
+              .filter((a) => a.userId !== user?.id)
+              .map((item, i) => (
+                <tr key={i}>
+                  <td>
+                    <div className="text-xs font-bold text-neutral-800">
+                      {item.name}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="text-end text-xs font-bold text-neutral-800">
+                      {item.rank}
+                    </div>
+                  </td>
 
-                <td className="flex justify-end">
-                  <TiClipboard
-                    onClick={() => {
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                      setCGMId(item.id);
-                      (
-                        document.getElementById(
-                          "discipleship-data",
-                        ) as HTMLDialogElement
-                      ).showModal();
-                    }}
-                    className="h-5 w-5 text-neutral-800"
-                  />
-                </td>
-              </tr>
-            ))}
+                  <td>
+                    <div className="flex justify-end gap-1 text-neutral-800">
+                      {item.status === "Healthy" ? (
+                        <TiTick className="h-5 w-5 text-green-400" />
+                      ) : item.status === "Warning" ? (
+                        <TiWarning className="h-5 w-5 text-red-400" />
+                      ) : (
+                        <>
+                          <TbUrgent className="h-5 w-5 text-red-600" />
+                          <TiWarning className="h-5 w-5 text-red-400" />
+                        </>
+                      )}
+                    </div>
+                  </td>
+                  {user?.superuser && (
+                    <td>
+                      <div className="text-end text-xs font-bold text-neutral-800">
+                        {item.cgId}
+                      </div>
+                    </td>
+                  )}
+                  <td className="flex justify-end">
+                    <TiClipboard
+                      onClick={() => {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                        setCGMId(item.id);
+                        (
+                          document.getElementById(
+                            "discipleship-data",
+                          ) as HTMLDialogElement
+                        ).showModal();
+                      }}
+                      className="h-5 w-5 cursor-pointer text-neutral-800"
+                    />
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       ) : (

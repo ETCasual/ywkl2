@@ -3,7 +3,7 @@ import { create, type StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
 
 type UserState = {
-  user: Omit<User, "password"> | null;
+  user: (Omit<User, "password"> & { as_cgm?: { cgId: null } | null }) | null;
   hasRegistered: boolean;
   clear: () => void;
   setUser: (user: Omit<User, "password">) => Promise<void>;
@@ -37,6 +37,7 @@ const createState: StateCreator<UserState> = (set, get) => ({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const response: User = await res.json();
 
+    console.log("user", response);
     set({
       user: response,
     });

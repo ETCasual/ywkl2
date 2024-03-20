@@ -39,7 +39,8 @@ const LoginPage = () => {
               body: JSON.stringify(values),
             });
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            const response: User = await res.json();
+            const response: User & { as_cgm: { cgId: string } } =
+              await res.json();
 
             if (!res.ok)
               toast.error("Invalid Credentials.", {
@@ -64,7 +65,7 @@ const LoginPage = () => {
                   },
                 })
                 .then(async () => {
-                  setRegistrationStatus(response.cgId ? true : false);
+                  setRegistrationStatus(response.as_cgm.cgId ? true : false);
                   await setUser(response).then(
                     async () => await router.push("/"),
                   );
