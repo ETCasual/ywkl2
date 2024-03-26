@@ -60,9 +60,7 @@ model Cluster {
 }
 
 enum Rank {
-    NB
-    NF
-    OM
+    Others
     SGL
     CGL
     Coach

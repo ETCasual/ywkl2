@@ -33,13 +33,14 @@ const createState: StateCreator<CGMState> = (set, get) => ({
   },
 
   reloadCG: async (superuser) => {
-    if (!(get().cgm.length > 0)) return;
+    // if (!(get().cgm.length > 0)) return;
 
     const res = await fetch(`/api/cgm?cgId=${superuser ? "all" : get().cg}`, {
       method: "GET",
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const response: CGMs[] = await res.json();
+    console.log(get().cg, response);
 
     set({
       cgm: response,

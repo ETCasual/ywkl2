@@ -13,21 +13,20 @@ import { Rings } from "react-loader-spinner";
 import { useUser } from "@/stores/useUser";
 
 export const Table: FunctionComponent<{
-  cgId: string;
   setCGMId: Dispatch<SetStateAction<string>>;
-}> = ({ cgId, setCGMId }) => {
-  const { cgm, setCGMs, setCG } = useCGM();
+}> = ({ setCGMId }) => {
+  const { cgm } = useCGM();
   const { user } = useUser();
 
-  useEffect(() => {
-    void setCG(cgId);
-    void (async () => {
-      await fetch(`/api/cgm?v=${cgId}`, { method: "GET" }).then(
-        async (res) =>
-          await res.json().then((response: CGMs[]) => setCGMs(response)),
-      );
-    })();
-  }, [cgId, setCG, setCGMs]);
+  // useEffect(() => {
+  //   void setCG(cgId);
+  //   void (async () => {
+  //     await fetch(`/api/cgm?cgId=${cgId}`, { method: "GET" }).then(
+  //       async (res) =>
+  //         await res.json().then((response: CGMs[]) => setCGMs(response)),
+  //     );
+  //   })();
+  // }, [cgId, setCG, setCGMs]);
 
   return (
     <div

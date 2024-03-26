@@ -8,7 +8,6 @@ import { type AddCGMForm } from "../discipleship";
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     const cg = req.query.cgId as string;
-
     try {
       if (cg === "all") {
         const findAll = await db.cGMs.findMany();

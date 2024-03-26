@@ -15,6 +15,7 @@ import { base64ToUint8Array } from "@/utils/helpers";
 import { env } from "@/env.mjs";
 import { toast } from "react-toastify";
 import { useUser } from "@/stores/useUser";
+import { useCGM } from "@/stores/useCGM";
 
 interface DrawerProps {
   open: boolean;
@@ -44,7 +45,13 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
     localStorage.getItem("ywkl-allow-notification") === "true",
   );
 
-  const { clear } = useUser();
+  const { clear: clearUser } = useUser();
+  const { clear: clearCGM } = useCGM();
+
+  const logout = () => {
+    clearCGM();
+    clearUser();
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -105,7 +112,7 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                       </Dialog.Title>
                     </div>
                     <div className="relative flex h-full flex-col justify-between pt-6">
-                      <div className="relative flex flex-col gap-5">
+                      {/* <div className="relative flex flex-col gap-5">
                         <div
                           className="flex cursor-pointer flex-row items-center justify-between"
                           onClick={async (event) => {
@@ -209,12 +216,12 @@ export const Drawer: FunctionComponent<DrawerProps> = ({
                             Download as App
                           </button>
                         )}
-                      </div>
+                      </div> */}
                       <button
                         onClick={() => {
-                          clear();
+                          logout();
                         }}
-                        className="w-full rounded-md border-2 border-[#8bda02] px-5 py-2 text-center font-sans font-bold transition hover:border-[1px]"
+                        className="absolute bottom-0 w-full rounded-md border-2 border-[#8bda02] px-5 py-2 text-center font-sans font-bold transition hover:border-[1px]"
                       >
                         Log Out
                       </button>
