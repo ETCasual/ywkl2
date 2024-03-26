@@ -4,9 +4,9 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "FGACYC Young Warrior KL Event Space",
+  "name": "FGACYC Young Warrior",
   "short_name": "YWKL",
-  "description": "An application that gathers events that happen within FGACYC Young Warrior.",
+  "description": "A mega application for FGACYC Young Warrior.",
   "icons": [
     {
       "src": "/assets/icon-192x192.png",

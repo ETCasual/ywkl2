@@ -48,10 +48,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <meta name="twitter:image" content="/icons/twitter.png" />
         <meta name="twitter:creator" content="@ETCasual" />
         <meta property="og:type" content="website" />
-        <meta
-          property="og:title"
-          content="FGACYC Young Warrior KL Event Space"
-        />
+        <meta property="og:title" content="FGACYC Yong Warrior" />
         <meta
           property="og:description"
           content="A mega application for FGACYC Young Warrior"
