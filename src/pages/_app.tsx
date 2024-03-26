@@ -19,7 +19,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <title>YWKL</title>
         <meta
           name="description"
-          content="An application that gathers events that happen within FGACYC Young Warrior"
+          content="A mega application for FGACYC Young Warrior"
         />
         <link rel="shortcut icon" href="/assets/icon-192x192.png" />
         <meta name="theme-color" content="#96ec00" />
@@ -40,13 +40,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:url" content="https://kl.fgacycyw.com" />
-        <meta
-          name="twitter:title"
-          content="FGACYC Young Warrior KL Event Space"
-        />
+        <meta name="twitter:title" content="FGACYC Young Warrior" />
         <meta
           name="twitter:description"
-          content="An application that gathers events that happen within FGACYC Young Warrior."
+          content="A mega application for FGACYC Young Warrior."
         />
         <meta name="twitter:image" content="/icons/twitter.png" />
         <meta name="twitter:creator" content="@ETCasual" />
@@ -57,7 +54,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         />
         <meta
           property="og:description"
-          content="An application that gathers events that happen within FGACYC Young Warrior"
+          content="A mega application for FGACYC Young Warrior"
         />
         <meta property="og:site_name" content="YWKL Events" />
         <meta property="og:url" content="https://kl.fgacycyw.com" />
