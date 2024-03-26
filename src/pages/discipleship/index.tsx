@@ -54,30 +54,17 @@ const DiscipleshipIndexPage = () => {
       void router.replace("/");
       return;
     }
-    if (
-      user.rank === "SGL" ||
-      user.rank === "OM" ||
-      user.rank === "NB" ||
-      user.rank === "NF" ||
-      !user.as_cgm?.cgId
-    ) {
+    if (user.rank === "SGL" || user.rank === "Others" || !user.as_cgm?.cgId) {
       void router.replace("/");
       return;
     }
 
-    void (async () =>
-      await fetch(
-        `/api/cgm?cgId=${user.superuser ? "all" : user.as_cgm?.cgId}`,
-        {
-          method: "GET",
-        },
-      ).then(
-        async (res) =>
-          await res.json().then((response: CGMs[]) => {
-            void setCGMs(response);
-          }),
-      ))();
-  }, [user, router, setCGMs]);
+    const reload = async () => {
+      await reloadCG(user.superuser);
+    };
+
+    void reload();
+  }, [user, router, setCGMs, reloadCG]);
 
   return (
     <>
@@ -117,7 +104,7 @@ const DiscipleshipIndexPage = () => {
               initialValues={{
                 discipleshipStatus: "Healthy",
                 name: "",
-                rank: "OM",
+                rank: "Others",
                 cg: user?.as_cgm?.cgId ?? "",
               }}
               onSubmit={async (values, action) => {
@@ -178,9 +165,7 @@ const DiscipleshipIndexPage = () => {
                     formikKey={"rank"}
                     as="select"
                     options={[
-                      { value: "NF", label: "NF" },
-                      { value: "NB", label: "NB" },
-                      { value: "OM", label: "OM" },
+                      { value: "Others", label: "Others" },
                       { value: "SGL", label: "SGL" },
                       { value: "CGL", label: "CGL" },
                       { value: "Coach", label: "Coach" },
@@ -214,7 +199,7 @@ const DiscipleshipIndexPage = () => {
         <h1 className="w-full pb-5 text-center font-made text-3xl font-bold uppercase text-[#e1f255] shadow-black text-shadow-hard">
           Discipleship
         </h1>
-        <Table cgId={String(user?.as_cgm?.cgId)} setCGMId={setCGMId} />
+        <Table setCGMId={setCGMId} />
         <div className="flex w-full flex-col items-center gap-2 pt-5">
           <button
             onClick={() => {
@@ -224,7 +209,7 @@ const DiscipleshipIndexPage = () => {
             }}
             className="flex w-full items-center justify-center rounded-xl bg-[#31925a] px-1 py-2 font-made text-lg text-white"
           >
-            Add NB / NF / OM
+            Add Members
           </button>
           <button
             onClick={() => {

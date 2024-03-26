@@ -74,7 +74,7 @@ export const DispicleshipDataDialog: FunctionComponent<{ cgmId: string }> = ({
             No Discipleship Data Found.
           </div>
         ) : (
-          <div className="flex w-full flex-col p-4">
+          <div className="flex max-h-[400px] w-full flex-col gap-2 overflow-y-auto p-4">
             {discipleshipData.map((d, i) => (
               <DiscipleshipData
                 key={i}
