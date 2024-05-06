@@ -105,8 +105,8 @@ export const Field: FunctionComponent<FieldProps> = ({
                 name === "dob"
                   ? "date"
                   : name === "contact_number"
-                  ? "tel"
-                  : "text"
+                    ? "tel"
+                    : "text"
               }
               className={`w-full px-2 outline-none${
                 name === "dob" ? " font-bold" : ""

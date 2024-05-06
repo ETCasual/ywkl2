@@ -65,7 +65,14 @@ const LoginPage = () => {
                   },
                 })
                 .then(async () => {
-                  setRegistrationStatus(response.as_cgm.cgId ? true : false);
+                  console.log("response", response);
+                  setRegistrationStatus(
+                    response.as_cgm
+                      ? response.as_cgm.cgId
+                        ? true
+                        : false
+                      : false,
+                  );
                   await setUser(response).then(
                     async () => await router.push("/"),
                   );

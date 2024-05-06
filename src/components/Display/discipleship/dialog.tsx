@@ -3,13 +3,21 @@ import { useCGM } from "@/stores/useCGM";
 import { useUser } from "@/stores/useUser";
 import type { DiscipleshipStatus } from "@prisma/client";
 import { Form, Formik } from "formik";
-import { useEffect, useState, type FunctionComponent } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useState,
+  type FunctionComponent,
+} from "react";
 import { Rings } from "react-loader-spinner";
 import { DiscipleshipField } from "./Field";
 import * as Yup from "yup";
 import { TiTick, TiWarning } from "react-icons/ti";
 import { TbUrgent } from "react-icons/tb";
 import { toast } from "react-toastify";
+import { type CGData } from "@/pages";
+// import { Field } from "../general/Form/Field";
 
 type ReturnedDiscipleshipData = {
   created_at: Date;
@@ -243,6 +251,93 @@ export const SubmitDiscipleshipDialog = () => {
               </Form>
             )}
           </Formik>
+        </div>
+      </div>
+    </dialog>
+  );
+};
+
+export type ChangeViewForm = {
+  cgId: string;
+};
+
+export const ChangeViewDialog: FunctionComponent<
+  ChangeViewForm & { setCGId: Dispatch<SetStateAction<string>> }
+> = ({ cgId, setCGId }) => {
+  const [cgs, setCgs] = useState<CGData[]>([]);
+
+  useEffect(() => {
+    if (cgs.length > 0) return;
+    void (async () => {
+      await fetch("/api/cg", { method: "GET" }).then((s) =>
+        s.json().then((res: CGData[]) => setCgs(res)),
+      );
+    })();
+  }, [cgs.length]);
+
+  return (
+    <dialog
+      id="change-view"
+      className="modal focus-within:outline-none focus-visible:outline-none"
+    >
+      <div className="modal-box flex max-h-[50vh] flex-col items-center justify-center overflow-y-auto bg-[#31925a]">
+        <form method="dialog">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn btn-circle btn-ghost btn-sm fixed right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <h1 className="pb-4 text-center font-made text-2xl text-[#e1f255] shadow-black text-shadow-sm">
+          POV
+        </h1>
+        <div className="flex w-full flex-col p-4">
+          {cgs.length > 0 ? (
+            <Formik<ChangeViewForm>
+              initialValues={{
+                cgId: cgId,
+              }}
+              onSubmit={async (values) => {
+                console.log(values.cgId);
+                setCGId(values.cgId);
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <DiscipleshipField
+                    disabled={isSubmitting}
+                    formikKey="cgId"
+                    label="CG"
+                    as="select"
+                    options={[
+                      { label: "Pastor", value: "" }, // Insert "Select..." as the first option
+                      ...cgs.map((cgd) => ({
+                        label: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
+                        value: `${cgd.id}`,
+                      })),
+                    ]}
+                  />
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center rounded-xl bg-[#45c178] px-1 py-2 font-made text-lg text-white"
+                  >
+                    Confirm
+                  </button>
+                </Form>
+              )}
+            </Formik>
+          ) : (
+            <div className="flex w-full flex-row items-center justify-center">
+              <Rings
+                visible={true}
+                height="200"
+                width="200"
+                color="purple"
+                ariaLabel="rings-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            </div>
+          )}
         </div>
       </div>
     </dialog>

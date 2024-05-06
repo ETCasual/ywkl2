@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { db } from "@/server/db";
 import { type NextApiHandler } from "next";
-import { type FormikProfileForm } from "..";
+import { type FormikProfileForm } from "@/components/Display/general/dialog/Profile";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
@@ -42,12 +42,23 @@ const handler: NextApiHandler = async (req, res) => {
   }
   // Profile Register
   if (req.method === "POST") {
-    const { cg, displayName, id, name, rank } = JSON.parse(
+    const { cg, displayName, id, name, rank, cgmid, email } = JSON.parse(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       req.body,
     ) as FormikProfileForm;
 
     try {
+      const connector =
+        cgmid !== "nothing"
+          ? {
+              as_cgm: {
+                connect: {
+                  id: cgmid,
+                },
+              },
+            }
+          : null;
+
       const user = await db.user.update({
         where: {
           id: id,
@@ -58,17 +69,8 @@ const handler: NextApiHandler = async (req, res) => {
           //     id: cg,
           //   },
           // },
-          as_cgm: {
-            create: {
-              name: name,
-              rank: rank,
-              Cg: {
-                connect: {
-                  id: cg,
-                },
-              },
-            },
-          },
+          email: email,
+          ...connector,
           display_name: displayName,
           name: name,
           rank: rank,

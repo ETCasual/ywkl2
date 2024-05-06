@@ -1,5 +1,6 @@
 import { DiscipleshipField } from "@/components/Display/discipleship/Field";
 import {
+  ChangeViewDialog,
   DispicleshipDataDialog,
   SubmitDiscipleshipDialog,
 } from "@/components/Display/discipleship/dialog";
@@ -7,7 +8,7 @@ import {
 import { Table } from "@/components/Display/general/Table";
 import { useCGM } from "@/stores/useCGM";
 import { useUser } from "@/stores/useUser";
-import type { DiscipleshipStatus, Rank, CGMs } from "@prisma/client";
+import type { DiscipleshipStatus, Rank } from "@prisma/client";
 import { Form, Formik } from "formik";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -29,7 +30,9 @@ const DiscipleshipIndexPage = () => {
 
   const [mounted, setMounted] = useState(false);
   const [cgmId, setCGMId] = useState<string>("");
-  const { setCGMs, reloadCG } = useCGM();
+  const [selectedCGId, setSelectedCGId] = useState<string>("");
+
+  const { setCGMs, reloadCG, state } = useCGM();
 
   useEffect(() => setMounted(true), []);
 
@@ -54,17 +57,23 @@ const DiscipleshipIndexPage = () => {
       void router.replace("/");
       return;
     }
-    if (user.rank === "SGL" || user.rank === "Others" || !user.as_cgm?.cgId) {
+
+    if (
+      !user.superuser &&
+      (user.rank === "SGL" || user.rank === "Others" || !user.as_cgm?.cgId)
+    ) {
       void router.replace("/");
       return;
     }
 
     const reload = async () => {
-      await reloadCG(user.superuser);
+      await reloadCG(
+        selectedCGId ? selectedCGId : user.superuser ? "all" : null,
+      );
     };
 
     void reload();
-  }, [user, router, setCGMs, reloadCG]);
+  }, [user, router, setCGMs, reloadCG, selectedCGId]);
 
   return (
     <>
@@ -130,7 +139,13 @@ const DiscipleshipIndexPage = () => {
                     type: "success",
                     render: () => `CGM ${response.name} added!`,
                   });
-                  await reloadCG(user?.superuser).then(() =>
+                  await reloadCG(
+                    selectedCGId
+                      ? selectedCGId
+                      : user?.superuser
+                        ? "all"
+                        : null,
+                  ).then(() =>
                     (
                       document.getElementById("add-cgm") as HTMLDialogElement
                     ).close(),
@@ -196,11 +211,24 @@ const DiscipleshipIndexPage = () => {
         </dialog>
         <DispicleshipDataDialog cgmId={cgmId} />
         <SubmitDiscipleshipDialog />
+        <ChangeViewDialog cgId={selectedCGId} setCGId={setSelectedCGId} />
         <h1 className="w-full pb-5 text-center font-made text-3xl font-bold uppercase text-[#e1f255] shadow-black text-shadow-hard">
           Discipleship
         </h1>
-        <Table setCGMId={setCGMId} />
+        <Table state={state} setCGMId={setCGMId} />
         <div className="flex w-full flex-col items-center gap-2 pt-5">
+          {user?.superuser && (
+            <button
+              onClick={() => {
+                (
+                  document.getElementById("change-view") as HTMLDialogElement
+                ).showModal();
+              }}
+              className="flex w-full items-center justify-center rounded-xl bg-[#31925a] px-1 py-2 font-made text-lg text-white"
+            >
+              POV &gt; {selectedCGId ? selectedCGId : "Pastor"}
+            </button>
+          )}
           <button
             onClick={() => {
               (

@@ -5,7 +5,6 @@ import Head from "next/head";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
-import { Rings } from "react-loader-spinner";
 
 // Import Swiper styles
 import "swiper/css";
@@ -18,23 +17,10 @@ import { Drawer } from "@/components/Drawer";
 import { env } from "@/env.mjs";
 import { LinkWrapper } from "@/components/Wrappers/Link";
 import { useRouter } from "next/router";
-import { Form, Formik } from "formik";
-import type { Rank } from "@prisma/client";
-import { Field } from "@/components/Display/general/Form/Field";
 import { useUser } from "@/stores/useUser";
-import { toast } from "react-toastify";
-import * as Yup from "yup";
+import { ProfileDialog } from "@/components/Display/general/dialog/Profile";
 
-export type FormikProfileForm = {
-  name: string;
-  cg: string;
-  rank: Rank;
-  email: string;
-  id: string;
-  displayName: string;
-};
-
-type CGData = { id: string; LeaderToCG: { leader: { name: string } } };
+export type CGData = { id: string; LeaderToCG: { leader: { name: string } } };
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -44,11 +30,11 @@ export default function Home() {
   const [subscription, setSubscription] = useState<PushSubscription>();
   const [registration, setRegistration] = useState<ServiceWorkerRegistration>();
   const [cgs, setCgs] = useState<CGData[]>([]);
-  const { user, hasRegistered, setRegistrationStatus, reloadUser } = useUser();
+  const { user, hasRegistered } = useUser();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) void router.replace("/login");
+    if (!user?.id) void router.replace("/login");
   }, [router, user]);
 
   useEffect(() => {
@@ -164,138 +150,7 @@ export default function Home() {
           className="flex min-h-screen flex-col bg-[#191919]"
           data-theme="dracula"
         >
-          <dialog
-            id="register-user"
-            className="modal focus-within:outline-none focus-visible:outline-none"
-          >
-            {cgs.length > 0 ? (
-              <div className="modal-box">
-                <h1 className="font-made text-xl tracking-tight text-primary underline underline-offset-4">
-                  Register Your Profile!
-                </h1>
-                <Formik<FormikProfileForm>
-                  initialValues={{
-                    displayName: user?.display_name ?? "",
-                    cg: `${cgs[0]?.id} - ${cgs[0]?.LeaderToCG.leader.name}`,
-                    email: user?.email,
-                    id: user?.id,
-                    name: user?.name ?? "",
-                    rank: user?.rank ?? "Others",
-                  }}
-                  validationSchema={Yup.object().shape({
-                    displayName: Yup.string(),
-                    name: Yup.string().required("Required."),
-                    email: Yup.string()
-                      .email("Invalid Format.")
-                      .required("Required."),
-                  })}
-                  onSubmit={async (values, action) => {
-                    const tst = toast.loading("Updating Profile");
-                    const cg = values.cg.split(" - ")[0];
-                    const rank = values.rank.replace("/", "_");
-                    const res = await fetch("/api/profile", {
-                      method: "POST",
-                      body: JSON.stringify({ ...values, rank: rank, cg: cg }),
-                    });
-                    if (res.ok) {
-                      setRegistrationStatus(true);
-                      await reloadUser();
-                      (
-                        document.getElementById(
-                          "register-user",
-                        ) as HTMLDialogElement
-                      ).close();
-                      toast.update(tst, {
-                        autoClose: 2000,
-                        isLoading: false,
-                        type: "success",
-                        render: () => "Profile Updated!",
-                      });
-                    }
-
-                    if (!res.ok) {
-                      toast.update(tst, {
-                        isLoading: false,
-                        type: "error",
-                        autoClose: 1500,
-                        render: () => "Something Unexpected Happened..",
-                      });
-                    }
-
-                    action.setSubmitting(false);
-                  }}
-                >
-                  {({ isSubmitting }) => (
-                    <Form className="flex w-full flex-col gap-3 pt-3">
-                      <Field<FormikProfileForm>
-                        disabled={isSubmitting}
-                        formikKey="email"
-                        label="Confirm Your Email"
-                      />
-                      <div className="flex w-full flex-col items-center gap-3 md:flex-row">
-                        <Field<FormikProfileForm>
-                          disabled={isSubmitting}
-                          formikKey="name"
-                          label="Full Name"
-                        />
-                        <Field<FormikProfileForm>
-                          disabled={isSubmitting}
-                          formikKey="displayName"
-                          label="Nickname"
-                        />
-                      </div>
-                      <div className="flex w-full flex-col items-center gap-3 md:flex-row">
-                        <Field<FormikProfileForm>
-                          disabled={isSubmitting}
-                          formikKey="cg"
-                          label="CG"
-                          as="select"
-                          options={cgs.map((cgd) => {
-                            return {
-                              label: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
-                              value: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
-                            };
-                          })}
-                        />
-                        <Field<FormikProfileForm>
-                          disabled={isSubmitting}
-                          formikKey="rank"
-                          label="Status"
-                          as="select"
-                          options={[
-                            { value: "Others", label: "Others" },
-                            { value: "SGL", label: "SGL" },
-                            { value: "CGL", label: "CGL" },
-                            { value: "Coach", label: "Coach" },
-                            { value: "TL/Pastor", label: "TL/Pastor" },
-                          ]}
-                        />
-                      </div>
-                      <div className="h-1 w-full" />
-                      <button
-                        className="btn btn-primary btn-md !h-[unset] !min-h-[unset] py-3"
-                        type="submit"
-                      >
-                        Save
-                      </button>
-                    </Form>
-                  )}
-                </Formik>
-              </div>
-            ) : (
-              <div className="modal-box flex flex-row items-center justify-center">
-                <Rings
-                  visible={true}
-                  height="200"
-                  width="200"
-                  color="purple"
-                  ariaLabel="rings-loading"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                />
-              </div>
-            )}
-          </dialog>
+          <ProfileDialog cgs={cgs} />
           <Drawer
             open={drawer}
             onClose={() => setDrawer(false)}
