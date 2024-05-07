@@ -3,6 +3,7 @@ import { useCGM } from "@/stores/useCGM";
 import { useUser } from "@/stores/useUser";
 import type { DiscipleshipStatus } from "@prisma/client";
 import { Form, Formik } from "formik";
+import type { CGMs } from "@prisma/client";
 import {
   type Dispatch,
   type SetStateAction,
@@ -149,6 +150,25 @@ export const SubmitDiscipleshipDialog = () => {
   const { user } = useUser();
   const { cgm } = useCGM();
 
+  const eligible =
+    user?.rank === "TL_Pastor" && !user?.leaderToCluster && !user?.as_cgm;
+
+  const [tempCGMs, setTempCGMs] = useState<CGMs[]>([]);
+
+  useEffect(() => {
+    if (!eligible) return;
+
+    const getTempCGMs = async () => {
+      await fetch("/api/cgm?cgId=all", { method: "GET" }).then((res) =>
+        res.json().then((r: CGMs[]) => {
+          setTempCGMs(r);
+        }),
+      );
+    };
+
+    void getTempCGMs();
+  }, [eligible]);
+
   return (
     <dialog
       id="submit-discipleship"
@@ -166,100 +186,231 @@ export const SubmitDiscipleshipDialog = () => {
         </h1>
 
         <div className="flex w-full flex-col p-4">
-          <Formik<SubmitDiscipleshipForm>
-            initialValues={{
-              by: user?.id ?? "",
-              cgmId: String(
-                cgm
-                  .filter((a) => a.userId !== user?.id)
-                  .flatMap((cg) => {
-                    return { label: `${cg.name}`, value: cg.id };
-                  })[0]?.value,
-              ),
-              note: "",
-              status: "Healthy",
-            }}
-            onSubmit={async (values, actions) => {
-              const tst = toast.loading("Updating Profile");
-              const res = await fetch("/api/discipleship", {
-                method: "POST",
-                body: JSON.stringify(values),
-              });
+          {eligible ? (
+            tempCGMs &&
+            tempCGMs.length > 0 && (
+              <>
+                <Formik<SubmitDiscipleshipForm>
+                  enableReinitialize
+                  initialValues={{
+                    by: user?.id ?? "",
+                    cgmId: String(
+                      tempCGMs
+                        .filter((a) => a.userId !== user?.id)
+                        .sort((a, b) => {
+                          if (a.cgId < b.cgId) {
+                            return -1;
+                          }
+                          if (a.cgId > b.cgId) {
+                            return 1;
+                          }
+                          return 0;
+                        })
+                        .flatMap((t) => {
+                          return {
+                            label: `${t.name}`,
+                            value: t.id,
+                          };
+                        })[0]?.value,
+                    ),
+                    note: "",
+                    status: "Healthy",
+                  }}
+                  onSubmit={async (values, actions) => {
+                    const tst = toast.loading("Updating Profile");
+                    const res = await fetch("/api/discipleship", {
+                      method: "POST",
+                      body: JSON.stringify(values),
+                    });
 
-              if (res.ok) {
-                actions.resetForm();
-                toast.update(tst, {
-                  autoClose: 2000,
-                  isLoading: false,
-                  type: "success",
-                  render: () => "Uploaded!",
-                });
-              }
+                    if (res.ok) {
+                      actions.resetForm();
+                      toast.update(tst, {
+                        autoClose: 2000,
+                        isLoading: false,
+                        type: "success",
+                        render: () => "Uploaded!",
+                      });
+                      (
+                        document.getElementById(
+                          "submit-discipleship",
+                        ) as HTMLDialogElement
+                      ).close();
+                    }
 
-              if (!res.ok) {
-                toast.update(tst, {
-                  isLoading: false,
-                  type: "error",
-                  autoClose: 1500,
-                  render: () => "Something Unexpected Happened..",
-                });
-              }
+                    if (!res.ok) {
+                      toast.update(tst, {
+                        isLoading: false,
+                        type: "error",
+                        autoClose: 1500,
+                        render: () => "Something Unexpected Happened..",
+                      });
+                    }
 
-              actions.setSubmitting(false);
-            }}
-            validationSchema={Yup.object().shape({
-              cgmId: Yup.string().required("Required."),
-              note: Yup.string().required("Required."),
-            })}
-          >
-            {({ isSubmitting }) => (
-              <Form className="flex w-full flex-col gap-2">
-                <DiscipleshipField<SubmitDiscipleshipForm>
-                  disabled={isSubmitting}
-                  formikKey="cgmId"
-                  label="CGM"
-                  as="select"
-                  options={cgm
-                    .filter((a) => a.userId !== user?.id)
-                    .sort((a, b) => {
-                      if (a.cgId < b.cgId) {
-                        return -1;
-                      }
-                      if (a.cgId > b.cgId) {
-                        return 1;
-                      }
-                      return 0;
-                    })
-                    .flatMap((cg) => {
-                      return { label: `${cg.cgId} - ${cg.name}`, value: cg.id };
-                    })}
-                />
-                <DiscipleshipField<SubmitDiscipleshipForm>
-                  disabled={isSubmitting}
-                  formikKey="status"
-                  label="status"
-                  as="select"
-                  options={[
-                    { label: "Healthy", value: "Healthy" },
-                    { label: "Alert", value: "Alert" },
-                    { label: "Warning", value: "Warning" },
-                  ]}
-                />
-                <DiscipleshipField<SubmitDiscipleshipForm>
-                  disabled={isSubmitting}
-                  formikKey="note"
-                  label="Note"
-                  as="textarea"
-                />
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center rounded-xl bg-[#45c178] px-1 py-2 font-made text-lg text-white"
+                    actions.setSubmitting(false);
+                  }}
+                  validationSchema={Yup.object().shape({
+                    cgmId: Yup.string().required("Required."),
+                    note: Yup.string().required("Required."),
+                  })}
                 >
-                  Submit
-                </button>
-              </Form>
-            )}
-          </Formik>
+                  {({ isSubmitting }) => (
+                    <Form className="flex w-full flex-col gap-2">
+                      <DiscipleshipField<SubmitDiscipleshipForm>
+                        disabled={isSubmitting}
+                        formikKey="cgmId"
+                        label="CGM"
+                        as="select"
+                        options={tempCGMs
+                          .filter((a) => a.userId !== user?.id)
+                          .sort((a, b) => {
+                            if (a.cgId < b.cgId) {
+                              return -1;
+                            }
+                            if (a.cgId > b.cgId) {
+                              return 1;
+                            }
+                            return 0;
+                          })
+                          .flatMap((cg) => {
+                            return {
+                              label: `${cg.cgId} - ${cg.name}`,
+                              value: cg.id,
+                            };
+                          })}
+                      />
+                      <DiscipleshipField<SubmitDiscipleshipForm>
+                        disabled={isSubmitting}
+                        formikKey="status"
+                        label="status"
+                        as="select"
+                        options={[
+                          { label: "Healthy", value: "Healthy" },
+                          { label: "Alert", value: "Alert" },
+                          { label: "Warning", value: "Warning" },
+                        ]}
+                      />
+                      <DiscipleshipField<SubmitDiscipleshipForm>
+                        disabled={isSubmitting}
+                        formikKey="note"
+                        label="Note"
+                        as="textarea"
+                      />
+                      <button
+                        type="submit"
+                        className="flex w-full items-center justify-center rounded-xl bg-[#45c178] px-1 py-2 font-made text-lg text-white"
+                      >
+                        Submit
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+              </>
+            )
+          ) : (
+            <Formik<SubmitDiscipleshipForm>
+              initialValues={{
+                by: user?.id ?? "",
+                cgmId: String(
+                  cgm
+                    .filter((a) => a.userId !== user?.id)
+                    .flatMap((cg) => {
+                      return { label: `${cg.name}`, value: cg.id };
+                    })[0]?.value,
+                ),
+                note: "",
+                status: "Healthy",
+              }}
+              onSubmit={async (values, actions) => {
+                const tst = toast.loading("Updating Profile");
+                const res = await fetch("/api/discipleship", {
+                  method: "POST",
+                  body: JSON.stringify(values),
+                });
+
+                if (res.ok) {
+                  actions.resetForm();
+                  toast.update(tst, {
+                    autoClose: 2000,
+                    isLoading: false,
+                    type: "success",
+                    render: () => "Uploaded!",
+                  });
+                  (
+                    document.getElementById(
+                      "submit-discipleship",
+                    ) as HTMLDialogElement
+                  ).close();
+                }
+
+                if (!res.ok) {
+                  toast.update(tst, {
+                    isLoading: false,
+                    type: "error",
+                    autoClose: 1500,
+                    render: () => "Something Unexpected Happened..",
+                  });
+                }
+
+                actions.setSubmitting(false);
+              }}
+              validationSchema={Yup.object().shape({
+                cgmId: Yup.string().required("Required."),
+                note: Yup.string().required("Required."),
+              })}
+            >
+              {({ isSubmitting }) => (
+                <Form className="flex w-full flex-col gap-2">
+                  <DiscipleshipField<SubmitDiscipleshipForm>
+                    disabled={isSubmitting}
+                    formikKey="cgmId"
+                    label="CGM"
+                    as="select"
+                    options={cgm
+                      .filter((a) => a.userId !== user?.id)
+                      .sort((a, b) => {
+                        if (a.cgId < b.cgId) {
+                          return -1;
+                        }
+                        if (a.cgId > b.cgId) {
+                          return 1;
+                        }
+                        return 0;
+                      })
+                      .flatMap((cg) => {
+                        return {
+                          label: `${cg.cgId} - ${cg.name}`,
+                          value: cg.id,
+                        };
+                      })}
+                  />
+                  <DiscipleshipField<SubmitDiscipleshipForm>
+                    disabled={isSubmitting}
+                    formikKey="status"
+                    label="status"
+                    as="select"
+                    options={[
+                      { label: "Healthy", value: "Healthy" },
+                      { label: "Alert", value: "Alert" },
+                      { label: "Warning", value: "Warning" },
+                    ]}
+                  />
+                  <DiscipleshipField<SubmitDiscipleshipForm>
+                    disabled={isSubmitting}
+                    formikKey="note"
+                    label="Note"
+                    as="textarea"
+                  />
+                  <button
+                    type="submit"
+                    className="flex w-full items-center justify-center rounded-xl bg-[#45c178] px-1 py-2 font-made text-lg text-white"
+                  >
+                    Submit
+                  </button>
+                </Form>
+              )}
+            </Formik>
+          )}
         </div>
       </div>
     </dialog>

@@ -58,7 +58,11 @@ const DiscipleshipIndexPage = () => {
       return;
     }
 
-    if (!user.superuser && (user.rank === "Others" || !user.as_cgm?.cgId)) {
+    if (
+      !user.superuser &&
+      user.rank !== "TL_Pastor" &&
+      (user.rank === "Others" || !user.as_cgm?.cgId)
+    ) {
       void router.replace("/");
       return;
     }

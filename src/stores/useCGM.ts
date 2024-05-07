@@ -41,8 +41,6 @@ const createState: StateCreator<CGMState> = (set, get) => ({
       state: "loading",
     });
 
-    console.log("cg-id", id);
-
     const res = await fetch(
       `/api/cgm?cgId=${id && id?.length > 0 ? String(id) : String([get().cg])}`,
       {
@@ -51,7 +49,6 @@ const createState: StateCreator<CGMState> = (set, get) => ({
     );
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const response: CGMs[] = await res.json();
-    console.log(get().cg, response);
     set({
       cgm: response,
       state: "done",
