@@ -222,9 +222,9 @@ export default function Home() {
             </Swiper>
 
             {(env.NEXT_PUBLIC_IS_STAGING === "1" ||
-              user.rank === "CGL" ||
-              user.rank === "Coach" ||
-              user.rank === "TL_Pastor") && (
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+              user.superuser ||
+              user.rank !== "Others") && (
               <div className="w-full px-4 pt-4">
                 <LinkWrapper
                   href="/discipleship"

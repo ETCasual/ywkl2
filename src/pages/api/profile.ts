@@ -31,6 +31,7 @@ const handler: NextApiHandler = async (req, res) => {
           rank: true,
           superuser: true,
           coaching_on: true,
+          LeaderToCG: true,
           leaderToCluster: true,
         },
       });

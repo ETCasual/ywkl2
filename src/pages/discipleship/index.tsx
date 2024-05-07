@@ -60,8 +60,10 @@ const DiscipleshipIndexPage = () => {
 
     if (
       !user.superuser &&
-      user.rank !== "TL_Pastor" &&
-      (user.rank === "Others" || !user.as_cgm?.cgId)
+      user.rank === "Others"
+      // !user.superuser &&
+      // user.rank !== "TL_Pastor" &&
+      // (user.rank === "Others" || !user.as_cgm?.cgId)
     ) {
       void router.replace("/");
       return;
@@ -77,7 +79,9 @@ const DiscipleshipIndexPage = () => {
               ? [user?.leaderToCluster?.id]
               : user?.rank === "Coach"
                 ? user?.coaching_on?.map((co) => co.id)
-                : [String(user?.as_cgm?.cgId)],
+                : user?.rank === "CGL" && user.LeaderToCG
+                  ? [user.LeaderToCG.cgId]
+                  : [""],
       );
 
       console.log("user", user);
@@ -160,7 +164,9 @@ const DiscipleshipIndexPage = () => {
                           ? [user?.leaderToCluster?.id]
                           : user?.rank === "Coach"
                             ? user?.coaching_on?.map((co) => co.id)
-                            : [String(user?.as_cgm?.cgId)],
+                            : user?.rank === "CGL" && user.LeaderToCG
+                              ? [user.LeaderToCG.cgId]
+                              : [""],
                   ).then(() =>
                     (
                       document.getElementById("add-cgm") as HTMLDialogElement
