@@ -457,8 +457,10 @@ export const ChangeViewDialog: FunctionComponent<
                 cgId: cgId,
               }}
               onSubmit={async (values) => {
-                console.log(values.cgId);
                 setCGId(values.cgId);
+                (
+                  document.getElementById("change-view") as HTMLDialogElement
+                ).close();
               }}
             >
               {({ isSubmitting }) => (
