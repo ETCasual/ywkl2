@@ -21,7 +21,7 @@ export const Field = <T,>({
       <div className="flex w-full flex-col gap-2">
         <div className="min-w-[130px]">
           <label
-            className="pl-2 font-made text-base font-semibold"
+            className="pl-2 font-mono text-base font-semibold"
             htmlFor={String(formikKey)}
           >
             {label}

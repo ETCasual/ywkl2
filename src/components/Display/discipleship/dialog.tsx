@@ -42,7 +42,7 @@ export const DispicleshipDataDialog: FunctionComponent<{ cgmId: string }> = ({
         async (res) =>
           await res.json().then((response: ReturnedDiscipleshipData[]) => {
             setDiscipleshipData(response);
-            console.log(response);
+            console.log("discipleship", response);
           }),
       ))();
   }, [cgmId]);
@@ -173,7 +173,7 @@ export const SubmitDiscipleshipDialog = () => {
                 cgm
                   .filter((a) => a.userId !== user?.id)
                   .flatMap((cg) => {
-                    return { label: cg.name, value: cg.id };
+                    return { label: `${cg.name}`, value: cg.id };
                   })[0]?.value,
               ),
               note: "",
@@ -221,8 +221,17 @@ export const SubmitDiscipleshipDialog = () => {
                   as="select"
                   options={cgm
                     .filter((a) => a.userId !== user?.id)
+                    .sort((a, b) => {
+                      if (a.cgId < b.cgId) {
+                        return -1;
+                      }
+                      if (a.cgId > b.cgId) {
+                        return 1;
+                      }
+                      return 0;
+                    })
                     .flatMap((cg) => {
-                      return { label: cg.name, value: cg.id };
+                      return { label: `${cg.cgId} - ${cg.name}`, value: cg.id };
                     })}
                 />
                 <DiscipleshipField<SubmitDiscipleshipForm>

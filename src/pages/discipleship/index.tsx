@@ -58,18 +58,25 @@ const DiscipleshipIndexPage = () => {
       return;
     }
 
-    if (
-      !user.superuser &&
-      (user.rank === "SGL" || user.rank === "Others" || !user.as_cgm?.cgId)
-    ) {
+    if (!user.superuser && (user.rank === "Others" || !user.as_cgm?.cgId)) {
       void router.replace("/");
       return;
     }
 
     const reload = async () => {
       await reloadCG(
-        selectedCGId ? selectedCGId : user.superuser ? "all" : null,
+        selectedCGId
+          ? [selectedCGId]
+          : user?.superuser
+            ? ["all"]
+            : user?.rank === "TL_Pastor" && user?.leaderToCluster?.id
+              ? [user?.leaderToCluster?.id]
+              : user?.rank === "Coach"
+                ? user?.coaching_on?.map((co) => co.id)
+                : [String(user?.as_cgm?.cgId)],
       );
+
+      console.log("user", user);
     };
 
     void reload();
@@ -91,7 +98,7 @@ const DiscipleshipIndexPage = () => {
       >
         <IoChevronBackCircleSharp
           onClick={() => router.push("/")}
-          className="absolute left-3 top-5 text-[#45c178]"
+          className="absolute left-3 top-5 cursor-pointer text-[#45c178]"
           size={35}
         />
 
@@ -141,10 +148,15 @@ const DiscipleshipIndexPage = () => {
                   });
                   await reloadCG(
                     selectedCGId
-                      ? selectedCGId
+                      ? [selectedCGId]
                       : user?.superuser
-                        ? "all"
-                        : null,
+                        ? ["all"]
+                        : user?.rank === "TL_Pastor" &&
+                            user?.leaderToCluster?.id
+                          ? [user?.leaderToCluster?.id]
+                          : user?.rank === "Coach"
+                            ? user?.coaching_on?.map((co) => co.id)
+                            : [String(user?.as_cgm?.cgId)],
                   ).then(() =>
                     (
                       document.getElementById("add-cgm") as HTMLDialogElement
@@ -189,6 +201,25 @@ const DiscipleshipIndexPage = () => {
                   />
                   <DiscipleshipField<AddCGMForm>
                     disabled={isSubmitting}
+                    label={"CG"}
+                    formikKey={"cg"}
+                    as="select"
+                    options={
+                      user?.rank === "Coach"
+                        ? user?.coaching_on?.map((co) => ({
+                            value: co.id,
+                            label: co.id,
+                          }))
+                        : [
+                            {
+                              value: String(user?.as_cgm?.cgId),
+                              label: String(user?.as_cgm?.cgId),
+                            },
+                          ]
+                    }
+                  />
+                  <DiscipleshipField<AddCGMForm>
+                    disabled={isSubmitting}
                     label={"Discipleship Status"}
                     formikKey={"discipleshipStatus"}
                     as="select"
@@ -229,16 +260,18 @@ const DiscipleshipIndexPage = () => {
               POV &gt; {selectedCGId ? selectedCGId : "Pastor"}
             </button>
           )}
-          <button
-            onClick={() => {
-              (
-                document.getElementById("add-cgm") as HTMLDialogElement
-              ).showModal();
-            }}
-            className="flex w-full items-center justify-center rounded-xl bg-[#31925a] px-1 py-2 font-made text-lg text-white"
-          >
-            Add Members
-          </button>
+          {user?.rank !== "SGL" && (
+            <button
+              onClick={() => {
+                (
+                  document.getElementById("add-cgm") as HTMLDialogElement
+                ).showModal();
+              }}
+              className="flex w-full items-center justify-center rounded-xl bg-[#31925a] px-1 py-2 font-made text-lg text-white"
+            >
+              Add Members
+            </button>
+          )}
           <button
             onClick={() => {
               (

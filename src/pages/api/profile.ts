@@ -4,6 +4,7 @@
 import { db } from "@/server/db";
 import { type NextApiHandler } from "next";
 import { type FormikProfileForm } from "@/components/Display/general/dialog/Profile";
+import { type Rank } from "@prisma/client";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
@@ -29,6 +30,8 @@ const handler: NextApiHandler = async (req, res) => {
           id: true,
           rank: true,
           superuser: true,
+          coaching_on: true,
+          leaderToCluster: true,
         },
       });
 
@@ -42,7 +45,7 @@ const handler: NextApiHandler = async (req, res) => {
   }
   // Profile Register
   if (req.method === "POST") {
-    const { cg, displayName, id, name, rank, cgmid, email } = JSON.parse(
+    const { displayName, id, name, rank, cgmid, email } = JSON.parse(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       req.body,
     ) as FormikProfileForm;
@@ -73,7 +76,7 @@ const handler: NextApiHandler = async (req, res) => {
           ...connector,
           display_name: displayName,
           name: name,
-          rank: rank,
+          rank: rank as Rank,
         },
       });
 

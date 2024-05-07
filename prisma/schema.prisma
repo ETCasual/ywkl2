@@ -27,6 +27,7 @@ model User {
     LeaderToCG      LeaderToCG?
     as_cgm          CGMs?
     Discipleship    Discipleship[]
+    coaching_on     Cg[]
 }
 
 model Subscription {
@@ -49,6 +50,7 @@ model Cg {
     CgToUserView   CgToUserView? @relation(fields: [cgToUserViewId], references: [id])
     cgToUserViewId String?       @unique
     LeaderToCG     LeaderToCG?
+    coaches        User[]
 }
 
 model Cluster {

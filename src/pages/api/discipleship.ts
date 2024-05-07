@@ -8,7 +8,6 @@ import { type NextApiHandler } from "next";
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     const id = req.query.cgmId as string;
-
     try {
       const find = await db.discipleship.findMany({
         where: {

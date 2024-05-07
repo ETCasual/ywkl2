@@ -8,7 +8,7 @@ type CGMState = {
   clear: () => void;
   setCGMs: (cgm: CGMState["cgm"]) => Promise<void>;
   setCG: (cg: string) => Promise<void>;
-  reloadCG: (id?: string | null) => Promise<void>;
+  reloadCG: (id?: string[] | null) => Promise<void>;
   state: "loading" | "done" | null;
 };
 
@@ -40,13 +40,18 @@ const createState: StateCreator<CGMState> = (set, get) => ({
     set({
       state: "loading",
     });
-    const res = await fetch(`/api/cgm?cgId=${id ? id : get().cg}`, {
-      method: "GET",
-    });
+
+    console.log("cg-id", id);
+
+    const res = await fetch(
+      `/api/cgm?cgId=${id && id?.length > 0 ? String(id) : String([get().cg])}`,
+      {
+        method: "GET",
+      },
+    );
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const response: CGMs[] = await res.json();
     console.log(get().cg, response);
-
     set({
       cgm: response,
       state: "done",

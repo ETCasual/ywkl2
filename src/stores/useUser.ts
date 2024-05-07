@@ -3,7 +3,13 @@ import { create, type StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
 
 type UserState = {
-  user: (Omit<User, "password"> & { as_cgm?: { cgId: null } | null }) | null;
+  user:
+    | (Omit<User, "password"> & {
+        as_cgm?: { cgId: string | null } | null;
+        coaching_on?: { id: string; clusterId: string }[];
+        leaderToCluster?: { id: string; userId: string } | null;
+      })
+    | null;
   hasRegistered: boolean;
   clear: () => void;
   setUser: (user: Omit<User, "password">) => Promise<void>;

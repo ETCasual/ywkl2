@@ -7,16 +7,52 @@ import { type AddCGMForm } from "../discipleship";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
-    const cg = req.query.cgId as string;
+    const cg = (req.query.cgId as string).split(",");
+    // const coach = req.query.coach as string;
+
     try {
-      if (cg === "all") {
+      // if (coach === 'true') {
+
+      // }
+
+      // else
+
+      if (
+        cg.includes("heart") ||
+        cg.includes("mind") ||
+        cg.includes("voice") ||
+        cg.includes("move") ||
+        cg.includes("force")
+      ) {
+        const cgFromTeam = await db.cluster.findFirst({
+          where: { id: cg[0] },
+          select: {
+            cgs: true,
+          },
+        });
+
+        console.log("cgFromTeam", cgFromTeam);
+        const cgs = cgFromTeam?.cgs.map((c) => c.id);
+
+        const findFromTeam = await db.cGMs.findMany({
+          where: {
+            cgId: {
+              in: cgs,
+            },
+          },
+        });
+
+        return res.status(200).json(findFromTeam);
+      } else if (cg.includes("all")) {
         const findAll = await db.cGMs.findMany();
 
         return res.status(200).json(findAll);
       } else {
         const findbyCg = await db.cGMs.findMany({
           where: {
-            cgId: cg,
+            cgId: {
+              in: cg,
+            },
           },
         });
 

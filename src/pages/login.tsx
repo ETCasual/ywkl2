@@ -60,12 +60,11 @@ const LoginPage = () => {
                   },
                   success: {
                     render: () => "Logging You In...",
-
+                    autoClose: 1500,
                     icon: () => <UseAnimations animation={activity} />,
                   },
                 })
                 .then(async () => {
-                  console.log("response", response);
                   setRegistrationStatus(
                     response.as_cgm
                       ? response.as_cgm.cgId

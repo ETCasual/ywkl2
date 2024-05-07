@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { GlobalTimer } from "@/components/GlobalTimer";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -230,8 +231,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       </Head>
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
         <Firestore>
-          <Component {...pageProps} />
-          <ToastContainer position="bottom-center" stacked hideProgressBar />
+          <GlobalTimer>
+            <Component {...pageProps} />
+            <ToastContainer position="bottom-center" stacked hideProgressBar />
+          </GlobalTimer>
         </Firestore>
       </FirebaseAppProvider>
       <SpeedInsights />

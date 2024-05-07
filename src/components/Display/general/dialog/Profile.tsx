@@ -1,6 +1,5 @@
 import { type CGData } from "@/pages";
 import { useUser } from "@/stores/useUser";
-import type { Rank } from "@prisma/client";
 import { Form, Formik } from "formik";
 import { useEffect, useState, type FunctionComponent } from "react";
 import { toast } from "react-toastify";
@@ -11,7 +10,7 @@ import { Rings } from "react-loader-spinner";
 export type FormikProfileForm = {
   name: string;
   cg: string;
-  rank: Rank;
+  rank: string;
   email: string;
   id: string;
   displayName: string;
@@ -35,7 +34,7 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
     >
       {cgs.length > 0 && user ? (
         <div className="modal-box">
-          <h1 className="font-made text-xl tracking-tight text-primary underline underline-offset-4">
+          <h1 className="font-made text-lg tracking-tight text-secondary underline underline-offset-4">
             Register Your Profile!
           </h1>
           <Formik<FormikProfileForm>
@@ -45,7 +44,7 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
               email: user?.email,
               id: user?.id,
               name: user?.name ?? "",
-              rank: user?.rank ?? "Others",
+              rank: user?.rank?.replace("_", "/") ?? "Others",
               cgmid: "nothing",
             }}
             validationSchema={Yup.object().shape({
@@ -59,7 +58,6 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
               const tst = toast.loading("Updating Profile");
               const cg = values.cg.split(" - ")[0];
               const rank = values.rank.replace("/", "_");
-              alert(JSON.stringify(values, null, 2));
               const res = await fetch("/api/profile", {
                 method: "POST",
                 body: JSON.stringify({ ...values, rank: rank, cg: cg }),
@@ -124,37 +122,62 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                           };
                         })}
                       />
-                      {/* <Field<FormikProfileForm>
-                      disabled={isSubmitting}
-                      formikKey="rank"
-                      label="Status"
-                      as="select"
-                      options={[
-                        { value: "Others", label: "Others" },
-                        { value: "SGL", label: "SGL" },
-                        { value: "CGL", label: "CGL" },
-                        { value: "Coach", label: "Coach" },
-                        { value: "TL/Pastor", label: "TL/Pastor" },
-                      ]}
-                    /> */}
+                      <Field<FormikProfileForm>
+                        disabled={isSubmitting}
+                        formikKey="rank"
+                        label="Status"
+                        as="select"
+                        options={[
+                          { value: "Others", label: "Others" },
+                          { value: "SGL", label: "SGL" },
+                          { value: "CGL", label: "CGL" },
+                          { value: "Coach", label: "Coach" },
+                          { value: "TL/Pastor", label: "TL/Pastor" },
+                        ]}
+                      />
                     </div>
                     <div className="h-1 w-full" />
                     <button
                       disabled={Object.keys(errors).length !== 0}
                       type="button"
                       className="btn btn-primary btn-md !h-[unset] !min-h-[unset] py-3"
-                      onClick={() => setStage(2)}
-                      // onClick={() => console.log(Object.keys(errors))}
+                      onClick={async () => {
+                        // if (
+                        //   values.rank === "Coach" ||
+                        //   values.rank.replace("/", "_") === "TL_Pastor"
+                        // ) {
+                        //   await submitForm();
+                        // } else
+                        setStage(2);
+                        // setStage(2)}}
+                        // onClick={() => console.log(Object.keys(errors))
+                      }}
                     >
                       Next
                     </button>
                   </>
                 ) : stage === 2 ? (
                   <>
-                    <CGMNamesSelect
-                      cgId={String(values.cg.split(" - ")[0])}
-                      disabled={isSubmitting}
-                    />
+                    {values.rank === "Coach" ||
+                    values.rank.replace("/", "_") === "TL_Pastor" ? (
+                      <div className="flex w-full flex-col">
+                        <Field<FormikProfileForm>
+                          disabled={isSubmitting}
+                          formikKey="name"
+                          label="Please Confirm Your Name"
+                        />
+                        <Field<FormikProfileForm>
+                          disabled={isSubmitting}
+                          formikKey="displayName"
+                          label="Nickname"
+                        />
+                      </div>
+                    ) : (
+                      <CGMNamesSelect
+                        cgId={String(values.cg.split(" - ")[0])}
+                        disabled={isSubmitting}
+                      />
+                    )}
 
                     <div className="flex w-full flex-row items-center gap-2">
                       <button
@@ -164,13 +187,13 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                           //   }).then(());
                           setStage(1);
                         }}
-                        className="btn btn-primary btn-md !h-[unset] !min-h-[unset] py-3"
+                        className="btn btn-secondary btn-md !h-[unset] !min-h-[unset] py-3"
                         type="button"
                       >
                         Back
                       </button>
                       <button
-                        className="btn btn-primary btn-md !h-[unset] !min-h-[unset] py-3"
+                        className="btn btn-primary btn-md !h-[unset] !min-h-[unset] flex-grow py-3"
                         type="submit"
                       >
                         Submit
