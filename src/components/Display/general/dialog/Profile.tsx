@@ -173,10 +173,17 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                         />
                       </div>
                     ) : (
-                      <CGMNamesSelect
-                        cgId={String(values.cg.split(" - ")[0])}
-                        disabled={isSubmitting}
-                      />
+                      <>
+                        <CGMNamesSelect
+                          cgId={String(values.cg.split(" - ")[0])}
+                          disabled={isSubmitting}
+                        />
+                        <Field<FormikProfileForm>
+                          disabled={isSubmitting}
+                          formikKey="displayName"
+                          label="Nickname"
+                        />
+                      </>
                     )}
 
                     <div className="flex w-full flex-row items-center gap-2">

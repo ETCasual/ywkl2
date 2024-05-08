@@ -66,11 +66,8 @@ const LoginPage = () => {
                 })
                 .then(async () => {
                   setRegistrationStatus(
-                    response.as_cgm
-                      ? response.as_cgm.cgId
-                        ? true
-                        : false
-                      : false,
+                    !!response.display_name
+                       
                   );
                   await setUser(response).then(
                     async () => await router.push("/"),
