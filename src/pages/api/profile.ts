@@ -73,7 +73,7 @@ const handler: NextApiHandler = async (req, res) => {
           //     id: cg,
           //   },
           // },
-          email: email,
+          email: email.toLowerCase(),
           ...connector,
           display_name: displayName,
           name: name,

@@ -21,13 +21,13 @@ const handler: NextApiHandler = async (req, res) => {
       const user = await db.user.findFirst({
         where: {
           email: {
-            equals: String(email),
+            equals: String(email).toLowerCase(),
           },
         },
       });
       if (!user) {
         const create = await db.user.create({
-          data: { email: email, password: encryptedPass },
+          data: { email: email.toLowerCase(), password: encryptedPass },
         });
 
         return res.status(200).json(create);

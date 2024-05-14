@@ -20,7 +20,7 @@ model User {
     created_at      DateTime?      @default(now())
     updated_at      DateTime?      @default(now()) @updatedAt
     Subscription    Subscription[]
-    leaderToCluster Cluster?
+    leaderToCluster Cluster[]
     password        String?
     CgToUserView    CgToUserView?  @relation(fields: [cgToUserViewId], references: [id])
     cgToUserViewId  String?
@@ -58,7 +58,7 @@ model Cluster {
     leader User   @relation(fields: [userId], references: [id])
     cgs    Cg[]
 
-    userId String @unique
+    userId String
 }
 
 enum Rank {

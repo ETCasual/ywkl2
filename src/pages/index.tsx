@@ -116,11 +116,12 @@ export default function Home() {
     if (!mounted) return;
     if (!user) return;
 
-    if (!hasRegistered)
+    // TODO: Flip Condition
+    if (hasRegistered)
       (
         document.getElementById("register-user") as HTMLDialogElement
       ).showModal();
-    if (hasRegistered)
+    if (!hasRegistered)
       (document.getElementById("register-user") as HTMLDialogElement).close();
   }, [hasRegistered, user, mounted]);
 

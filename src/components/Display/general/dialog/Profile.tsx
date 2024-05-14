@@ -41,14 +41,13 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
             initialValues={{
               displayName: user?.display_name ?? "",
               cg: `${cgs[0]?.id} - ${cgs[0]?.LeaderToCG.leader.name}`,
-              email: user?.email,
+              email: user?.email.toLowerCase(),
               id: user?.id,
               name: user?.name ?? "",
               rank: user?.rank?.replace("_", "/") ?? "Others",
               cgmid: "nothing",
             }}
             validationSchema={Yup.object().shape({
-              displayName: Yup.string(),
               name: Yup.string().required("Required."),
               email: Yup.string()
                 .email("Invalid Format.")
@@ -116,10 +115,17 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                         label="CG"
                         as="select"
                         options={cgs.map((cgd) => {
-                          return {
-                            label: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
-                            value: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
-                          };
+                          if (cgd.id === "core_leaders") {
+                            return {
+                              label: "Core Leaders",
+                              value: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
+                            };
+                          } else {
+                            return {
+                              label: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
+                              value: `${cgd.id} - ${cgd.LeaderToCG.leader.name}`,
+                            };
+                          }
                         })}
                       />
                       <Field<FormikProfileForm>
@@ -137,8 +143,9 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                       />
                     </div>
                     <div className="h-1 w-full" />
+                    {/* {JSON.stringify(errors, null, 2)} */}
                     <button
-                      disabled={Object.keys(errors).length !== 0}
+                      disabled={!!errors.email}
                       type="button"
                       className="btn btn-primary btn-md !h-[unset] !min-h-[unset] py-3"
                       onClick={async () => {

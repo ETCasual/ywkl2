@@ -40,7 +40,7 @@ const handler: NextApiHandler = async (req, res) => {
     try {
       const user = await db.user.findFirst({
         where: {
-          email: email,
+          email: email.toLowerCase(),
         },
         select: { password: true, id: true },
       });
