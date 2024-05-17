@@ -20,7 +20,11 @@ import { useRouter } from "next/router";
 import { useUser } from "@/stores/useUser";
 import { ProfileDialog } from "@/components/Display/general/dialog/Profile";
 
-export type CGData = { id: string; LeaderToCG: { leader: { name: string } } };
+export type CGData = {
+  id: string;
+  clusterId: string;
+  LeaderToCG: { leader: { name: string } };
+};
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);

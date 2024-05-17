@@ -134,7 +134,7 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                         label="Status"
                         as="select"
                         options={[
-                          { value: "Others", label: "Others" },
+                          { value: "Others", label: "Others (OM, NB)" },
                           { value: "SGL", label: "SGL" },
                           { value: "CGL", label: "CGL" },
                           { value: "Coach", label: "Coach" },

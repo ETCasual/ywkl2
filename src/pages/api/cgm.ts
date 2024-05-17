@@ -40,11 +40,18 @@ const handler: NextApiHandler = async (req, res) => {
               in: cgs,
             },
           },
+          include: {
+            Cg: true,
+          },
         });
 
         return res.status(200).json(findFromTeam);
       } else if (cg.includes("all")) {
-        const findAll = await db.cGMs.findMany();
+        const findAll = await db.cGMs.findMany({
+          include: {
+            Cg: true,
+          },
+        });
 
         return res.status(200).json(findAll);
       } else {

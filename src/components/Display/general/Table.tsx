@@ -12,12 +12,13 @@ import {
 import { useCGM } from "@/stores/useCGM";
 import { Rings } from "react-loader-spinner";
 import { useUser } from "@/stores/useUser";
-import type { CGMs } from "@prisma/client";
+import type { Cg, CGMs } from "@prisma/client";
 
 export const Table: FunctionComponent<{
+  showCluster?: boolean;
   state: "loading" | "done" | null;
   setCGMId: Dispatch<SetStateAction<string>>;
-}> = ({ setCGMId, state }) => {
+}> = ({ setCGMId, state, showCluster }) => {
   const { cgm } = useCGM();
   const { user } = useUser();
   const [sorter, setSorter] = useState("cg");
@@ -34,7 +35,21 @@ export const Table: FunctionComponent<{
 
   const sortFn = useMemo(() => {
     if (sorter === "cg")
-      return (a: CGMs, b: CGMs) => {
+      return (a: CGMs & { Cg: Cg }, b: CGMs & { Cg: Cg }) => {
+        // if (a.cgId < b.cgId) {
+        //   return -1;
+        // }
+        // if (a.cgId > b.cgId) {
+        //   return 1;
+        // }
+        // return 0;
+
+        if (a.Cg?.clusterId < b.Cg?.clusterId) {
+          return -1;
+        }
+        if (a.Cg?.clusterId > b.Cg?.clusterId) {
+          return 1;
+        }
         if (a.cgId < b.cgId) {
           return -1;
         }
@@ -109,6 +124,16 @@ export const Table: FunctionComponent<{
                   >
                     Name
                   </th>
+                  {user?.superuser && showCluster && (
+                    <th
+                      className={`cursor-pointer text-end`}
+                      // onClick={() => {
+                      //   setSorter("position");
+                      // }}
+                    >
+                      Cluster
+                    </th>
+                  )}
                   <th
                     className={`cursor-pointer text-end${sorter === "position" ? " text-primary" : ""}`}
                     onClick={() => {
@@ -117,6 +142,7 @@ export const Table: FunctionComponent<{
                   >
                     Position
                   </th>
+
                   <th
                     onClick={() => {
                       setSorter("status");
@@ -156,6 +182,13 @@ export const Table: FunctionComponent<{
                           {item.name}
                         </div>
                       </td>
+                      {user?.superuser && showCluster && (
+                        <td>
+                          <div className="text-end text-xs font-bold capitalize text-neutral-800">
+                            {item.Cg?.clusterId}
+                          </div>
+                        </td>
+                      )}
                       <td>
                         <div className="text-end text-xs font-bold text-neutral-800">
                           {item.rank}

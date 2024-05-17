@@ -18,6 +18,7 @@ const handler: NextApiHandler = async (req, res) => {
       const cgs = await db.cg.findMany({
         select: {
           id: true,
+          clusterId: true,
           LeaderToCG: {
             select: {
               leader: {

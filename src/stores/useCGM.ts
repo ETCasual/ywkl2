@@ -1,9 +1,9 @@
-import type { CGMs } from "@prisma/client";
+import type { CGMs, Cg } from "@prisma/client";
 import { create, type StateCreator } from "zustand";
 import { persist } from "zustand/middleware";
 
 type CGMState = {
-  cgm: CGMs[] | [];
+  cgm: (CGMs & { Cg: Cg })[] | [];
   cg: string;
   clear: () => void;
   setCGMs: (cgm: CGMState["cgm"]) => Promise<void>;
@@ -48,7 +48,7 @@ const createState: StateCreator<CGMState> = (set, get) => ({
       },
     );
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const response: CGMs[] = await res.json();
+    const response: (CGMs & { Cg: Cg })[] = await res.json();
     set({
       cgm: response,
       state: "done",
