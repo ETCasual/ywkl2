@@ -94,7 +94,7 @@ export const Table: FunctionComponent<{
   return (
     user?.rank !== "SGL" && (
       <div
-        className={`max-h-[50vh] min-h-[50vh] w-full overflow-x-hidden overflow-y-scroll rounded-lg bg-white/50${cgm.length > 0 ? "" : " flex flex-col items-center justify-center"}`}
+        className={`max-h-[50vh] min-h-[50vh] w-full overflow-y-scroll rounded-lg bg-white/50${cgm.length > 0 ? "" : " flex flex-col items-center justify-center"}`}
       >
         {state == "loading" ? (
           <div className="flex min-h-[50vh] w-full flex-row items-center justify-center">
@@ -161,7 +161,7 @@ export const Table: FunctionComponent<{
                         setSorter("cg");
                       }}
                     >
-                      From CG
+                      CG
                     </th>
                   ) : null}
                   <th className="text-end">Discipleship</th>
@@ -219,19 +219,21 @@ export const Table: FunctionComponent<{
                           </div>
                         </td>
                       ) : null}
-                      <td className="flex justify-end">
-                        <TiClipboard
-                          onClick={() => {
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                            setCGMId(item.id);
-                            (
-                              document.getElementById(
-                                "discipleship-data",
-                              ) as HTMLDialogElement
-                            ).showModal();
-                          }}
-                          className="h-5 w-5 cursor-pointer text-neutral-800"
-                        />
+                      <td>
+                        <div className="flex h-full flex-row items-center justify-end">
+                          <TiClipboard
+                            onClick={() => {
+                              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                              setCGMId(item.id);
+                              (
+                                document.getElementById(
+                                  "discipleship-data",
+                                ) as HTMLDialogElement
+                              ).showModal();
+                            }}
+                            className="h-5 w-5 cursor-pointer text-neutral-800"
+                          />
+                        </div>
                       </td>
                     </tr>
                   ))}
