@@ -18,7 +18,7 @@ import { TiTick, TiWarning } from "react-icons/ti";
 import { TbUrgent } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { type CGData } from "@/pages";
-import { AddCGMForm } from "@/pages/discipleship";
+import { type AddCGMForm } from "@/pages/discipleship";
 // import { Field } from "../general/Form/Field";
 
 type ReturnedDiscipleshipData = {
@@ -154,7 +154,7 @@ export const SubmitDiscipleshipDialog = () => {
 
   const eligible =
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    user?.superuser ||
+    !user?.superuser ||
     (user?.rank === "TL_Pastor" && !user?.leaderToCluster && !user?.as_cgm);
 
   const [tempCGMs, setTempCGMs] = useState<CGMs[]>([]);
@@ -213,7 +213,6 @@ export const SubmitDiscipleshipDialog = () => {
         </h1>
 
         <div className="flex w-full flex-col p-4">
-          {/* TODO:Remove flip */}
           {eligible ? (
             tempCGMs &&
             tempCGMs.length > 0 && (
@@ -246,43 +245,43 @@ export const SubmitDiscipleshipDialog = () => {
                     status: "Healthy",
                   }}
                   onSubmit={async (values, actions) => {
-                    console.log(values);
-                    // const tst = toast.loading("Updating...");
-                    // const res = await fetch("/api/discipleship", {
-                    //   method: "POST",
-                    //   body: JSON.stringify(values),
-                    // });
+                    // console.log(values);
+                    const tst = toast.loading("Updating...");
+                    const res = await fetch("/api/discipleship", {
+                      method: "POST",
+                      body: JSON.stringify(values),
+                    });
 
-                    // if (res.ok) {
-                    //   actions.resetForm();
-                    //   toast.update(tst, {
-                    //     autoClose: 2000,
-                    //     isLoading: false,
-                    //     type: "success",
-                    //     render: () => "Uploaded!",
-                    //   });
-                    //   (
-                    //     document.getElementById(
-                    //       "submit-discipleship",
-                    //     ) as HTMLDialogElement
-                    //   ).close();
-                    // }
+                    if (res.ok) {
+                      actions.resetForm();
+                      toast.update(tst, {
+                        autoClose: 2000,
+                        isLoading: false,
+                        type: "success",
+                        render: () => "Uploaded!",
+                      });
+                      (
+                        document.getElementById(
+                          "submit-discipleship",
+                        ) as HTMLDialogElement
+                      ).close();
+                    }
 
-                    // if (!res.ok) {
-                    //   toast.update(tst, {
-                    //     isLoading: false,
-                    //     type: "error",
-                    //     autoClose: 1500,
-                    //     render: () => "Something Unexpected Happened..",
-                    //   });
-                    // }
+                    if (!res.ok) {
+                      toast.update(tst, {
+                        isLoading: false,
+                        type: "error",
+                        autoClose: 1500,
+                        render: () => "Something Unexpected Happened..",
+                      });
+                    }
 
                     actions.setSubmitting(false);
                   }}
-                  // validationSchema={Yup.object().shape({
-                  //   cgmId: Yup.string().required("Required."),
-                  //   note: Yup.string().required("Required."),
-                  // })}
+                  validationSchema={Yup.object().shape({
+                    cgmId: Yup.string().required("Required."),
+                    note: Yup.string().required("Required."),
+                  })}
                 >
                   {({ isSubmitting, setFieldValue, values }) => (
                     <Form className="flex w-full flex-col gap-2">
@@ -696,7 +695,7 @@ export const ChangeViewDialog: FunctionComponent<
           </button>
         </form>
         <h1 className="pb-4 text-center font-made text-2xl text-[#e1f255] shadow-black text-shadow-sm">
-          POV
+          View As
         </h1>
         <div className="flex w-full flex-col p-4">
           {cgs.length > 0 ? (

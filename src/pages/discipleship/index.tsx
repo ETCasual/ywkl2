@@ -127,7 +127,7 @@ const DiscipleshipIndexPage = () => {
               }}
               className="flex w-full items-center justify-center rounded-xl bg-[#31925a] px-1 py-2 font-made text-lg text-white"
             >
-              POV &gt;{" "}
+              View As &gt;{" "}
               {selectedCGId === "core_leaders"
                 ? "Core Leaders"
                 : selectedCGId
