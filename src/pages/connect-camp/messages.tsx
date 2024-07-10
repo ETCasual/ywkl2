@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-// import { MessageCard } from "@/components/Cards/Message";
+import { MessageCard } from "@/components/Cards/Message";
 import { RegistrationForm } from "@/components/Display/connect-camp/Forms/Registration";
 import { PostModal } from "@/components/Modals/Post";
 import { jsonData } from "@/data";
@@ -101,7 +101,7 @@ const EventPage = () => {
               isOpen={uploadModalShown}
             />
             <button
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/connect-camp")}
               className="absolute left-3 top-4 z-10 w-[110px] py-1.5 font-made text-[12px] font-bold text-black shadow-xl hover:top-[18px]"
               style={{
                 backgroundColor: colors?.secondary ?? "",
@@ -119,7 +119,7 @@ const EventPage = () => {
               className="absolute left-3 top-[20px] h-8 w-[110px] bg-black py-1"
             />
             <img
-              src="/assets/CC_Main_Title.png"
+              src="/assets/CC_MessageBoard_Title.png"
               alt="main title"
               className="mt-4 w-[200px] object-cover md:mt-0 md:w-[250px] lg:w-[290px]"
             />
@@ -144,8 +144,8 @@ const EventPage = () => {
                   secondaryColor={colors?.secondary}
                 />
               ) : (
-                <div className="flex h-full flex-col gap-3 px-3 pb-2 pt-2">
-                  {/* {allDone &&
+                <div className="flex h-full flex-col gap-7 px-3 pb-2 pt-7">
+                  {allDone &&
                     postingsData.length === (postsCountData.count as number) &&
                     postingsData
                       .sort((a, b) => a.timestamp - b.timestamp)
@@ -158,8 +158,8 @@ const EventPage = () => {
                           groupNo={posting.groupNo}
                           message={posting.message}
                         />
-                      ))} */}
-                  <button
+                      ))}
+                  {/* <button
                     onClick={() => router.push("/connect-camp/messages")}
                     // style={{ backgroundColor: colors.primary }}
                     className="flex flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#96ec00] py-3 font-made font-bold text-black active:mb-[6px] active:border active:bg-opacity-80 disabled:bg-opacity-50 disabled:text-opacity-50"
@@ -254,20 +254,20 @@ const EventPage = () => {
                         ),
                       )}
                     </div>
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>
           </>
         )}
-        {/* <div className="fixed bottom-0 z-20 w-full max-w-[500px] p-1.5">
+        <div className="fixed bottom-0 z-20 w-full max-w-[500px] p-1.5">
           <button
             onClick={() => setUploadModalShown(true)}
             className="flex w-full flex-row items-center justify-center border-2 border-b-[6px] border-black bg-[#ff6511] py-2 font-made font-bold text-black active:mb-[6px] active:border disabled:text-opacity-50"
           >
             Write a post
           </button>
-        </div> */}
+        </div>
       </main>
     </>
   );

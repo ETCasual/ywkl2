@@ -12,7 +12,7 @@ export const Rules: FunctionComponent<RulesProps> = ({ rules, bg }) => {
   const router = useRouter();
   return (
     <div
-      className="flex min-h-screen w-screen flex-grow flex-col justify-start bg-cover bg-center"
+      className="flex min-h-screen w-screen flex-grow flex-col justify-start bg-cover bg-center text-black"
       style={{ backgroundImage: `url(/${bg})` }}
     >
       <div className="sticky top-0 z-10 flex flex-row-reverse items-center justify-between border-b-4 border-black bg-[#96ec00] font-made">

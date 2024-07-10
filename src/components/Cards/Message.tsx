@@ -23,7 +23,7 @@ export const MessageCard: FunctionComponent<MessageCardProps> = ({
   const uid = uuidv4();
   return (
     <div
-      className="relative w-full border-x-4 border-b-[10px] border-t-4 border-black bg-white"
+      className="relative w-full border-x-4 border-b-[10px] border-t-4 border-black bg-white text-black"
       id={`${author}-${clanName}-${groupNo}-${uid}`}
       ref={ref}
     >

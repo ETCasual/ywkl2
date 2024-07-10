@@ -220,7 +220,7 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                     }}
                   >
                     {({ isSubmitting, errors }) => (
-                      <Form className="flex flex-grow flex-col justify-between pb-3 pt-2">
+                      <Form className="flex flex-grow flex-col justify-between pb-3 pt-2 text-black">
                         <div className="flex flex-col gap-1">
                           <div className="flex flex-col">
                             <div className="flex w-full flex-row border-2 border-solid border-black">
@@ -236,7 +236,7 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                                 name={"name"}
                                 disabled={isSubmitting}
                                 type={"text"}
-                                className={`w-full p-1 outline-none`}
+                                className={`w-full bg-white p-1 outline-none`}
                               />
                             </div>
                             {errors.name && (
@@ -259,7 +259,7 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                                 name={"clan"}
                                 as="select"
                                 disabled={isSubmitting}
-                                className={`w-full p-1 font-bold outline-none`}
+                                className={`w-full bg-white p-1 font-bold outline-none`}
                               >
                                 {clans.map((clan) => (
                                   <option key={clan} value={clan}>
@@ -288,7 +288,7 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                                 name={"groupNo"}
                                 disabled={isSubmitting}
                                 placeholder="001"
-                                className={`w-full p-1 outline-none`}
+                                className={`w-full bg-white p-1 outline-none`}
                               />
                             </div>
                             {errors.groupNo && (
@@ -311,7 +311,7 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                                 name={"message"}
                                 disabled={isSubmitting}
                                 as="textarea"
-                                className={`w-full resize-none p-1 outline-none`}
+                                className={`w-full resize-none bg-white p-1 outline-none`}
                               />
                             </div>
                             {errors.message && (
@@ -338,7 +338,7 @@ export const PostModal: FunctionComponent<ModalProps> = ({
                                 disabled={isSubmitting}
                                 type="file"
                                 onChange={(e) => setFile(e.target.files?.[0])}
-                                className={`w-full p-1 text-xs outline-none`}
+                                className={`w-full bg-white p-1 text-xs text-black outline-none`}
                                 accept="image/*"
                               />
                             </div>

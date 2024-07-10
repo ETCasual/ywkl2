@@ -40,7 +40,7 @@ const PICPage = () => {
         style={{
           background: `url("/${bg}")`,
         }}
-        className={`relative flex h-screen flex-col items-center${
+        className={`relative flex h-screen flex-col text-black items-center${
           bg ? " bg-cover bg-center" : ""
         }`}
       >

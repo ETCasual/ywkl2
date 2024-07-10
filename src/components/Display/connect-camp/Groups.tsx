@@ -21,7 +21,7 @@ export const Groups: FunctionComponent<GroupsProps> = ({
 
   return (
     <div
-      className="flex min-h-screen w-screen flex-grow flex-col justify-start bg-cover bg-center"
+      className="flex min-h-screen w-screen flex-grow flex-col justify-start bg-cover bg-center text-black"
       style={{ backgroundImage: `url(/${bg})` }}
     >
       <div className="sticky top-0 z-10 flex flex-col items-center border-b-4 border-black bg-white font-made">
@@ -71,7 +71,7 @@ export const Groups: FunctionComponent<GroupsProps> = ({
               placeholder="Bruce Lee.."
               name="name"
               type="text"
-              className="w-full px-2 outline-none"
+              className="w-full bg-white px-2 outline-none"
             />
             <button
               onClick={() => setSearchString("")}
@@ -147,8 +147,8 @@ export const Groups: FunctionComponent<GroupsProps> = ({
                           {no.length === 1
                             ? `00${no}`
                             : no.length == 2
-                            ? `0${no}`
-                            : no}
+                              ? `0${no}`
+                              : no}
                         </p>
                       </div>
                       <div className="flex w-full flex-col border-2 border-t-0 border-black">

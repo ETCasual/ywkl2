@@ -15,7 +15,7 @@ export const Rooms: FunctionComponent<RoomsProps> = ({ rooms, bg }) => {
 
   return (
     <div
-      className="flex min-h-screen w-screen flex-grow flex-col justify-start bg-cover bg-center"
+      className="flex min-h-screen w-screen flex-grow flex-col justify-start bg-cover bg-center text-black"
       style={{ backgroundImage: `url(/${bg})` }}
     >
       <div className="sticky top-0 z-10 flex flex-col items-center border-b-4 border-black bg-white font-made">
@@ -65,7 +65,7 @@ export const Rooms: FunctionComponent<RoomsProps> = ({ rooms, bg }) => {
               placeholder="Bruce Lee.."
               name="name"
               type="text"
-              className="w-full px-2 outline-none"
+              className="w-full bg-white px-2 outline-none"
             />
             <button
               onClick={() => setSearchString("")}
