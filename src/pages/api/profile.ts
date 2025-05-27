@@ -5,7 +5,6 @@ import { db } from "@/server/db";
 import { type NextApiHandler } from "next";
 import { type FormikProfileForm } from "@/components/Display/general/dialog/Profile";
 import { type Rank } from "@prisma/client";
-
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     const id = req.query.id as string;

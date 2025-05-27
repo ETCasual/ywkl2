@@ -6,6 +6,7 @@ interface FieldProps<T> {
   disabled: boolean;
   as?: string;
   options?: { label: string; value: string }[];
+  type?: HTMLInputElement["type"];
 }
 
 export const Field = <T,>({
@@ -14,6 +15,7 @@ export const Field = <T,>({
   disabled,
   as,
   options,
+  type = "text",
 }: FieldProps<T>) => {
   const { errors } = useFormikContext<T>();
   return (
@@ -33,6 +35,7 @@ export const Field = <T,>({
           id={formikKey}
           name={String(formikKey)}
           disabled={disabled}
+          type={type}
           className={`w-full rounded-md px-2 outline-none${as === "select" ? " select select-bordered select-secondary select-sm" : " input input-bordered input-secondary input-sm"}`}
         >
           {options?.map((s, i) => (

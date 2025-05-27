@@ -878,7 +878,7 @@ export const AddCGMDialog: FunctionComponent<AddCGMDialogProps> = ({
           initialValues={{
             discipleshipStatus: "Healthy",
             name: "",
-            rank: "Others",
+            rank: user?.rank ?? "OM",
             cg: user?.as_cgm?.cgId ?? "",
           }}
           onSubmit={async (values, action) => {
@@ -949,7 +949,10 @@ export const AddCGMDialog: FunctionComponent<AddCGMDialogProps> = ({
                 formikKey={"rank"}
                 as="select"
                 options={[
-                  { value: "Others", label: "Others (OM, NB)" },
+                  { value: "RNF", label: "RNF" },
+                  { value: "NF", label: "NF" },
+                  { value: "OM", label: "OM" },
+                  { value: "NB", label: "NB" },
                   { value: "SGL", label: "SGL" },
                   { value: "CGL", label: "CGL" },
                   { value: "Coach", label: "Coach" },

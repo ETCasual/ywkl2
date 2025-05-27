@@ -18,11 +18,9 @@ const handler: NextApiHandler = async (req, res) => {
       // else
 
       if (
-        cg.includes("heart") ||
-        cg.includes("mind") ||
-        cg.includes("voice") ||
-        cg.includes("move") ||
-        cg.includes("force")
+        cg.includes("Youth") ||
+        cg.includes("Teens") ||
+        cg.includes("Working Adult")
       ) {
         const cgFromTeam = await db.cluster.findFirst({
           where: { id: cg[0] },

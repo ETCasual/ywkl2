@@ -45,11 +45,12 @@ const createState: StateCreator<UserState> = (set, get) => ({
       method: "GET",
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const response: User = await res.json();
+    const response = await res.json();
 
     console.log("user-fetch", response);
     set({
       user: response,
+      hasRegistered: response.as_cgm !== null,
     });
   },
 });

@@ -45,7 +45,10 @@ export default function Home() {
     if (cgs.length > 0) return;
     void (async () => {
       await fetch("/api/cg", { method: "GET" }).then((s) =>
-        s.json().then((res: CGData[]) => setCgs(res)),
+        s.json().then((res: CGData[]) => {
+          console.log("res", res);
+          setCgs(res);
+        }),
       );
     })();
   }, [cgs.length]);
@@ -73,7 +76,6 @@ export default function Home() {
     const readyNotifications = async () => {
       await navigator.serviceWorker.ready.then(async (reg) => {
         await reg.pushManager.getSubscription().then((sub) => {
-          console.log("sub", sub);
           if (
             sub &&
             !(
@@ -228,7 +230,10 @@ export default function Home() {
             {(env.NEXT_PUBLIC_IS_STAGING === "1" ||
               // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
               user.superuser ||
-              user.rank !== "Others") && (
+              (user.rank !== "OM" &&
+                user.rank !== "NB" &&
+                user.rank !== "NF" &&
+                user.rank !== "RNF")) && (
               <div className="w-full px-4 pt-4">
                 <LinkWrapper
                   href="/discipleship"

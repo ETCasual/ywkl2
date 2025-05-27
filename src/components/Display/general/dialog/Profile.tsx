@@ -30,6 +30,11 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
   return (
     <dialog
       id="register-user"
+      onClick={async () => {
+        await fetch("api/seed", {
+          method: "POST",
+        });
+      }}
       className="modal focus-within:outline-none focus-visible:outline-none"
     >
       {cgs.length > 0 && user ? (
@@ -44,7 +49,7 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
               email: user?.email.toLowerCase(),
               id: user?.id,
               name: user?.name ?? "",
-              rank: user?.rank?.replace("_", "/") ?? "Others",
+              rank: user?.rank?.replace("_", "/") ?? "OM",
               cgmid: "nothing",
             }}
             validationSchema={Yup.object().shape({
@@ -96,6 +101,7 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                       formikKey="email"
                       label="Confirm Your Email"
                     />
+
                     <div className="flex w-full flex-col items-center gap-3 md:flex-row">
                       {/* <Field<FormikProfileForm>
                       disabled={isSubmitting}
@@ -134,7 +140,10 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
                         label="Status"
                         as="select"
                         options={[
-                          { value: "Others", label: "Others (OM, NB)" },
+                          { value: "RNF", label: "RNF" },
+                          { value: "NF", label: "NF" },
+                          { value: "OM", label: "OM" },
+                          { value: "NB", label: "NB" },
                           { value: "SGL", label: "SGL" },
                           { value: "CGL", label: "CGL" },
                           { value: "Coach", label: "Coach" },

@@ -4,6 +4,8 @@ import {
   SubmitDiscipleshipDialog,
   AddCGMDialog,
 } from "@/components/Display/discipleship/dialog";
+import { EditCGMProfileDialog } from "@/components/Display/discipleship/EditCGMProfile";
+
 // import { Field } from "@/components/Display/general/Form/Field";
 import { Table } from "@/components/Display/general/Table";
 import { useCGM } from "@/stores/useCGM";
@@ -28,7 +30,9 @@ const DiscipleshipIndexPage = () => {
   const { user } = useUser();
 
   const [mounted, setMounted] = useState(false);
+
   const [cgmId, setCGMId] = useState<string>("");
+  const [cgmLookupId, setCGMLookupId] = useState<string>("");
   const [selectedCGId, setSelectedCGId] = useState<string>("");
 
   const { setCGMs, reloadCG, state } = useCGM();
@@ -51,6 +55,22 @@ const DiscipleshipIndexPage = () => {
     };
   }, [mounted]);
 
+  const reload = async () => {
+    await reloadCG(
+      selectedCGId
+        ? [selectedCGId]
+        : user?.superuser
+          ? ["all"]
+          : user?.rank === "TL_Pastor" && user?.leaderToCluster?.id
+            ? [user?.leaderToCluster?.id]
+            : user?.rank === "Coach"
+              ? user?.coaching_on?.map((co) => co.id)
+              : user?.rank === "CGL" && user.LeaderToCG
+                ? [user.LeaderToCG.cgId]
+                : [""],
+    );
+  };
+
   useEffect(() => {
     if (!user) {
       void router.replace("/");
@@ -59,32 +79,14 @@ const DiscipleshipIndexPage = () => {
 
     if (
       !user.superuser &&
-      user.rank === "Others"
-      // !user.superuser &&
-      // user.rank !== "TL_Pastor" &&
-      // (user.rank === "Others" || !user.as_cgm?.cgId)
+      (user.rank === "OM" ||
+        user.rank === "NB" ||
+        user.rank === "NF" ||
+        user.rank === "RNF")
     ) {
       void router.replace("/");
       return;
     }
-
-    const reload = async () => {
-      await reloadCG(
-        selectedCGId
-          ? [selectedCGId]
-          : user?.superuser
-            ? ["all"]
-            : user?.rank === "TL_Pastor" && user?.leaderToCluster?.id
-              ? [user?.leaderToCluster?.id]
-              : user?.rank === "Coach"
-                ? user?.coaching_on?.map((co) => co.id)
-                : user?.rank === "CGL" && user.LeaderToCG
-                  ? [user.LeaderToCG.cgId]
-                  : [""],
-      );
-
-      console.log("user", user);
-    };
 
     void reload();
   }, [user, router, setCGMs, reloadCG, selectedCGId]);
@@ -98,10 +100,7 @@ const DiscipleshipIndexPage = () => {
       </Head>
       <main
         data-theme="dracula"
-        style={{
-          background: `url("/assets/V24_BG_Vertical.jpg")`,
-        }}
-        className={`relative flex min-h-screen flex-col items-center bg-cover bg-center px-5 py-12`}
+        className={`relative flex min-h-screen flex-col items-center bg-indigo-700 bg-cover bg-center px-5 py-12`}
       >
         <IoChevronBackCircleSharp
           onClick={() => router.push("/")}
@@ -109,6 +108,11 @@ const DiscipleshipIndexPage = () => {
           size={35}
         />
 
+        <EditCGMProfileDialog
+          cgmLookupId={cgmLookupId}
+          reloadCG={reload}
+          resetCGMLookupId={() => setCGMLookupId("")}
+        />
         <AddCGMDialog selectedCGId={selectedCGId} />
         <DispicleshipDataDialog cgmId={cgmId} />
         <SubmitDiscipleshipDialog />
@@ -116,7 +120,12 @@ const DiscipleshipIndexPage = () => {
         <h1 className="w-full pb-5 text-center font-made text-3xl font-bold uppercase text-[#e1f255] shadow-black text-shadow-hard">
           Discipleship
         </h1>
-        <Table showCluster={!selectedCGId} state={state} setCGMId={setCGMId} />
+        <Table
+          showCluster={!selectedCGId}
+          state={state}
+          setCGMId={setCGMId}
+          setCGMLookupId={setCGMLookupId}
+        />
         <div className="flex w-full flex-col items-center gap-2 pt-5">
           {user?.superuser && (
             <button
