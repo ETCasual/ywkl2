@@ -89,6 +89,8 @@ const DiscipleshipIndexPage = () => {
     }
 
     void reload();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, router, setCGMs, reloadCG, selectedCGId]);
 
   return (

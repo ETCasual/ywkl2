@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type User } from "@prisma/client";
 import { create, type StateCreator } from "zustand";
 import { persist } from "zustand/middleware";

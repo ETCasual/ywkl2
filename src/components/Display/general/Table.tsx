@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { TiClipboard, TiWarning, TiTick } from "react-icons/ti";
-import { TbUrgent } from "react-icons/tb";
 import {
   type FunctionComponent,
   type Dispatch,
@@ -19,7 +16,7 @@ export const Table: FunctionComponent<{
   state: "loading" | "done" | null;
   setCGMId: Dispatch<SetStateAction<string>>;
   setCGMLookupId: Dispatch<SetStateAction<string>>;
-}> = ({ setCGMId, state, setCGMLookupId, showCluster }) => {
+}> = ({ setCGMId, state, setCGMLookupId }) => {
   const { cgm } = useCGM();
   const { user } = useUser();
   const [sorter] = useState("cg_rank");
