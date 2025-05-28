@@ -202,7 +202,7 @@ export default function Home() {
                 )} */}
               </div>
             </div>
-            <Swiper
+            {/* <Swiper
               freeMode
               modules={[FreeMode, Pagination]}
               pagination={{
@@ -225,7 +225,7 @@ export default function Home() {
               <SwiperSlide>
                 <MoreCard />
               </SwiperSlide>
-            </Swiper>
+            </Swiper> */}
 
             {(env.NEXT_PUBLIC_IS_STAGING === "1" ||
               // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
