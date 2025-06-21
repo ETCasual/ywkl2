@@ -166,20 +166,20 @@ export const Table: FunctionComponent<{
                       </p>
                       <div className="flex flex-row items-center gap-0.5">
                         {item.rank === "TL_Pastor" ? (
-                          <div className="inline-flex items-center rounded-full bg-purple-100 px-1.5 py-0 text-[10px] font-thin text-purple-800">
+                          <div className="inline-flex items-center rounded-full bg-purple-100 px-1.5 py-0 text-[10px] font-light text-purple-800">
                             Core Leader
                           </div>
                         ) : (
                           <div className="flex flex-wrap gap-1">
-                            <div className="inline-flex items-center rounded-full bg-blue-100 px-1.5 py-0 text-[10px] font-thin text-blue-800">
+                            <div className="inline-flex items-center rounded-full bg-blue-100 px-1.5 py-0 text-[10px] font-light text-blue-800">
                               {item.rank}
                             </div>
                             {showCgId && (
-                              <div className="inline-flex items-center rounded-full bg-green-100 px-1.5 py-0 text-[10px] font-thin text-green-800">
+                              <div className="inline-flex items-center rounded-full bg-green-100 px-1.5 py-0 text-[10px] font-light text-green-800">
                                 {item.cgId}
                               </div>
                             )}
-                            <div className="inline-flex items-center rounded-full bg-yellow-100 px-1.5 py-0 text-[10px] font-thin text-yellow-800">
+                            <div className="inline-flex items-center rounded-full bg-yellow-100 px-1.5 py-0 text-[10px] font-light text-yellow-800">
                               {item.Cg?.clusterId}
                             </div>
                           </div>
