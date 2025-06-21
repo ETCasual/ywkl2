@@ -4,10 +4,15 @@ import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import UseAnimations from "react-useanimations";
-import activity from "react-useanimations/lib/activity";
-import checkmark from "react-useanimations/lib/checkmark";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
+import { type Animation } from "react-useanimations/utils";
+
+// Dynamically import UseAnimations to prevent SSR issues with lottie-web
+const UseAnimations = dynamic(() => import("react-useanimations"), {
+  ssr: false,
+});
 
 export type FormikRegisterForm = {
   email: string;
@@ -16,8 +21,20 @@ export type FormikRegisterForm = {
 };
 
 const RegisterPage = () => {
-  const { setUser, setRegistrationStatus } = useUser();
+  const { setUser, reloadUser, setRegistrationStatus } = useUser();
   const router = useRouter();
+  const [checkmark, setCheckmark] = useState<Animation | null>(null);
+  const [activity, setActivity] = useState<Animation | null>(null);
+
+  // Load animations dynamically on client side
+  useEffect(() => {
+    void import("react-useanimations/lib/checkmark").then((module) => {
+      setCheckmark(module.default);
+    });
+    void import("react-useanimations/lib/activity").then((module) => {
+      setActivity(module.default);
+    });
+  }, []);
 
   return (
     <main
@@ -35,56 +52,53 @@ const RegisterPage = () => {
             confirmPassword: "",
           }}
           onSubmit={async (values, actions) => {
-            const res = await fetch("/api/register", {
+            const { confirmPassword: _, ...payload } = values;
+            const res = await fetch("/api/auth/register", {
               method: "POST",
-              body: JSON.stringify(values),
+              body: JSON.stringify(payload),
             });
+
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const response: User = await res.json();
-
-            if (res.status === 302)
-              toast.error("Email Already Exists!", {
-                icon: () => "⚠️",
-              });
 
             if (res.ok) {
               await toast
                 .promise(new Promise((resolve) => setTimeout(resolve, 1200)), {
                   pending: {
-                    render: () => "Registered successfully.",
-                    icon: (
+                    render: () => "Registration successful!",
+                    icon: checkmark ? (
                       <UseAnimations
                         animation={checkmark}
                         pathCss="stroke: green; stroke-width: 5px;"
                       />
-                    ),
+                    ) : undefined,
                   },
                   success: {
                     render: () => "Logging You In...",
-
-                    icon: () => <UseAnimations animation={activity} />,
+                    autoClose: 1500,
+                    icon: activity
+                      ? () => <UseAnimations animation={activity} />
+                      : undefined,
                   },
                 })
                 .then(async () => {
-                  setRegistrationStatus(false);
-                  await setUser(response).then(
-                    async () => await router.push("/"),
-                  );
+                  setRegistrationStatus(!!response.display_name);
+                  await setUser(response).then(async () => {
+                    await reloadUser().then(async () => {
+                      await router.push("/");
+                    });
+                  });
                 });
             }
+
             actions.setSubmitting(false);
           }}
           validationSchema={Yup.object().shape({
             email: Yup.string().email("Invalid Format.").required("Required."),
-            password: Yup.string()
-              .required("Required.")
-              .matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character",
-              ),
+            password: Yup.string().required("Required."),
             confirmPassword: Yup.string()
-              .required("Required.")
-              .oneOf([Yup.ref("password"), ""], "Passwords must match"),
+              .oneOf([Yup.ref("password")], "Password must match")
+              .required("Required."),
           })}
         >
           {({ errors, isSubmitting }) => {

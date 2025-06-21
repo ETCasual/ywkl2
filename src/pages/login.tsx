@@ -1,14 +1,18 @@
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import UseAnimations from "react-useanimations";
-import checkmark from "react-useanimations/lib/checkmark";
-
-import activity from "react-useanimations/lib/activity";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useUser } from "@/stores/useUser";
 import { useRouter } from "next/router";
 import { type User } from "@prisma/client";
+import { Animation } from "react-useanimations/utils";
+
+// Dynamically import UseAnimations to prevent SSR issues with lottie-web
+const UseAnimations = dynamic(() => import("react-useanimations"), {
+  ssr: false,
+});
 
 export type FormikLoginForm = {
   email: string;
@@ -16,8 +20,20 @@ export type FormikLoginForm = {
 };
 
 const LoginPage = () => {
-  const { setUser, setRegistrationStatus } = useUser();
+  const { setUser, setRegistrationStatus, reloadUser } = useUser();
   const router = useRouter();
+  const [checkmark, setCheckmark] = useState<Animation | null>(null);
+  const [activity, setActivity] = useState<Animation | null>(null);
+
+  // Load animations dynamically on client side
+  useEffect(() => {
+    void import("react-useanimations/lib/checkmark").then((module) => {
+      setCheckmark(module.default);
+    });
+    void import("react-useanimations/lib/activity").then((module) => {
+      setActivity(module.default);
+    });
+  }, []);
 
   return (
     <main
@@ -51,27 +67,28 @@ const LoginPage = () => {
                 .promise(new Promise((resolve) => setTimeout(resolve, 1200)), {
                   pending: {
                     render: () => "Login successful!",
-                    icon: (
+                    icon: checkmark ? (
                       <UseAnimations
                         animation={checkmark}
                         pathCss="stroke: green; stroke-width: 5px;"
                       />
-                    ),
+                    ) : undefined,
                   },
                   success: {
                     render: () => "Logging You In...",
                     autoClose: 1500,
-                    icon: () => <UseAnimations animation={activity} />,
+                    icon: activity
+                      ? () => <UseAnimations animation={activity} />
+                      : undefined,
                   },
                 })
                 .then(async () => {
-                  setRegistrationStatus(
-                    !!response.display_name
-                       
-                  );
-                  await setUser(response).then(
-                    async () => await router.push("/"),
-                  );
+                  setRegistrationStatus(!!response.display_name);
+                  await setUser(response).then(async () => {
+                    await reloadUser().then(async () => {
+                      await router.push("/");
+                    });
+                  });
                 });
             }
 

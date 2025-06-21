@@ -35,7 +35,7 @@ const DiscipleshipIndexPage = () => {
   const [cgmLookupId, setCGMLookupId] = useState<string>("");
   const [selectedCGId, setSelectedCGId] = useState<string>("");
 
-  const { setCGMs, reloadCG, state } = useCGM();
+  const { reloadCG, state } = useCGM();
 
   useEffect(() => setMounted(true), []);
 
@@ -61,8 +61,8 @@ const DiscipleshipIndexPage = () => {
         ? [selectedCGId]
         : user?.superuser
           ? ["all"]
-          : user?.rank === "TL_Pastor" && user?.leaderToCluster?.id
-            ? [user?.leaderToCluster?.id]
+          : user?.rank === "TL_Pastor" && user?.leaderToCluster?.[0]?.id
+            ? [user?.leaderToCluster?.[0]?.id]
             : user?.rank === "Coach"
               ? user?.coaching_on?.map((co) => co.id)
               : user?.rank === "CGL" && user.LeaderToCG
@@ -91,7 +91,7 @@ const DiscipleshipIndexPage = () => {
     void reload();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, router, setCGMs, reloadCG, selectedCGId]);
+  }, [user, router, reloadCG, selectedCGId]);
 
   return (
     <>

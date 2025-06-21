@@ -67,7 +67,6 @@ const handler: NextApiHandler = async (req, res) => {
             id: true,
             rank: true,
             superuser: true,
-            coaching_on: true,
           },
         });
         return res.status(200).json(result);

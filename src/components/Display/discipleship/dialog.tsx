@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
   type FunctionComponent,
+  useMemo,
 } from "react";
 import { Rings } from "react-loader-spinner";
 import { DiscipleshipField } from "./Field";
@@ -191,10 +192,19 @@ export const SubmitDiscipleshipDialog = () => {
     if (cgs.length > 0) return;
     void (async () => {
       await fetch("/api/cg", { method: "GET" }).then((s) =>
-        s.json().then((res: CGData[]) => setCGs(res)),
+        s.json().then((res: CGData[]) => {
+          setCGs(res);
+        }),
       );
     })();
   }, [cgs.length]);
+
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const isOP = user?.superuser || user?.rank === "TL_Pastor";
+
+  const options = useMemo(() => {
+    return isOP ? tempCGMs : cgm;
+  }, [tempCGMs, cgm, isOP]);
 
   return (
     <dialog
@@ -223,7 +233,7 @@ export const SubmitDiscipleshipDialog = () => {
                     by: user?.id ?? "",
                     cg: "",
                     cgmId: String(
-                      tempCGMs
+                      (isOP ? tempCGMs : cgm)
                         .filter((a) => a.userId !== user?.id)
                         .sort((a, b) => {
                           if (a.cgId < b.cgId) {
@@ -481,27 +491,34 @@ export const SubmitDiscipleshipDialog = () => {
                               );
                             }}
                           >
-                            {tempCGMs
-                              .filter(
-                                (a) =>
-                                  a.userId !== user?.id && a.cgId === values.cg,
-                              )
-                              .sort((a, b) => {
-                                if (a.cgId < b.cgId) {
-                                  return -1;
-                                }
-                                if (a.cgId > b.cgId) {
-                                  return 1;
-                                }
-                                return 0;
-                              })
-                              .flatMap((cg) => {
-                                return (
-                                  <option className="text-black" value={cg.id}>
-                                    {cg.name}
-                                  </option>
-                                );
-                              })}
+                            {options.length > 0 &&
+                              options
+                                .filter((a) => {
+                                  return isOP
+                                    ? a.userId !== user?.id &&
+                                        a.cgId === values.cg
+                                    : a.userId !== user?.id;
+                                })
+                                .sort((a, b) => {
+                                  if (a.cgId < b.cgId) {
+                                    return -1;
+                                  }
+                                  if (a.cgId > b.cgId) {
+                                    return 1;
+                                  }
+                                  return 0;
+                                })
+                                .flatMap((cg) => {
+                                  return (
+                                    <option
+                                      key={cg.id}
+                                      className="text-black"
+                                      value={cg.id}
+                                    >
+                                      {cg.name}
+                                    </option>
+                                  );
+                                })}
                           </select>
                         </div>
                         <div className="min-h-[24px]" />
@@ -907,8 +924,9 @@ export const AddCGMDialog: FunctionComponent<AddCGMDialogProps> = ({
                   ? [selectedCGId]
                   : user?.superuser
                     ? ["all"]
-                    : user?.rank === "TL_Pastor" && user?.leaderToCluster?.id
-                      ? [user?.leaderToCluster?.id]
+                    : user?.rank === "TL_Pastor" &&
+                        user?.leaderToCluster?.[0]?.id
+                      ? [user?.leaderToCluster?.[0]?.id]
                       : user?.rank === "Coach"
                         ? user?.coaching_on?.map((co) => co.id)
                         : user?.rank === "CGL" && user.LeaderToCG

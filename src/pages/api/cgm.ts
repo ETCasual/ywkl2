@@ -59,6 +59,9 @@ const handler: NextApiHandler = async (req, res) => {
               in: cg,
             },
           },
+          include: {
+            Cg: true,
+          },
         });
 
         return res.status(200).json(findbyCg);

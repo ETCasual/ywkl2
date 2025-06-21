@@ -30,11 +30,6 @@ export const ProfileDialog: FunctionComponent<ProfileDialogProps> = ({
   return (
     <dialog
       id="register-user"
-      onClick={async () => {
-        await fetch("api/seed", {
-          method: "POST",
-        });
-      }}
       className="modal focus-within:outline-none focus-visible:outline-none"
     >
       {cgs.length > 0 && user ? (
@@ -264,6 +259,7 @@ const CGMNamesSelect: FunctionComponent<CGMNamesSelectProps> = ({
     const fetchCGMs = async () => {
       await fetch(`/api/cgm_profile?cgId=${cgId}`).then((res) =>
         res.json().then((js: { name: string; id: string }[]) => {
+          console.log("js", js);
           setOptions(js);
         }),
       );

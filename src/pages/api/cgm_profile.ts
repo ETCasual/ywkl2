@@ -9,28 +9,12 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     const cg = req.query.cgId as string;
     try {
-      const findleaderForCG = await db.leaderToCG.findFirst({
-        where: {
-          cgId: cg,
-        },
-        select: {
-          userId: true,
-        },
-      });
-
-      const findNameToLeader = await db.user.findFirst({
-        where: {
-          id: String(findleaderForCG?.userId),
-        },
-      });
-
       const findbyCg = await db.cGMs.findMany({
         where: {
           cgId: cg,
         },
       });
-      const leaderName = { name: findNameToLeader?.name };
-      return res.status(200).json([leaderName, ...findbyCg]);
+      return res.status(200).json(findbyCg);
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);

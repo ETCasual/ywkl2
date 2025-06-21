@@ -46,7 +46,6 @@ export default function Home() {
     void (async () => {
       await fetch("/api/cg", { method: "GET" }).then((s) =>
         s.json().then((res: CGData[]) => {
-          console.log("res", res);
           setCgs(res);
         }),
       );

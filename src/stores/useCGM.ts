@@ -36,7 +36,6 @@ const createState: StateCreator<CGMState> = (set, get) => ({
   },
 
   reloadCG: async (id) => {
-    // if (!(get().cgm.length > 0)) return;
     set({
       state: "loading",
     });

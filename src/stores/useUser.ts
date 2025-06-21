@@ -9,7 +9,7 @@ type UserState = {
     | (Omit<User, "password"> & {
         as_cgm?: { cgId: string | null } | null;
         coaching_on?: { id: string; clusterId: string }[];
-        leaderToCluster?: { id: string; userId: string };
+        leaderToCluster?: { id: string; userId: string }[];
         LeaderToCG?: {
           cgId: string;
           id: string;
