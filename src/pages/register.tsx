@@ -52,14 +52,14 @@ const RegisterPage = () => {
             confirmPassword: "",
           }}
           onSubmit={async (values, actions) => {
-            const { confirmPassword: _, ...payload } = values;
-            const res = await fetch("/api/auth/register", {
+            const res = await fetch("/api/auth", {
               method: "POST",
-              body: JSON.stringify(payload),
+              body: JSON.stringify(values),
             });
 
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const response: User = await res.json();
+            console.log(response);
 
             if (res.ok) {
               await toast
