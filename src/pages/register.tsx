@@ -52,7 +52,7 @@ const RegisterPage = () => {
             confirmPassword: "",
           }}
           onSubmit={async (values, actions) => {
-            const res = await fetch("/api/auth", {
+            const res = await fetch("/api/register", {
               method: "POST",
               body: JSON.stringify(values),
             });
@@ -60,6 +60,11 @@ const RegisterPage = () => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const response: User = await res.json();
             console.log(response);
+
+            if (res.status === 302)
+              toast.error("Email Already Exists!", {
+                icon: () => "⚠️",
+              });
 
             if (res.ok) {
               await toast
